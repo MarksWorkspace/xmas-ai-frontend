@@ -1,9 +1,9 @@
 .sidebar {
-  width: 240px;
+  width: min(240px, 20vw);
   height: 100vh;
   background-color: #ffffff;
   color: #333333;
-  padding: 20px 12px;
+  padding: clamp(12px, 1.5vw, 20px);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -11,27 +11,35 @@
   top: 0;
   border-right: 1px solid #eaeaea;
   user-select: none;
+  overflow-y: auto;
 }
 
 .logo-container {
-  padding: 10px 0 30px 8px;
+  padding: clamp(8px, 1vw, 10px) 0 clamp(20px, 2.5vw, 30px) 8px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
 }
 
 .logo-container h2 {
   color: #000000;
-  font-size: 16px;
+  font-size: clamp(14px, 1vw, 16px);
   font-weight: 600;
   margin: 0;
+  white-space: nowrap;
 }
 
 .nav-menu {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 10px 16px;
+  padding: clamp(8px, 1vw, 10px) clamp(12px, 1.5vw, 16px);
   margin: 2px 0;
   border-radius: 6px;
   cursor: pointer;
@@ -40,6 +48,7 @@
   user-select: none;
   -webkit-user-select: none;
   outline: none;
+  min-height: 40px;
 }
 
 .nav-item:hover {
@@ -47,27 +56,31 @@
 }
 
 .nav-item.active {
-  background-color: #1b4332;
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
   color: #ffffff;
 }
 
-.nav-item:focus {
-  outline: none;
+.nav-item:hover:not(.active) {
+  background: linear-gradient(90deg, #f5f5f5 0%, #eaeaea 100%);
 }
 
 .nav-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
+  min-width: 24px;
   height: 24px;
-  margin-right: 12px;
+  margin-right: clamp(8px, 1vw, 12px);
   opacity: 0.8;
+  flex-shrink: 0;
 }
 
 .nav-label {
-  font-size: 14px;
+  font-size: clamp(13px, 0.9vw, 14px);
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .active .nav-label,
@@ -76,10 +89,16 @@
   color: #ffffff;
 }
 
-.logout-section {
-  padding-top: 20px;
+.system-menu {
+  margin-top: clamp(16px, 2vw, 20px);
+  padding-top: clamp(16px, 2vw, 20px);
   border-top: 1px solid #eaeaea;
-  margin-top: 20px;
+}
+
+.logout-section {
+  padding-top: clamp(16px, 2vw, 20px);
+  border-top: 1px solid #eaeaea;
+  margin-top: clamp(16px, 2vw, 20px);
 }
 
 .logout-section .nav-item {
@@ -87,6 +106,27 @@
 }
 
 .logout-section .nav-item:hover {
-  background-color: #f5f5f5;
+  background: linear-gradient(90deg, #f5f5f5 0%, #eaeaea 100%);
   color: #333333;
+}
+
+@media (max-height: 600px) {
+  .sidebar {
+    padding: 12px 8px;
+  }
+  
+  .logo-container {
+    padding: 8px 0 16px 8px;
+  }
+  
+  .nav-item {
+    padding: 6px 12px;
+    min-height: 36px;
+  }
+  
+  .system-menu,
+  .logout-section {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
 } 
