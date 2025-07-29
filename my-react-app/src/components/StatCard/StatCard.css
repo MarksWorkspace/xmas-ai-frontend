@@ -1,0 +1,77 @@
+.stat-card {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: clamp(8px, 1vw, 10px);
+  padding: clamp(10px, 1.2vw, 14px);
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1vw, 12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  min-width: 0;
+}
+
+.stat-icon {
+  width: clamp(24px, 2vw, 28px);
+  height: clamp(24px, 2vw, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.stat-icon.neighborhoods {
+  background-color: #e8f5e9;
+  color: #2d6a4f;
+}
+
+.stat-icon.jobs {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.stat-icon.flyers {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.stat-icon.conversion {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.stat-info {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-value {
+  font-size: clamp(18px, 1.8vw, 20px);
+  font-weight: 600;
+  color: #111;
+  margin: 0;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: clamp(12px, 1vw, 13px);
+  color: #666666;
+  margin: 4px 0 0 0;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  .stat-card {
+    padding: 10px 12px;
+  }
+
+  .stat-icon {
+    width: 24px;
+    height: 24px;
+  }
+} 

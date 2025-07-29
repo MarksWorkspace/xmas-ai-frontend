@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
+import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       <Sidebar />
       <div className="main-content">
         <TopBar />
-        {/* Main content will go here */}
+        <WelcomeBanner />
       </div>
     </div>
   );
