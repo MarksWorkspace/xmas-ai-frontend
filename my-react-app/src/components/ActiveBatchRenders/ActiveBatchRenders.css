@@ -1,0 +1,31 @@
+.batch-renders-section {
+  background: white;
+  padding: 24px;
+  margin-bottom: 24px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.batch-renders-header {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: #111;
+  margin-bottom: 20px;
+  gap: 8px;
+}
+
+.batch-renders-header-icon {
+  color: #111;
+  width: 16px;
+  height: 16px;
+}
+
+.batch-renders-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 12px;
+} 

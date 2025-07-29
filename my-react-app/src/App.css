@@ -27,6 +27,28 @@ body {
   overflow-x: hidden;
 }
 
+.dashboard-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.dashboard-main {
+  flex: 3;
+  min-width: 0;
+}
+
+.dashboard-side {
+  flex: 2;
+  min-width: 0;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-row {
+    flex-direction: column;
+  }
+}
+
 @media (max-width: 768px) {
   .main-content {
     padding: 16px;
