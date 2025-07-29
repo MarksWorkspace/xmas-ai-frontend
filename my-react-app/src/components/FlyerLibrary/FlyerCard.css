@@ -1,0 +1,84 @@
+.flyer-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.flyer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.flyer-image {
+  position: relative;
+  width: 100%;
+  padding-top: 66.67%; /* 3:2 aspect ratio */
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.flyer-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flyer-details {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.flyer-address {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.flyer-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.share-btn {
+  background: none;
+  border: 1px solid #006633;
+  color: #006633;
+}
+
+.share-btn:hover {
+  background: rgba(0, 102, 51, 0.05);
+}
+
+.download-btn {
+  background: #006633;
+  border: 1px solid #006633;
+  color: white;
+}
+
+.download-btn:hover {
+  background: #005529;
+} 

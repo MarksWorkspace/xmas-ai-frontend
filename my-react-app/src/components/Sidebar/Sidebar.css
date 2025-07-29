@@ -27,6 +27,7 @@
   font-weight: 600;
   margin: 0;
   white-space: nowrap;
+  font-size: 20px;
 }
 
 .nav-menu {
@@ -102,7 +103,7 @@
 }
 
 .logout-section .nav-item {
-  color: #666666;
+  color: #000000;
 }
 
 .logout-section .nav-item:hover {

@@ -7,6 +7,7 @@ import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 import ActiveBatchRenders from './components/ActiveBatchRenders/ActiveBatchRenders';
 import NewCampaign from './components/NewCampaign/NewCampaign';
 import StatCard from './components/StatCard/StatCard';
+import FlyerLibrary from './components/FlyerLibrary/FlyerLibrary';
 
 function App() {
   // Stats data
@@ -58,6 +59,7 @@ function App() {
               <NewCampaign />
             </div>
           </div>
+          <FlyerLibrary />
         </div>
       </div>
     </Layout>

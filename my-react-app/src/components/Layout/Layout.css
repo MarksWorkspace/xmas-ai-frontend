@@ -14,7 +14,7 @@
 }
 
 .gradient-background {
-  background: linear-gradient(180deg, rgba(220, 255, 236, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(180deg, rgba(211, 248, 228, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
   border-radius: 24px;
   padding: clamp(16px, 2vw, 20px);
   margin: 20px;
