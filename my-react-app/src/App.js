@@ -1,19 +1,55 @@
 import React from 'react';
 import './App.css';
+import Layout from './components/Layout/Layout';
 import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 import ActiveBatchRenders from './components/ActiveBatchRenders/ActiveBatchRenders';
 import NewCampaign from './components/NewCampaign/NewCampaign';
+import StatCard from './components/StatCard/StatCard';
 
 function App() {
+  // Stats data
+  const statsData = [
+    {
+      icon: "neighborhoods",
+      value: "12",
+      label: "Neighborhoods Targeted"
+    },
+    {
+      icon: "jobs",
+      value: "5",
+      label: "Batch Jobs in Progress"
+    },
+    {
+      icon: "flyers",
+      value: "247",
+      label: "Flyers Generated This Week"
+    },
+    {
+      icon: "conversion",
+      value: "4.8%",
+      label: "Conversion CTR"
+    }
+  ];
+
   return (
-    <div className="app">
+    <Layout>
       <Sidebar />
       <div className="main-content">
         <TopBar />
         <div className="gradient-background">
           <WelcomeBanner />
+          <div className="stats-container">
+            {statsData.map((stat, index) => (
+              <StatCard 
+                key={index}
+                icon={stat.icon}
+                value={stat.value}
+                label={stat.label}
+              />
+            ))}
+          </div>
           <div className="dashboard-row">
             <div className="dashboard-main">
               <ActiveBatchRenders />
@@ -24,7 +60,7 @@ function App() {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 
