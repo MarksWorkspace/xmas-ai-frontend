@@ -41,6 +41,9 @@ body {
 .dashboard-side {
   flex: 2;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 @media (max-width: 1200px) {

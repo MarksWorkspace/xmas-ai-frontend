@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 import ActiveBatchRenders from './components/ActiveBatchRenders/ActiveBatchRenders';
+import NewCampaign from './components/NewCampaign/NewCampaign';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
             <ActiveBatchRenders />
           </div>
           <div className="dashboard-side">
-            {/* Start a New Campaign component will go here */}
+            <NewCampaign />
           </div>
         </div>
       </div>
