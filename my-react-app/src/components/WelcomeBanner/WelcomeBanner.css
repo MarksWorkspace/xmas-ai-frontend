@@ -1,6 +1,5 @@
 .welcome-section {
   margin-bottom: clamp(16px, 2vw, 24px);
-  background: linear-gradient(90deg, rgba(244, 247, 244, 0.4) 0%, rgba(200, 230, 201, 0.4) 100%);
   border-radius: clamp(8px, 1vw, 12px);
   padding: clamp(16px, 2vw, 24px);
   width: 100%;

@@ -12,13 +12,15 @@ function App() {
       <Sidebar />
       <div className="main-content">
         <TopBar />
-        <WelcomeBanner />
-        <div className="dashboard-row">
-          <div className="dashboard-main">
-            <ActiveBatchRenders />
-          </div>
-          <div className="dashboard-side">
-            <NewCampaign />
+        <div className="gradient-background">
+          <WelcomeBanner />
+          <div className="dashboard-row">
+            <div className="dashboard-main">
+              <ActiveBatchRenders />
+            </div>
+            <div className="dashboard-side">
+              <NewCampaign />
+            </div>
           </div>
         </div>
       </div>

@@ -20,17 +20,24 @@ body {
 .main-content {
   flex: 1;
   margin-left: min(240px, 20vw);
-  padding: clamp(16px, 2vw, 20px);
-  padding-top: calc(clamp(48px, 6vh, 56px) + 20px);
+  padding-top: calc(clamp(48px, 6vh, 56px));
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
 }
 
+.gradient-background {
+  background: linear-gradient(180deg, rgba(220, 255, 236, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 24px;
+  padding: clamp(16px, 2vw, 20px);
+  margin: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
 .dashboard-row {
   display: flex;
   gap: 24px;
-  margin-bottom: 24px;
+  margin-top: 24px;
 }
 
 .dashboard-main {
@@ -53,8 +60,12 @@ body {
 }
 
 @media (max-width: 768px) {
-  .main-content {
+  .gradient-background {
+    margin: 12px;
     padding: 16px;
-    padding-top: calc(48px + 16px);
+  }
+  
+  .main-content {
+    padding-top: 48px;
   }
 }
