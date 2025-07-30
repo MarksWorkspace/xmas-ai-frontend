@@ -37,13 +37,14 @@ body {
 }
 
 .dashboard-main {
-  flex: 1;
+  flex: 0.9; /* Reduced further to make it even narrower */
   min-width: 0; /* Prevents flex item from overflowing */
 }
 
 .dashboard-side {
-  width: 300px;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 480px; /* Increased minimum width significantly */
+  max-width: 520px; /* Increased maximum width significantly */
 }
 
 /* Ensure consistent padding across components */
@@ -56,12 +57,14 @@ body {
 }
 
 /* Responsive adjustments */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .dashboard-row {
     flex-direction: column;
   }
 
   .dashboard-side {
     width: 100%;
+    max-width: none;
+    min-width: 0;
   }
 }

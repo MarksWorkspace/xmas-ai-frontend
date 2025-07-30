@@ -1,31 +1,55 @@
-.batch-renders-section {
+.active-batch-renders {
   background: white;
-  padding: 24px;
-  margin-bottom: 24px;
-  width: 100%;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .batch-renders-header {
   display: flex;
   align-items: center;
-  font-weight: 650;
-  font-size: 23px;
-  color: #111;
-  margin-bottom: 20px;
-  gap: 8px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.batch-renders-header-icon {
-  color: #111;
-  width: 16px;
-  height: 16px;
+.batch-renders-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.batch-renders-title h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.icon-batch {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-batch svg {
+  width: 14px;
+  height: 14px;
+  color: #1a1a1a;
 }
 
 .batch-renders-list {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .batch-renders-list {
+    grid-template-columns: 1fr;
+  }
 } 

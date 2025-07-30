@@ -1,27 +1,40 @@
 import React from 'react';
 import './BatchRenderRow.css';
 
-const BatchRenderRow = ({ batch }) => {
-  const [homes, timeInfo] = batch.subtitle.split(' · ');
+const BatchRenderRow = ({ title, homes, startTime, progress, thumbnail }) => {
+  const isQueued = progress === 'Queued';
   
   return (
-    <div className={`batch-row ${batch.status}`}>
-      <img className="batch-thumb" src={batch.image} alt={batch.title} />
-      <div className="batch-info">
-        <div className="batch-title">{batch.title}</div>
-        <div className="batch-subtitle">
-          <span>{homes}</span>
-          <span>{timeInfo}</span>
+    <div className={`batch-render-row ${isQueued ? 'queued' : ''}`}>
+      <div className="batch-content">
+        <div className="thumbnail">
+          <img src={thumbnail} alt={title} />
         </div>
-        {batch.status === 'active' ? (
-          <div className="batch-progress-container">
-            <div className="batch-progress-text">{batch.progress}%</div>
-            <div className="batch-progress-bar">
-              <div className="batch-progress" style={{ width: `${batch.progress}%` }} />
-            </div>
+        <div className="batch-info">
+          <h3 className="batch-title">{title}</h3>
+          <div className="batch-subtitle">
+            <span>{homes} homes</span>
+            <span>{startTime}</span>
           </div>
-        ) : (
-          <div className="batch-status-queued" />
+        </div>
+      </div>
+      <div className="progress-container">
+        {!isQueued && (
+          <>
+            <div className="progress-bar">
+              <div 
+                className="progress-fill" 
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <div className="status">{progress}%</div>
+          </>
+        )}
+        {isQueued && (
+          <>
+            <div className="progress-bar" />
+            <div className="status">Queued</div>
+          </>
         )}
       </div>
     </div>

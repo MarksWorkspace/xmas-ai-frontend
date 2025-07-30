@@ -58,23 +58,11 @@
 
 .flyer-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }
 
 /* Responsive grid adjustments */
-@media (max-width: 1600px) {
-  .flyer-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-@media (max-width: 1400px) {
-  .flyer-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 @media (max-width: 1200px) {
   .flyer-grid {
     grid-template-columns: repeat(3, 1fr);
