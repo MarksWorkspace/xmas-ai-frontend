@@ -1,0 +1,210 @@
+.create-campaign-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.campaign-header {
+  background-color: #1a73e8;
+  color: white;
+  padding: 20px 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.campaign-header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.header-icon {
+  font-size: 20px;
+}
+
+.header-subtitle {
+  background-color: #1a73e8;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  padding: 8px 24px 16px;
+  font-size: 14px;
+}
+
+.selection-options {
+  display: flex;
+  gap: 32px;
+  padding: 12px 24px;
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.option-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border: none;
+  background: none;
+  color: #5f6368;
+  font-size: 14px;
+  cursor: pointer;
+  position: relative;
+}
+
+.option-button.active {
+  color: #1a73e8;
+}
+
+.option-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #1a73e8;
+}
+
+.option-icon {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Upload Area Styles */
+.upload-area {
+  background-color: white;
+  border: 1px dashed #dadce0;
+  border-radius: 8px;
+  padding: 40px;
+  margin: 24px;
+  text-align: center;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.upload-area.dragging {
+  border-color: #1a73e8;
+  background-color: rgba(26, 115, 232, 0.05);
+}
+
+.upload-content {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.upload-icon {
+  color: #1a73e8;
+  font-size: 32px;
+}
+
+.upload-content h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #202124;
+}
+
+.upload-content p {
+  margin: 0;
+  color: #5f6368;
+  font-size: 14px;
+}
+
+.choose-file-btn {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 8px;
+}
+
+.choose-file-btn:hover {
+  background-color: #1557b0;
+}
+
+.file-format-note {
+  color: #5f6368;
+  font-size: 12px !important;
+  margin-top: 24px !important;
+}
+
+/* Address Form Styles */
+.address-form-container {
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.address-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #202124;
+}
+
+.form-group input {
+  padding: 8px 12px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #202124;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #1a73e8;
+}
+
+.form-group input::placeholder {
+  color: #5f6368;
+}
+
+.submit-btn {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 8px;
+  align-self: flex-end;
+}
+
+.submit-btn:hover {
+  background-color: #1557b0;
+}

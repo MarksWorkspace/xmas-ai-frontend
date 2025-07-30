@@ -1,30 +1,31 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './NewCampaign.css';
-import { TbArrowsExchange } from 'react-icons/tb';
-
-const steps = [
-  {
-    number: 1,
-    title: 'Select Neighbourhood',
-    color: '#1b4332'
-  },
-  {
-    number: 2,
-    title: 'Start Batch Render',
-    color: '#2d6a4f'
-  },
-  {
-    number: 3,
-    title: 'Export Flyers',
-    color: '#ffd700'
-  }
-];
 
 const NewCampaign = () => {
+  const navigate = useNavigate();
+
+  const steps = [
+    {
+      number: 1,
+      title: 'Select Neighbourhood',
+      color: '#006633'
+    },
+    {
+      number: 2,
+      title: 'Start Batch Render',
+      color: '#008040'
+    },
+    {
+      number: 3,
+      title: 'Export Flyers',
+      color: '#e6b800'
+    }
+  ];
+
   return (
     <div className="campaign-section">
       <div className="campaign-header">
-        <TbArrowsExchange className="campaign-header-icon" />
         <span>Start a New Campaign</span>
       </div>
       <div className="campaign-steps">
@@ -43,11 +44,14 @@ const NewCampaign = () => {
           </div>
         ))}
       </div>
-      <button className="start-campaign-btn">
+      <button 
+        className="start-campaign-btn"
+        onClick={() => navigate('/create-campaign')}
+      >
         Start Now
       </button>
     </div>
   );
 };
 
-export default NewCampaign; 
+export default NewCampaign;

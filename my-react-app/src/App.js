@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Layout from './components/Layout/Layout';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -8,9 +9,9 @@ import ActiveBatchRenders from './components/ActiveBatchRenders/ActiveBatchRende
 import NewCampaign from './components/NewCampaign/NewCampaign';
 import StatCard from './components/StatCard/StatCard';
 import FlyerLibrary from './components/FlyerLibrary/FlyerLibrary';
+import CreateCampaign from './components/CreateCampaign/CreateCampaign';
 
-function App() {
-  // Stats data
+function Dashboard() {
   const statsData = [
     {
       icon: "neighborhoods",
@@ -63,6 +64,17 @@ function App() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/create-campaign" element={<CreateCampaign />} />
+      </Routes>
+    </Router>
   );
 }
 
