@@ -20,7 +20,7 @@ body {
 .gradient-background {
   background: linear-gradient(to bottom, #f0f9f0, #ffffff);
   min-height: 100vh;
-  padding: 24px 0;
+  padding: 12px 0;
 }
 
 .content-container {
@@ -31,29 +31,29 @@ body {
 
 .dashboard-row {
   display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 12px;
   padding: 0 24px;
 }
 
 .dashboard-main {
-  flex: 0.9; /* Reduced further to make it even narrower */
-  min-width: 0; /* Prevents flex item from overflowing */
+  flex: 0.9;
+  min-width: 0;
 }
 
 .dashboard-side {
   flex: 1;
-  min-width: 480px; /* Increased minimum width significantly */
-  max-width: 520px; /* Increased maximum width significantly */
+  min-width: 480px;
+  max-width: 520px;
 }
 
 /* Ensure consistent padding across components */
 .stats-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: 12px;
   padding: 0 24px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 }
 
 /* Responsive adjustments */

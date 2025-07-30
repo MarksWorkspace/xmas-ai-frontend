@@ -1,7 +1,7 @@
 .campaign-section {
   background: white;
   border-radius: 12px;
-  padding: 20px;
+  padding: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.08);
   height: fit-content;
@@ -10,15 +10,15 @@
 .campaign-header {
   display: flex;
   align-items: center;
-  font-weight: 650;
-  font-size: 23px;
-  color: #000;
-  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 24px;
   gap: 8px;
 }
 
 .campaign-header-icon {
-  color: #000;
+  color: #1a1a1a;
   width: 18px;
   height: 18px;
   stroke-width: 1.5;
@@ -27,14 +27,14 @@
 .campaign-steps {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   margin-bottom: 24px;
 }
 
 .campaign-step {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .step-indicator {
@@ -75,6 +75,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-top: 8px;
 }
 
 .start-campaign-btn:hover {

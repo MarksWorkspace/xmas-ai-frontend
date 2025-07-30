@@ -1,7 +1,7 @@
 .active-batch-renders {
   background: white;
   border-radius: 12px;
-  padding: 20px;
+  padding: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   width: 100%;
   box-sizing: border-box;
@@ -10,18 +10,18 @@
 .batch-renders-header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 16px;
 }
 
 .batch-renders-title {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .batch-renders-title h2 {
-  font-size: 16px;
+  font-size: 22px;
   font-weight: 600;
   color: #1a1a1a;
   margin: 0;
