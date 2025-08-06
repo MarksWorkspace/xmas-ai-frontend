@@ -18,6 +18,7 @@ const Register = () => {
       navigate('/login');
     } catch (err) {
       // Error is handled by AuthContext
+
     }
   };
 
@@ -27,6 +28,7 @@ const Register = () => {
         <h2>Register</h2>
         <form onSubmit={handleSubmit}>
           {error && <div className="error-message">{error}</div>}
+
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
@@ -35,6 +37,7 @@ const Register = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+
             />
           </div>
           <div className="form-group">
@@ -45,6 +48,7 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+
             />
           </div>
           <div className="form-group">
@@ -65,6 +69,7 @@ const Register = () => {
           Already have an account?{' '}
           <button onClick={() => navigate('/login')}>Login</button>
         </p>
+
       </div>
     </div>
   );

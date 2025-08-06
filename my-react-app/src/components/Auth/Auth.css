@@ -41,6 +41,7 @@
 
 .form-group input:focus {
   outline: none;
+
   border-color: #0066cc;
 }
 
@@ -62,6 +63,7 @@ button:hover {
 
 button:disabled {
   background-color: #ccc;
+
   cursor: not-allowed;
 }
 
@@ -77,6 +79,7 @@ button:disabled {
   margin-top: 1rem;
   text-align: center;
   color: #666;
+
 }
 
 .auth-switch button {
@@ -93,4 +96,5 @@ button:disabled {
 .auth-switch button:hover {
   color: #0052a3;
   background: none;
+
 }

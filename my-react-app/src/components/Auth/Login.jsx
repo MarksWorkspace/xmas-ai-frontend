@@ -16,6 +16,7 @@ const Login = () => {
       navigate('/dashboard');
     } catch (err) {
       // Error is handled by AuthContext
+
     }
   };
 
@@ -25,6 +26,7 @@ const Login = () => {
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           {error && <div className="error-message">{error}</div>}
+
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
@@ -33,6 +35,7 @@ const Login = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+
             />
           </div>
           <div className="form-group">
@@ -53,6 +56,7 @@ const Login = () => {
           Don't have an account?{' '}
           <button onClick={() => navigate('/register')}>Register</button>
         </p>
+
       </div>
     </div>
   );

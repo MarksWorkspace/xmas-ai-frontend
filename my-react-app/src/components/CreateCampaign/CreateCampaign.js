@@ -9,7 +9,9 @@ const CreateCampaign = () => {
   const [activeTab, setActiveTab] = useState('upload'); // 'upload', 'address', 'map'
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
-  const [zipCode, setZipCode] = useState('');
+  const [state, setState] = useState('');
+  const [county, setCounty] = useState('');
+  const [lightingPreferences, setLightingPreferences] = useState({});
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -38,10 +40,37 @@ const CreateCampaign = () => {
     }
   };
 
-  const handleAddressSubmit = (e) => {
+  const handleAddressSubmit = async (e) => {
     e.preventDefault();
-    // Handle address submission
-    console.log({ address, city, zipCode });
+    try {
+      const response = await fetch('/jobs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          description: `Generate image for ${address}, ${city}, ${state}`,
+          addresses: [{
+            street: address,
+            city: city,
+            state: state,
+            county: county
+          }],
+          lighting_preferences: lightingPreferences
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create job');
+      }
+
+      const data = await response.json();
+      console.log('Job created:', data);
+      // TODO: Handle successful job creation (e.g., show success message, redirect to job status page)
+    } catch (error) {
+      console.error('Error creating job:', error);
+      // TODO: Handle error (e.g., show error message to user)
+    }
   };
 
   const renderContent = () => {
@@ -74,15 +103,54 @@ const CreateCampaign = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="zipCode">ZIP Code</label>
+                  <label htmlFor="state">State</label>
                   <input
                     type="text"
-                    id="zipCode"
-                    value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
-                    placeholder="Enter ZIP code"
+                    id="state"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    placeholder="Enter state"
                     required
                   />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="county">County</label>
+                  <input
+                    type="text"
+                    id="county"
+                    value={county}
+                    onChange={(e) => setCounty(e.target.value)}
+                    placeholder="Enter county"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="lighting">Lighting Preferences</label>
+                <div className="lighting-options">
+                  <button
+                    type="button"
+                    className={`lighting-btn ${lightingPreferences.daytime ? 'active' : ''}`}
+                    onClick={() => setLightingPreferences(prev => ({...prev, daytime: !prev.daytime}))}
+                  >
+                    Daytime
+                  </button>
+                  <button
+                    type="button"
+                    className={`lighting-btn ${lightingPreferences.sunset ? 'active' : ''}`}
+                    onClick={() => setLightingPreferences(prev => ({...prev, sunset: !prev.sunset}))}
+                  >
+                    Sunset
+                  </button>
+                  <button
+                    type="button"
+                    className={`lighting-btn ${lightingPreferences.night ? 'active' : ''}`}
+                    onClick={() => setLightingPreferences(prev => ({...prev, night: !prev.night}))}
+                  >
+                    Night
+                  </button>
                 </div>
               </div>
               <button type="submit" className="submit-btn">
