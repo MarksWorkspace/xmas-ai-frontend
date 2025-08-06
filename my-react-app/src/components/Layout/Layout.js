@@ -57,8 +57,8 @@ const Layout = () => {
     return <div>{location.pathname === '/login' ? <Login /> : <Register />}</div>;
   }
 
-  // Don't show dashboard content for create-campaign page
-  const isDashboard = location.pathname === '/';
+  // Check if we're on the dashboard route (either '/' or '/dashboard')
+  const isDashboard = location.pathname === '/' || location.pathname === '/dashboard';
   const isCreateCampaign = location.pathname === '/create-campaign';
 
   return (
