@@ -19,8 +19,14 @@ const Layout = () => {
   const { logout } = useAuth();
 
   const handleLogout = () => {
-    logout();
-    navigate('/auth');
+    try {
+      logout();
+      // Navigate to login page after successful logout
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // You might want to show an error message to the user here
+    }
   };
 
   const statsData = [

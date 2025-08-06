@@ -1,8 +1,22 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
 import { RiDashboardLine, RiBuilding2Line, RiImageLine, RiFileList2Line, RiPriceTag3Line, RiPaintLine, RiWalletLine, RiSettings3Line, RiLogoutBoxRLine } from 'react-icons/ri';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    try {
+      logout();
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   const mainMenuItems = [
     { icon: <RiDashboardLine size={20} />, label: "Dashboard", active: true },
     { icon: <RiBuilding2Line size={20} />, label: "Neighborhoods" },
@@ -48,7 +62,7 @@ const Sidebar = () => {
       </nav>
 
       <div className="logout-section">
-        <div className="nav-item">
+        <div className="nav-item" onClick={handleLogout} role="button" tabIndex={0}>
           <span className="nav-icon"><RiLogoutBoxRLine size={20} /></span>
           <span className="nav-label">Logout</span>
         </div>
