@@ -1,84 +1,41 @@
 import React, { useState } from 'react';
-import { API_ENDPOINTS } from '../../config/api';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './Auth.css';
 
-const Login = ({ onLoginSuccess }) => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-  });
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { login, loading, error } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setIsLoading(true);
-
     try {
-      const response = await fetch(`${API_ENDPOINTS.BASE_URL}/users/token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json'
-        },
-        body: new URLSearchParams({
-          username: formData.username,
-          password: formData.password,
-          grant_type: 'password',
-          scope: '',
-          client_id: '',
-          client_secret: ''
-        }),
-        credentials: 'include'
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Login error:', errorData);
-        
-        if (errorData.detail) {
-          throw new Error(errorData.detail);
-        }
-        
-        throw new Error('Invalid username or password. Please try again.');
-      }
-
-      const data = await response.json();
-      // Store the token - adjust this based on your backend's response format
-      localStorage.setItem('token', data.token || data.access_token);
-      localStorage.setItem('token_type', 'Bearer');
-      onLoginSuccess();
+      await login(username, password);
+      navigate('/dashboard');
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
+      // Error is handled by AuthContext
+
     }
   };
 
   return (
     <div className="auth-container">
-      <div className="auth-card">
+      <div className="auth-box">
         <h2>Login</h2>
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit}>
+          {error && <div className="error-message">{error}</div>}
+
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
               type="text"
               id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
-              placeholder="Enter your username"
+
             />
           </div>
           <div className="form-group">
@@ -86,22 +43,20 @@ const Login = ({ onLoginSuccess }) => {
             <input
               type="password"
               id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="Enter your password"
             />
           </div>
-          {error && <div className="error-message">{error}</div>}
-          <button 
-            type="submit" 
-            className="auth-button"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Logging in...' : 'Login'}
+          <button type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+        <p className="auth-switch">
+          Don't have an account?{' '}
+          <button onClick={() => navigate('/register')}>Register</button>
+        </p>
+
       </div>
     </div>
   );
