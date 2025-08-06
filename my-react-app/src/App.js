@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import Layout from './components/Layout/Layout';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -10,6 +10,10 @@ import NewCampaign from './components/NewCampaign/NewCampaign';
 import StatCard from './components/StatCard/StatCard';
 import FlyerLibrary from './components/FlyerLibrary/FlyerLibrary';
 import CreateCampaign from './components/CreateCampaign/CreateCampaign';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function Dashboard() {
   const statsData = [
@@ -70,10 +74,23 @@ function Dashboard() {
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/create-campaign" element={<CreateCampaign />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/create-campaign" element={
+            <ProtectedRoute>
+              <CreateCampaign />
+            </ProtectedRoute>
+          } />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }
