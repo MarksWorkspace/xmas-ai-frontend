@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './CreateCampaign.css';
 import { FaHome, FaMapMarkerAlt } from 'react-icons/fa';
 import { IoCloudUploadOutline } from 'react-icons/io5';
-import { API_ENDPOINTS, getAuthHeaders } from '../../config/api';
+import { API_ROUTES, makeRequest } from '../../config/api';
 
 // Custom hook for form handling
 const useAddressForm = (onSubmit) => {
@@ -183,20 +183,8 @@ const CreateCampaign = () => {
   React.useEffect(() => {
     const checkBackendStatus = async () => {
       try {
-        const response = await fetch(API_ENDPOINTS.JOBS, {
-          method: 'GET',
-          headers: getAuthHeaders(),
-          mode: 'cors',
-        });
-        setIsBackendAvailable(response.ok);
-        if (response.status === 401) {
-          setError('Please log in to access this feature');
-          setIsBackendAvailable(false);
-          return;
-        }
-        if (!response.ok) {
-          throw new Error('Backend not available');
-        }
+        await makeRequest(`${API_ROUTES.jobs}/status`, 'GET');
+        setIsBackendAvailable(true);
       } catch (err) {
         console.error('Backend connection error:', err);
         setIsBackendAvailable(false);
@@ -213,36 +201,16 @@ const CreateCampaign = () => {
     setSuccess(null);
 
     try {
-      const response = await fetch(API_ENDPOINTS.JOBS, {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        mode: 'cors',
-        body: JSON.stringify({
-          description: `Generate image for ${formData.address}, ${formData.city}, ${formData.state}`,
-          addresses: [{
-            street: formData.address,
-            city: formData.city,
-            state: formData.state,
-            county: formData.county
-          }],
-          lighting_preferences: formData.lightingPreferences
-        })
+      const data = await makeRequest(API_ROUTES.jobs, 'POST', {
+        description: `Generate image for ${formData.address}, ${formData.city}, ${formData.state}`,
+        addresses: [{
+          street: formData.address,
+          city: formData.city,
+          state: formData.state,
+          county: formData.county
+        }],
+        lighting_preferences: formData.lightingPreferences
       });
-
-      if (!response.ok) {
-        // Try to get error details from response
-        let errorMessage = 'Failed to create job';
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.message || errorData.error || errorMessage;
-        } catch (e) {
-          // If we can't parse the error response, use status text
-          errorMessage = `Failed to create job: ${response.statusText}`;
-        }
-        throw new Error(errorMessage);
-      }
-
-      const data = await response.json();
       setSuccess('Job created successfully!');
       console.log('Job created:', data);
     } catch (err) {
