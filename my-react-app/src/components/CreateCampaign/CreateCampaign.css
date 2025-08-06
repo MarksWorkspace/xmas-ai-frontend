@@ -208,3 +208,63 @@
 .submit-btn:hover {
   background-color: #1557b0;
 }
+
+/* Lighting Preferences Styles */
+.lighting-options {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.lighting-btn {
+  padding: 8px 16px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  background-color: white;
+  color: #5f6368;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lighting-btn:hover {
+  border-color: #1a73e8;
+  color: #1a73e8;
+}
+
+.lighting-btn.active {
+  background-color: #1a73e8;
+  border-color: #1a73e8;
+  color: white;
+}
+
+/* Status Messages */
+.error-message {
+  color: #d93025;
+  background-color: #fce8e6;
+  padding: 12px;
+  border-radius: 4px;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.success-message {
+  color: #188038;
+  background-color: #e6f4ea;
+  padding: 12px;
+  border-radius: 4px;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.file-selected {
+  color: #188038;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* Disabled button state */
+.submit-btn:disabled {
+  background-color: #dadce0;
+  cursor: not-allowed;
+}
