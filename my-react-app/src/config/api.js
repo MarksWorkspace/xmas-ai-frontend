@@ -3,6 +3,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 export const API_ROUTES = {
   login: `${API_BASE_URL}/users/token`,
   register: `${API_BASE_URL}/users/register`,
+  jobs: `${API_BASE_URL}/jobs/`,  // Added trailing slash to match API route
 };
 
 export const makeRequest = async (url, method = 'GET', data = null, isFormEncoded = false) => {
@@ -12,6 +13,12 @@ export const makeRequest = async (url, method = 'GET', data = null, isFormEncode
       'Content-Type': isFormEncoded ? 'application/x-www-form-urlencoded' : 'application/json',
     },
   };
+
+  // Add authorization token if available
+  const token = localStorage.getItem('auth_token');
+  if (token && !url.includes('/token')) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
 
   if (data) {
     if (isFormEncoded) {

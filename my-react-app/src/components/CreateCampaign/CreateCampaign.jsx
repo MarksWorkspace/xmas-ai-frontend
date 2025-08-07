@@ -179,16 +179,30 @@ const CreateCampaign = () => {
   const [success, setSuccess] = useState(null);
   const [isBackendAvailable, setIsBackendAvailable] = useState(true);
 
-  // Check if backend is available
+  // Check if backend is available and user is authenticated
   React.useEffect(() => {
     const checkBackendStatus = async () => {
       try {
-        await makeRequest(`${API_ROUTES.jobs}/status`, 'GET');
+        // Check if we have an auth token
+        const token = localStorage.getItem('auth_token');
+        if (!token) {
+          setIsBackendAvailable(false);
+          setError('Please log in to continue.');
+          return;
+        }
+
+        // Test the connection with authentication
+        await makeRequest(API_ROUTES.jobs, 'GET');
         setIsBackendAvailable(true);
+        setError(null);
       } catch (err) {
         console.error('Backend connection error:', err);
         setIsBackendAvailable(false);
-        setError('Cannot connect to server. Please try again later.');
+        if (err.message.includes('401') || err.message.includes('unauthorized')) {
+          setError('Your session has expired. Please log in again.');
+        } else {
+          setError('Cannot connect to server. Please try again later.');
+        }
       }
     };
 
@@ -201,20 +215,30 @@ const CreateCampaign = () => {
     setSuccess(null);
 
     try {
-      const data = await makeRequest(API_ROUTES.jobs, 'POST', {
+      // Format the request data according to the API specification
+      const requestData = {
         description: `Generate image for ${formData.address}, ${formData.city}, ${formData.state}`,
-        addresses: [{
-          street: formData.address,
-          city: formData.city,
-          state: formData.state,
-          county: formData.county
-        }],
-        lighting_preferences: formData.lightingPreferences
-      });
-      setSuccess('Job created successfully!');
+        addresses: [
+          {
+            street: formData.address,
+            city: formData.city,
+            state: formData.state,
+            county: formData.county
+          }
+        ],
+        lighting_preferences: formData.lightingPreferences  // Pass the preferences object directly
+      };
+
+      // Add debug logging to see the exact request format
+      console.log('Request data structure:', JSON.stringify(requestData, null, 2));
+
+      console.log('Sending request with data:', requestData); // Debug log
+      const data = await makeRequest(API_ROUTES.jobs, 'POST', requestData);
+      
+      setSuccess('Campaign created successfully! Processing your request...');
       console.log('Job created:', data);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Failed to create campaign. Please try again.');
       console.error('Error creating job:', err);
     } finally {
       setIsLoading(false);
