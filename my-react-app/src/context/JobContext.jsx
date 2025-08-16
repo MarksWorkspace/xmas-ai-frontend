@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { makeRequest, API_ROUTES } from '../config/api';
+import { useAuth } from './AuthContext';
 
 const JobContext = createContext();
 
@@ -7,13 +8,14 @@ export const JobProvider = ({ children }) => {
   const [activeJobs, setActiveJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { user } = useAuth();
 
   // Fetch all active jobs
   const fetchJobs = async () => {
     try {
       setIsLoading(true);
       const response = await makeRequest(API_ROUTES.jobs, 'GET');
-      console.log('All jobs response:', response);
+      //console.log('All jobs response:', response);
       
       // Fetch initial status for each job
       const jobsWithStatus = await Promise.all(
@@ -42,7 +44,7 @@ export const JobProvider = ({ children }) => {
   const fetchJobStatus = async (jobId) => {
     try {
       const statusResponse = await makeRequest(API_ROUTES.jobStatus(jobId), 'GET');
-      console.log(`Job ${jobId} status response:`, statusResponse);
+      //console.log(`Job ${jobId} status response:`, statusResponse);
       
       setActiveJobs(prev => prev.map(job => {
         if (job.id === jobId) {
@@ -56,23 +58,50 @@ export const JobProvider = ({ children }) => {
       }));
     } catch (err) {
       console.error(`Error fetching status for job ${jobId}:`, err);
+      
+      // If we get a 401 error, the token might be invalid
+      if (err.message.includes('Not authenticated')) {
+        // Clear the invalid token
+        localStorage.removeItem('auth_token');
+        // Set error state to notify user
+        setError('Your session has expired. Please log in again.');
+        // Stop polling
+        setActiveJobs([]);
+      }
     }
   };
 
   // Poll for updates
   useEffect(() => {
-    fetchJobs(); // Initial fetch
+    let pollInterval;
+    
+    // Only fetch if user is logged in
+    if (user?.token) {
+      console.log('Starting job fetching with valid token');
+      fetchJobs(); // Initial fetch
 
-    const pollInterval = setInterval(() => {
-      activeJobs.forEach(job => {
-        if (job.status !== 'completed' && job.status !== 'failed') {
-          fetchJobStatus(job.id);
-        }
-      });
-    }, 5000); // Poll every 5 seconds
+      pollInterval = setInterval(() => {
+        // Use a function to get the latest activeJobs state
+        setActiveJobs(currentJobs => {
+          currentJobs.forEach(job => {
+            if (job.status !== 'completed' && job.status !== 'failed') {
+              fetchJobStatus(job.id);
+            }
+          });
+          return currentJobs;
+        });
+      }, 5000); // Poll every 5 seconds
+    } else {
+      console.log('User not logged in, skipping job fetch');
+      setError('Please log in to view jobs');
+    }
 
-    return () => clearInterval(pollInterval);
-  }, [activeJobs]); // Add activeJobs as dependency
+    return () => {
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
+    };
+  }, [user]); // Only depend on user state
 
   // Format job for display
   const formatJobForDisplay = (job) => {

@@ -12,9 +12,28 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  // Initialize user state from localStorage
+  const [user, setUser] = useState(() => {
+    const token = localStorage.getItem('auth_token');
+    const username = localStorage.getItem('username');
+    if (token && username) {
+      return { username, token };
+    }
+    return null;
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Effect to sync user state with localStorage
+  React.useEffect(() => {
+    if (user) {
+      localStorage.setItem('auth_token', user.token);
+      localStorage.setItem('username', user.username);
+    } else {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('username');
+    }
+  }, [user]);
 
   const login = async (username, password) => {
     try {

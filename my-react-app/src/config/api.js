@@ -19,7 +19,9 @@ export const makeRequest = async (url, method = 'GET', data = null, isFormEncode
   // Add authorization token if available
   const token = localStorage.getItem('auth_token');
   if (token && !url.includes('/token')) {
-    options.headers['Authorization'] = `Bearer ${token}`;
+    // Clean the token and ensure proper format
+    const cleanToken = token.replace(/^Bearer\s+/i, '').trim();
+    options.headers['Authorization'] = `Bearer ${cleanToken}`;
   }
 
   if (data) {
