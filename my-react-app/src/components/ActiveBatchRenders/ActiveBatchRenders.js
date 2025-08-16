@@ -53,6 +53,7 @@ const ActiveBatchRenders = () => {
             homes={job.homes}
             startTime={job.startTime}
             progress={job.progress}
+            status={job.status}
             thumbnail={job.thumbnail}
           />
         ))}

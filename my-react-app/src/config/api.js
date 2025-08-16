@@ -19,9 +19,13 @@ export const makeRequest = async (url, method = 'GET', data = null, isFormEncode
   // Add authorization token if available
   const token = localStorage.getItem('auth_token');
   if (token && !url.includes('/token')) {
-    // Clean the token and ensure proper format
-    const cleanToken = token.replace(/^Bearer\s+/i, '').trim();
-    options.headers['Authorization'] = `Bearer ${cleanToken}`;
+    // Ensure token is in the correct format for FastAPI
+    options.headers['Authorization'] = `Bearer ${token}`;
+    
+    // Debug auth header for status requests only
+    if (url.includes('/status')) {
+      console.log('Auth header for status request:', options.headers['Authorization']);
+    }
   }
 
   if (data) {

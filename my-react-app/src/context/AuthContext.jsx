@@ -44,8 +44,13 @@ export const AuthProvider = ({ children }) => {
         password,
         grant_type: 'password',
       }, true); // Set isFormEncoded to true for login
-      setUser({ username, token: response.access_token });
+      
+      // Store token immediately in localStorage
       localStorage.setItem('auth_token', response.access_token);
+      localStorage.setItem('username', username);
+      
+      // Then update state
+      setUser({ username, token: response.access_token });
       return response;
     } catch (err) {
       console.error('Login error:', err);

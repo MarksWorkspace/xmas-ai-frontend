@@ -21,8 +21,13 @@ export const JobProvider = ({ children }) => {
       const jobsWithStatus = await Promise.all(
         response.map(async (job) => {
           try {
-            const status = await makeRequest(API_ROUTES.jobStatus(job.id), 'GET');
-            return { ...job, ...status };
+            const statusResponse = await makeRequest(API_ROUTES.jobStatus(job.id), 'GET');
+            console.log(`Initial status for job ${job.id}:`, statusResponse);
+            return { 
+              ...job, 
+              ...statusResponse,
+              status: statusResponse.status // Make sure we explicitly set the status field
+            };
           } catch (err) {
             console.error(`Error fetching status for job ${job.id}:`, err);
             return job;
@@ -48,11 +53,13 @@ export const JobProvider = ({ children }) => {
       
       setActiveJobs(prev => prev.map(job => {
         if (job.id === jobId) {
-          return { 
+          const updatedJob = { 
             ...job,
-            ...statusResponse, // This includes progress, total_addresses, etc.
-            status: statusResponse.status || 'queued'
+            ...statusResponse,
+            status: statusResponse.status // Use the exact status from the response
           };
+          console.log('Updated job:', updatedJob);
+          return updatedJob;
         }
         return job;
       }));
@@ -75,24 +82,38 @@ export const JobProvider = ({ children }) => {
   useEffect(() => {
     let pollInterval;
     
-    // Only fetch if user is logged in
-    if (user?.token) {
-      console.log('Starting job fetching with valid token');
-      fetchJobs(); // Initial fetch
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      // Immediate fetch
+      const doInitialFetch = async () => {
+        try {
+          await fetchJobs();
+        } catch (err) {
+          console.error('Initial fetch failed:', err);
+        }
+      };
+      doInitialFetch();
 
-      pollInterval = setInterval(() => {
-        // Use a function to get the latest activeJobs state
-        setActiveJobs(currentJobs => {
-          currentJobs.forEach(job => {
+      // Set up polling
+      pollInterval = setInterval(async () => {
+        const currentToken = localStorage.getItem('auth_token');
+        if (!currentToken) {
+          clearInterval(pollInterval);
+          return;
+        }
+
+        try {
+          const currentJobs = activeJobs;
+          for (const job of currentJobs) {
             if (job.status !== 'completed' && job.status !== 'failed') {
-              fetchJobStatus(job.id);
+              await fetchJobStatus(job.id);
             }
-          });
-          return currentJobs;
-        });
-      }, 5000); // Poll every 5 seconds
+          }
+        } catch (err) {
+          console.error('Poll update failed:', err);
+        }
+      }, 5000);
     } else {
-      console.log('User not logged in, skipping job fetch');
       setError('Please log in to view jobs');
     }
 
@@ -105,23 +126,21 @@ export const JobProvider = ({ children }) => {
 
   // Format job for display
   const formatJobForDisplay = (job) => {
-    // Calculate progress display
-    let progressDisplay;
-    if (typeof job.progress === 'number') {
-      progressDisplay = job.progress;
-    } else if (job.total_addresses === 0) {
-      progressDisplay = 'Queued';
-    } else {
-      const percent = Math.round((job.completed_addresses / job.total_addresses) * 100);
-      progressDisplay = percent;
-    }
+    // Calculate progress percentage for processing jobs
+    const calculateProgress = () => {
+      if (!job.total_addresses || job.total_addresses === 0) return 0;
+      return Math.round((job.completed_addresses / job.total_addresses) * 100);
+    };
+
+    // Log job data for debugging
+    console.log('Formatting job:', job);
 
     return {
       id: job.id,
       title: job.description || 'Untitled Campaign',
       homes: job.total_addresses || '0',
       startTime: job.created_at ? `Started ${new Date(job.created_at).toLocaleString()}` : 'Starting soon',
-      progress: progressDisplay,
+      progress: calculateProgress(),
       status: job.status || 'pending',
       thumbnail: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=200&h=150'
     };
