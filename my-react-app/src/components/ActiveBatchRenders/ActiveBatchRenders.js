@@ -1,35 +1,36 @@
 import React from 'react';
 import './ActiveBatchRenders.css';
 import BatchRenderRow from './BatchRenderRow';
+import { useJobs } from '../../context/JobContext';
 
 const ActiveBatchRenders = () => {
-  // This would come from your API in a real application
-  const batchRenders = [
-    {
-      id: 1,
-      title: 'Westover Heights',
-      homes: '47',
-      startTime: 'Started 2h ago',
-      progress: 76,
-      thumbnail: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=200&h=150'
-    },
-    {
-      id: 2,
-      title: 'Maple Ridge',
-      homes: '23',
-      startTime: 'Started 45m ago',
-      progress: 35,
-      thumbnail: 'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=200&h=150'
-    },
-    {
-      id: 3,
-      title: 'Luxury Estates',
-      homes: '8',
-      startTime: 'Starting soon',
-      progress: 'Queued',
-      thumbnail: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=200&h=150'
-    }
-  ];
+  const { activeJobs, isLoading, error } = useJobs();
+
+  if (isLoading && activeJobs.length === 0) {
+    return (
+      <div className="active-batch-renders">
+        <div className="batch-renders-header">
+          <div className="batch-renders-title">
+            <h2>Active Batch Renders</h2>
+          </div>
+        </div>
+        <div className="loading-spinner" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="active-batch-renders">
+        <div className="batch-renders-header">
+          <div className="batch-renders-title">
+            <h2>Active Batch Renders</h2>
+          </div>
+        </div>
+        <div className="error-message">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="active-batch-renders">
@@ -45,16 +46,19 @@ const ActiveBatchRenders = () => {
         </div>
       </div>
       <div className="batch-renders-list">
-        {batchRenders.map((batch) => (
+        {activeJobs.map((job) => (
           <BatchRenderRow
-            key={batch.id}
-            title={batch.title}
-            homes={batch.homes}
-            startTime={batch.startTime}
-            progress={batch.progress}
-            thumbnail={batch.thumbnail}
+            key={job.id}
+            title={job.title}
+            homes={job.homes}
+            startTime={job.startTime}
+            progress={job.progress}
+            thumbnail={job.thumbnail}
           />
         ))}
+        {activeJobs.length === 0 && (
+          <div className="no-jobs-message">No active renders at the moment</div>
+        )}
       </div>
     </div>
   );

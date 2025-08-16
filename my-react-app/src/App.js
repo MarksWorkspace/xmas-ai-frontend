@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, useNavigate, useLocation, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { JobProvider } from './context/JobContext';
 import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
@@ -102,7 +103,9 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppContent />
+        <JobProvider>
+          <AppContent />
+        </JobProvider>
       </AuthProvider>
     </Router>
   );

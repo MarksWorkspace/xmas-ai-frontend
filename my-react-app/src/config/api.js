@@ -3,7 +3,9 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://luminate-ai.onren
 export const API_ROUTES = {
   login: `${API_BASE_URL}/users/token`,
   register: `${API_BASE_URL}/users/register`,
-  jobs: `${API_BASE_URL}/jobs/`,  // Added trailing slash to match API route
+  jobs: `${API_BASE_URL}/jobs/`,
+  jobStatus: (jobId) => `${API_BASE_URL}/jobs/${jobId}/status`,
+  jobAddresses: (jobId) => `${API_BASE_URL}/jobs/${jobId}/addresses`,
 };
 
 export const makeRequest = async (url, method = 'GET', data = null, isFormEncoded = false) => {
