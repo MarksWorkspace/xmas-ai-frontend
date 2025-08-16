@@ -28,14 +28,14 @@ const Login = () => {
           {error && <div className="error-message">{error}</div>}
 
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Username (not email)</label>
             <input
               type="text"
               id="username"
+              placeholder="Enter your username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-
             />
           </div>
           <div className="form-group">
