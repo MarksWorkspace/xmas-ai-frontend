@@ -49,6 +49,7 @@ const ActiveBatchRenders = () => {
         {activeJobs.map((job) => (
           <BatchRenderRow
             key={job.id}
+            id={job.id}
             title={job.title}
             homes={job.homes}
             startTime={job.startTime}

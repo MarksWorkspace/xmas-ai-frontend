@@ -146,13 +146,29 @@ export const JobProvider = ({ children }) => {
     };
   };
 
+  // Delete a job
+  const deleteJob = async (jobId) => {
+    try {
+      setIsLoading(true);
+      await makeRequest(`${API_ROUTES.jobs}${jobId}`, 'DELETE');
+      setActiveJobs(prev => prev.filter(job => job.id !== jobId));
+      setError(null);
+    } catch (err) {
+      console.error('Error deleting job:', err);
+      setError('Failed to delete job');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <JobContext.Provider value={{ 
       activeJobs: activeJobs.map(formatJobForDisplay),
       isLoading,
       error,
       fetchJobs,
-      fetchJobStatus
+      fetchJobStatus,
+      deleteJob
     }}>
       {children}
     </JobContext.Provider>
