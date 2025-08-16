@@ -210,32 +210,200 @@
 }
 
 /* Lighting Preferences Styles */
-.lighting-options {
-  display: flex;
-  gap: 12px;
+.lighting-preferences {
+  background-color: #f8f9fa;
+  padding: 24px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.preferences-section {
+  margin-top: 24px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.preferences-section:first-child {
+  margin-top: 0;
+}
+
+.preferences-section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #202124;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.lighting-preferences select,
+.lighting-preferences input[type="text"],
+.form-group input[type="text"] {
+  padding: 10px 14px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #202124;
+  background-color: white;
+  width: 100%;
+  transition: all 0.2s;
+  height: 38px;
+}
+
+/* Semantic UI dropdown customizations */
+.ui.search.dropdown {
+  width: 100%;
+  height: 38px;
+  border-color: #dadce0;
+  border-radius: 4px;
+  padding: 8px 14px;
+  min-height: 38px;
+}
+
+.ui.search.dropdown > .text {
+  padding: 0;
+  margin: 0;
+  line-height: 22px;
+}
+
+.ui.search.dropdown .menu {
+  border-radius: 4px;
+  border-color: #dadce0;
   margin-top: 4px;
 }
 
-.lighting-btn {
-  padding: 8px 16px;
-  border: 1px solid #dadce0;
-  border-radius: 4px;
-  background-color: white;
-  color: #5f6368;
+.ui.search.dropdown .menu > .item {
+  padding: 10px 14px !important;
+  border-top: none;
+}
+
+.lighting-preferences select:focus,
+.lighting-preferences input[type="text"]:focus,
+.form-group input[type="text"]:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+}
+
+.lighting-preferences select:hover,
+.lighting-preferences input[type="text"]:hover,
+.form-group input[type="text"]:hover {
+  border-color: #1a73e8;
+  background-color: #f8f9fa;
+}
+
+.lighting-preferences .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.lighting-preferences .form-row:last-child {
+  margin-bottom: 0;
+}
+
+.lighting-preferences option {
+  padding: 12px;
   font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
-.lighting-btn:hover {
-  border-color: #1a73e8;
+/* Style the section headers */
+.preferences-section h3 {
+  font-size: 15px;
+  font-weight: 600;
   color: #1a73e8;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e8f0fe;
 }
 
-.lighting-btn.active {
-  background-color: #1a73e8;
-  border-color: #1a73e8;
-  color: white;
+/* Style the sections */
+.preferences-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e8f0fe;
+}
+
+/* Style checkboxes */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #202124;
+  padding: 8px 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #1a73e8;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Main form inputs */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #202124;
+}
+
+/* Datalist dropdown styling */
+input[list]::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
+/* State input specific styling */
+#state {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #202124;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Color input styles */
+.lighting-preferences input[type="text"]::placeholder {
+  color: #5f6368;
+}
+
+/* Section transitions */
+.preferences-section {
+  transition: opacity 0.2s, height 0.2s;
+}
+
+/* Disabled section styles */
+.preferences-section.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 /* Status Messages */

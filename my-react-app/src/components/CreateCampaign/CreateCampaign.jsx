@@ -5,34 +5,136 @@ import { FaHome, FaMapMarkerAlt } from 'react-icons/fa';
 import { IoCloudUploadOutline } from 'react-icons/io5';
 import { API_ROUTES, makeRequest } from '../../config/api';
 
+// Map of state names to abbreviations
+const stateAbbreviations = {
+  'ALABAMA': 'AL', 'ALASKA': 'AK', 'ARIZONA': 'AZ', 'ARKANSAS': 'AR', 'CALIFORNIA': 'CA',
+  'COLORADO': 'CO', 'CONNECTICUT': 'CT', 'DELAWARE': 'DE', 'FLORIDA': 'FL', 'GEORGIA': 'GA',
+  'HAWAII': 'HI', 'IDAHO': 'ID', 'ILLINOIS': 'IL', 'INDIANA': 'IN', 'IOWA': 'IA',
+  'KANSAS': 'KS', 'KENTUCKY': 'KY', 'LOUISIANA': 'LA', 'MAINE': 'ME', 'MARYLAND': 'MD',
+  'MASSACHUSETTS': 'MA', 'MICHIGAN': 'MI', 'MINNESOTA': 'MN', 'MISSISSIPPI': 'MS', 'MISSOURI': 'MO',
+  'MONTANA': 'MT', 'NEBRASKA': 'NE', 'NEVADA': 'NV', 'NEW HAMPSHIRE': 'NH', 'NEW JERSEY': 'NJ',
+  'NEW MEXICO': 'NM', 'NEW YORK': 'NY', 'NORTH CAROLINA': 'NC', 'NORTH DAKOTA': 'ND', 'OHIO': 'OH',
+  'OKLAHOMA': 'OK', 'OREGON': 'OR', 'PENNSYLVANIA': 'PA', 'RHODE ISLAND': 'RI', 'SOUTH CAROLINA': 'SC',
+  'SOUTH DAKOTA': 'SD', 'TENNESSEE': 'TN', 'TEXAS': 'TX', 'UTAH': 'UT', 'VERMONT': 'VT',
+  'VIRGINIA': 'VA', 'WASHINGTON': 'WA', 'WEST VIRGINIA': 'WV', 'WISCONSIN': 'WI', 'WYOMING': 'WY'
+};
+
 // Custom hook for form handling
 const useAddressForm = (onSubmit) => {
+
   const [formData, setFormData] = useState({
     address: '',
     city: '',
     state: '',
-    county: '',
   });
 
   const [lightingPreferences, setLightingPreferences] = useState({
-    daytime: false,
-    sunset: false,
-    night: false,
+    lighting: {
+      overall_theme: '',
+      color_palette: [],
+      brightness: '',
+      effect: '',
+      density: ''
+    },
+    scene: {
+      view_angle: '',
+      time_of_day: '',
+      season: '',
+      weather: '',
+      snow_coverage: '',
+      mood: '',
+      style: ''
+    },
+    roof_lights: {
+      enabled: false,
+      bulb_size: '',
+      colors: [],
+      pattern: '',
+      style: ''
+    },
+    window_lights: {
+      enabled: false,
+      color: '',
+      style: '',
+      interior_glow: false
+    },
+    doorway_lights: {
+      enabled: false,
+      style: '',
+      colors: [],
+      extra: ''
+    },
+    walkway_lights: {
+      enabled: false,
+      style: '',
+      color: '',
+      spacing: ''
+    },
+    bush_lights: {
+      enabled: false,
+      bulb_size: '',
+      colors: [],
+      wrap_style: '',
+      density: ''
+    },
+    tree_lights: {
+      enabled: false,
+      bulb_size: '',
+      colors: [],
+      wrap_style: '',
+      density: ''
+    },
+    garage_trim_lights: {
+      enabled: false,
+      colors: [],
+      pattern: ''
+    },
+    ambient: {
+      sky_color: '',
+      ambient_light_color: '',
+      ground_reflection: ''
+    },
+    camera: {
+      lens: '',
+      framing: '',
+      depth_of_field: ''
+    },
+    image_settings: {
+      resolution: '',
+      format: ''
+    }
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    
+    if (name === 'state') {
+      // Convert input to uppercase for matching
+      const upperValue = value.toUpperCase();
+      
+      // Check if it's already a valid 2-letter abbreviation
+      if (Object.values(stateAbbreviations).includes(upperValue)) {
+        setFormData(prev => ({ ...prev, [name]: upperValue }));
+        return;
+      }
+      
+      // Check if it matches a state name and convert to abbreviation
+      const matchingState = Object.keys(stateAbbreviations).find(
+        stateName => stateName.startsWith(upperValue)
+      );
+      
+      if (matchingState) {
+        setFormData(prev => ({ ...prev, [name]: stateAbbreviations[matchingState] }));
+      } else {
+        setFormData(prev => ({ ...prev, [name]: upperValue }));
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
-  const toggleLightingPreference = (preference) => {
-    setLightingPreferences((prev) => ({
-      ...prev,
-      [preference]: !prev[preference],
-    }));
+  const toggleLightingPreference = (newPreferences) => {
+    setLightingPreferences(newPreferences);
   };
 
   const handleSubmit = async (e) => {
@@ -75,29 +177,282 @@ FormInput.propTypes = {
 };
 
 // Lighting Preferences Component
-const LightingPreferences = ({ preferences, onToggle }) => (
-  <div className="form-group">
-    <label htmlFor="lighting">Lighting Preferences</label>
-    <div className="lighting-options">
-      {Object.entries(preferences).map(([key, value]) => (
-        <button
-          key={key}
-          type="button"
-          className={`lighting-btn ${value ? 'active' : ''}`}
-          onClick={() => onToggle(key)}
-        >
-          {key.charAt(0).toUpperCase() + key.slice(1)}
-        </button>
-      ))}
+const LightingPreferences = ({ preferences, onToggle }) => {
+  const handleChange = (section, field, value) => {
+    onToggle({
+      ...preferences,
+      [section]: {
+        ...preferences[section],
+        [field]: value
+      }
+    });
+  };
+
+  const handleArrayChange = (section, field, value) => {
+    const values = value.split(',').map(v => v.trim()).filter(v => v);
+    onToggle({
+      ...preferences,
+      [section]: {
+        ...preferences[section],
+        [field]: values
+      }
+    });
+  };
+
+  const handleToggle = (section, enabled) => {
+    onToggle({
+      ...preferences,
+      [section]: {
+        ...preferences[section],
+        enabled: enabled
+      }
+    });
+  };
+
+  return (
+    <div className="form-group lighting-preferences">
+      <label>Lighting Preferences (Optional)</label>
+      
+      <div className="preferences-section">
+        <h3>Scene Settings</h3>
+        <div className="form-row">
+          <select 
+            value={preferences.scene.time_of_day} 
+            onChange={(e) => handleChange('scene', 'time_of_day', e.target.value)}
+          >
+            <option value="">Select Time of Day</option>
+            <option value="dawn">Dawn</option>
+            <option value="twilight">Twilight</option>
+            <option value="dusk">Dusk</option>
+            <option value="night">Night</option>
+          </select>
+
+          <select 
+            value={preferences.scene.season} 
+            onChange={(e) => handleChange('scene', 'season', e.target.value)}
+          >
+            <option value="">Select Season</option>
+            <option value="winter">Winter</option>
+            <option value="fall">Fall</option>
+          </select>
+        </div>
+
+        <div className="form-row">
+          <select 
+            value={preferences.scene.weather} 
+            onChange={(e) => handleChange('scene', 'weather', e.target.value)}
+          >
+            <option value="">Select Weather</option>
+            <option value="clear">Clear</option>
+            <option value="light snow">Light Snow</option>
+            <option value="heavy snow">Heavy Snow</option>
+            <option value="cloudy">Cloudy</option>
+          </select>
+
+          <select 
+            value={preferences.scene.view_angle} 
+            onChange={(e) => handleChange('scene', 'view_angle', e.target.value)}
+          >
+            <option value="">Select View Angle</option>
+            <option value="straight on">Straight On</option>
+            <option value="slightly elevated frontal">Slightly Elevated</option>
+            <option value="elevated">Elevated</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="preferences-section">
+        <h3>General Lighting</h3>
+        <div className="form-row">
+          <select 
+            value={preferences.lighting.overall_theme} 
+            onChange={(e) => handleChange('lighting', 'overall_theme', e.target.value)}
+          >
+            <option value="">Select Theme</option>
+            <option value="classic multicolor">Classic Multicolor</option>
+            <option value="warm white">Warm White</option>
+            <option value="cool white">Cool White</option>
+            <option value="red and green">Red and Green</option>
+          </select>
+
+          <select 
+            value={preferences.lighting.brightness} 
+            onChange={(e) => handleChange('lighting', 'brightness', e.target.value)}
+          >
+            <option value="">Select Brightness</option>
+            <option value="subtle">Subtle</option>
+            <option value="balanced">Balanced</option>
+            <option value="bright">Bright</option>
+          </select>
+        </div>
+
+        <div className="form-row">
+          <select 
+            value={preferences.lighting.density} 
+            onChange={(e) => handleChange('lighting', 'density', e.target.value)}
+          >
+            <option value="">Select Density</option>
+            <option value="sparse">Sparse</option>
+            <option value="moderate">Moderate</option>
+            <option value="full">Full</option>
+          </select>
+
+          <select 
+            value={preferences.lighting.effect} 
+            onChange={(e) => handleChange('lighting', 'effect', e.target.value)}
+          >
+            <option value="">Select Effect</option>
+            <option value="steady">Steady</option>
+            <option value="twinkling">Twinkling</option>
+            <option value="chasing">Chasing</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="preferences-section">
+        <h3>Roof Lights</h3>
+        <div className="form-row">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={preferences.roof_lights.enabled}
+              onChange={(e) => handleToggle('roof_lights', e.target.checked)}
+            />
+            Enable Roof Lights
+          </label>
+        </div>
+
+        {preferences.roof_lights.enabled && (
+          <>
+            <div className="form-row">
+              <select 
+                value={preferences.roof_lights.bulb_size} 
+                onChange={(e) => handleChange('roof_lights', 'bulb_size', e.target.value)}
+              >
+                <option value="">Select Bulb Size</option>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+              </select>
+
+              <select 
+                value={preferences.roof_lights.style} 
+                onChange={(e) => handleChange('roof_lights', 'style', e.target.value)}
+              >
+                <option value="">Select Style</option>
+                <option value="C9 bulbs">C9 Bulbs</option>
+                <option value="mini lights">Mini Lights</option>
+                <option value="icicle lights">Icicle Lights</option>
+              </select>
+            </div>
+
+            <div className="form-row">
+              <input
+                type="text"
+                placeholder="Colors (comma-separated)"
+                value={preferences.roof_lights.colors.join(', ')}
+                onChange={(e) => handleArrayChange('roof_lights', 'colors', e.target.value)}
+              />
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="preferences-section">
+        <h3>Window Lights</h3>
+        <div className="form-row">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={preferences.window_lights.enabled}
+              onChange={(e) => handleToggle('window_lights', e.target.checked)}
+            />
+            Enable Window Lights
+          </label>
+        </div>
+
+        {preferences.window_lights.enabled && (
+          <>
+            <div className="form-row">
+              <select 
+                value={preferences.window_lights.style} 
+                onChange={(e) => handleChange('window_lights', 'style', e.target.value)}
+              >
+                <option value="">Select Style</option>
+                <option value="candle lights in each window">Candle Lights</option>
+                <option value="string lights">String Lights</option>
+                <option value="icicle lights">Icicle Lights</option>
+              </select>
+
+              <select 
+                value={preferences.window_lights.color} 
+                onChange={(e) => handleChange('window_lights', 'color', e.target.value)}
+              >
+                <option value="">Select Color</option>
+                <option value="warm white">Warm White</option>
+                <option value="cool white">Cool White</option>
+                <option value="multicolor">Multicolor</option>
+              </select>
+            </div>
+
+            <div className="form-row">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={preferences.window_lights.interior_glow}
+                  onChange={(e) => handleChange('window_lights', 'interior_glow', e.target.checked)}
+                />
+                Interior Glow
+              </label>
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="preferences-section">
+        <h3>Image Settings</h3>
+        <div className="form-row">
+          <select 
+            value={preferences.image_settings.resolution} 
+            onChange={(e) => handleChange('image_settings', 'resolution', e.target.value)}
+          >
+            <option value="">Select Resolution</option>
+            <option value="1920x1080">1920x1080 (Full HD)</option>
+            <option value="2560x1440">2560x1440 (2K)</option>
+            <option value="3840x2160">3840x2160 (4K)</option>
+          </select>
+
+          <select 
+            value={preferences.image_settings.format} 
+            onChange={(e) => handleChange('image_settings', 'format', e.target.value)}
+          >
+            <option value="">Select Format</option>
+            <option value="landscape">Landscape</option>
+            <option value="portrait">Portrait</option>
+            <option value="square">Square</option>
+          </select>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 LightingPreferences.propTypes = {
   preferences: PropTypes.shape({
-    daytime: PropTypes.bool,
-    sunset: PropTypes.bool,
-    night: PropTypes.bool,
+    scene: PropTypes.shape({
+      style: PropTypes.string,
+      time_of_day: PropTypes.string,
+      weather: PropTypes.string,
+      mood: PropTypes.string,
+      season: PropTypes.string
+    }),
+    lighting: PropTypes.shape({
+      overall_theme: PropTypes.string,
+      brightness: PropTypes.string,
+      effect: PropTypes.string,
+      density: PropTypes.string,
+      color_palette: PropTypes.arrayOf(PropTypes.string)
+    })
   }).isRequired,
   onToggle: PropTypes.func.isRequired,
 };
@@ -222,12 +577,36 @@ const CreateCampaign = () => {
           {
             street: formData.address,
             city: formData.city,
-            state: formData.state,
-            county: formData.county
+            state: formData.state
           }
-        ],
-        lighting_preferences: formData.lightingPreferences  // Pass the preferences object directly
+        ]
       };
+
+      // Only add lighting preferences if they are set
+      // Helper function to clean empty values from an object
+      const cleanObject = (obj) => {
+        const cleaned = {};
+        for (const [key, value] of Object.entries(obj)) {
+          if (value && (
+            (Array.isArray(value) && value.length > 0) || 
+            (typeof value === 'object' && Object.keys(cleanObject(value)).length > 0) ||
+            (typeof value !== 'object' && value !== '')
+          )) {
+            cleaned[key] = typeof value === 'object' && !Array.isArray(value) 
+              ? cleanObject(value) 
+              : value;
+          }
+        }
+        return cleaned;
+      };
+
+      // Only add lighting_preferences if there are actual preferences set
+      if (formData.lightingPreferences) {
+        const cleanedPreferences = cleanObject(formData.lightingPreferences);
+        if (Object.keys(cleanedPreferences).length > 0) {
+          requestData.lighting_preferences = cleanedPreferences;
+        }
+      }
 
       // Add debug logging to see the exact request format
       console.log('Request data structure:', JSON.stringify(requestData, null, 2));
@@ -278,25 +657,72 @@ const CreateCampaign = () => {
             placeholder="Enter city"
             required
           />
-          <FormInput
-            label="State"
-            id="state"
-            value={formData.state}
-            onChange={handleInputChange}
-            placeholder="Enter state"
-            required
-          />
+          <div className="form-group">
+            <label htmlFor="state">State</label>
+            <select 
+              className="ui search dropdown"
+              id="state"
+              name="state"
+              value={formData.state}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">State</option>
+              <option value="AL">Alabama</option>
+              <option value="AK">Alaska</option>
+              <option value="AZ">Arizona</option>
+              <option value="AR">Arkansas</option>
+              <option value="CA">California</option>
+              <option value="CO">Colorado</option>
+              <option value="CT">Connecticut</option>
+              <option value="DE">Delaware</option>
+              <option value="DC">District Of Columbia</option>
+              <option value="FL">Florida</option>
+              <option value="GA">Georgia</option>
+              <option value="HI">Hawaii</option>
+              <option value="ID">Idaho</option>
+              <option value="IL">Illinois</option>
+              <option value="IN">Indiana</option>
+              <option value="IA">Iowa</option>
+              <option value="KS">Kansas</option>
+              <option value="KY">Kentucky</option>
+              <option value="LA">Louisiana</option>
+              <option value="ME">Maine</option>
+              <option value="MD">Maryland</option>
+              <option value="MA">Massachusetts</option>
+              <option value="MI">Michigan</option>
+              <option value="MN">Minnesota</option>
+              <option value="MS">Mississippi</option>
+              <option value="MO">Missouri</option>
+              <option value="MT">Montana</option>
+              <option value="NE">Nebraska</option>
+              <option value="NV">Nevada</option>
+              <option value="NH">New Hampshire</option>
+              <option value="NJ">New Jersey</option>
+              <option value="NM">New Mexico</option>
+              <option value="NY">New York</option>
+              <option value="NC">North Carolina</option>
+              <option value="ND">North Dakota</option>
+              <option value="OH">Ohio</option>
+              <option value="OK">Oklahoma</option>
+              <option value="OR">Oregon</option>
+              <option value="PA">Pennsylvania</option>
+              <option value="RI">Rhode Island</option>
+              <option value="SC">South Carolina</option>
+              <option value="SD">South Dakota</option>
+              <option value="TN">Tennessee</option>
+              <option value="TX">Texas</option>
+              <option value="UT">Utah</option>
+              <option value="VT">Vermont</option>
+              <option value="VA">Virginia</option>
+              <option value="WA">Washington</option>
+              <option value="WV">West Virginia</option>
+              <option value="WI">Wisconsin</option>
+              <option value="WY">Wyoming</option>
+            </select>
+          </div>
         </div>
-        <div className="form-row">
-          <FormInput
-            label="County"
-            id="county"
-            value={formData.county}
-            onChange={handleInputChange}
-            placeholder="Enter county"
-            required
-          />
-        </div>
+
         <LightingPreferences
           preferences={lightingPreferences}
           onToggle={toggleLightingPreference}
