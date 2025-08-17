@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './FlyerLibrary.css';
 import FlyerCard from './FlyerCard';
 import { useJobs } from '../../context/JobContext';
-import { makeRequest, API_ROUTES } from '../../config/api';
+import { makeRequest, API_ROUTES, API_BASE_URL } from '../../config/api';
 import AuthImage from '../common/AuthImage';
 
 const FlyerLibrary = () => {
@@ -17,18 +17,27 @@ const FlyerLibrary = () => {
 
   const handleDownload = async (flyerId) => {
     const [jobId, addressId] = flyerId.split('-');
+    console.log('Download clicked:', { flyerId, jobId, addressId });
     try {
-      // Get the download URL
-      const downloadUrl = await makeRequest(API_ROUTES.jobDownloadAll(jobId), 'GET');
-      console.log('Download URL:', downloadUrl);
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${API_BASE_URL}/jobs/${jobId}/addresses/${addressId}/output-image`, {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
       
-      // Create a temporary link to trigger the download
+      if (!response.ok) throw new Error('Failed to download image');
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.setAttribute('download', `flyer-${jobId}-${addressId}.jpg`);
+      link.href = url;
+      link.setAttribute('download', `flyer-${addressId}.jpg`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Error downloading flyer:', error);
     }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { makeRequest, API_ROUTES } from '../../config/api';
+import { makeRequest, API_ROUTES, API_BASE_URL } from '../../config/api';
 import AuthImage from '../common/AuthImage';
 import './StreetView.css';
 
@@ -39,13 +39,36 @@ const StreetView = () => {
 
   const handleDownload = async (jobId, addressId) => {
     try {
-      const downloadUrl = await makeRequest(API_ROUTES.jobDownloadAll(jobId), 'GET');
+      const token = localStorage.getItem('auth_token');
+      console.log('Download params:', { jobId, addressId });
+      const downloadUrl = `${API_BASE_URL}/jobs/${jobId}/addresses/${addressId}/output-image`;
+      console.log('Downloading from:', downloadUrl);
+      const response = await fetch(downloadUrl, {
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Download failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorText
+        });
+        throw new Error(`Failed to download image: ${response.status} ${response.statusText}`);
+      }
+      
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = downloadUrl;
+      link.href = blobUrl;
       link.setAttribute('download', `flyer-${addressId}.jpg`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error('Error downloading image:', error);
     }
@@ -105,7 +128,13 @@ const StreetView = () => {
                 <button className="view-button">View</button>
                 <button 
                   className="download-button"
-                  onClick={() => handleDownload(house.jobId, house.id)}
+                  onClick={() => {
+                    // Get the original IDs from the house object
+                    console.log('Download clicked - house data:', house);
+                    // Extract addressId from the image URL since that has the full ID
+                    const addressId = house.image.split('/addresses/')[1].split('/output-image')[0];
+                    handleDownload(house.jobId, addressId);
+                  }}
                 >
                   Download
                 </button>
