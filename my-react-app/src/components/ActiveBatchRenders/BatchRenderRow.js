@@ -2,7 +2,7 @@ import React from 'react';
 import './BatchRenderRow.css';
 import { useJobs } from '../../context/JobContext';
 
-const BatchRenderRow = ({ id, title, addresses = [], startTime, status, progress, thumbnail }) => {
+const BatchRenderRow = ({ id, title, streets = [], startTime, status, progress, thumbnail }) => {
   const { deleteJob } = useJobs();
 
   // Format the date to be more readable
@@ -18,12 +18,6 @@ const BatchRenderRow = ({ id, title, addresses = [], startTime, status, progress
     });
   };
 
-  // Format addresses for display
-  const formatAddresses = (addresses) => {
-    if (!addresses || addresses.length === 0) return '';
-    return addresses.join(', ');
-  };
-
   // Get status display info
   const getStatusInfo = () => {
     const currentStatus = status?.toLowerCase() || 'pending';
@@ -34,8 +28,14 @@ const BatchRenderRow = ({ id, title, addresses = [], startTime, status, progress
   };
 
   const statusInfo = getStatusInfo();
-  const formattedTitle = title;
-  const addressesText = formatAddresses(addresses);
+  // Format streets with ellipsis if too long
+  const formatStreets = (streets) => {
+    if (!streets || streets.length === 0) return '';
+    const streetsText = streets.join(', ');
+    return streetsText;
+  };
+
+  const formattedStreets = formatStreets(streets);
   
   return (
     <div className={`batch-render-row ${statusInfo.className}`}>
@@ -44,10 +44,16 @@ const BatchRenderRow = ({ id, title, addresses = [], startTime, status, progress
           <img src={thumbnail} alt={title} />
         </div>
         <div className="batch-info">
-          <h3 className="batch-title">{formattedTitle}</h3>
+          <h3 className="batch-title">{title}</h3>
           <div className="batch-subtitle">
-            {addressesText && <span className="addresses">{addressesText}</span>}
-            <span>{formatDate(startTime)}</span>
+            {formattedStreets && (
+              <>
+                <span className="streets">{formattedStreets}</span>
+                <span className="separator">•</span>
+              </>
+            )}
+            <span className="date">{formatDate(startTime)}</span>
+            <span className="separator">•</span>
             <span className={`status ${statusInfo.className}`}>
               {statusInfo.text}
             </span>

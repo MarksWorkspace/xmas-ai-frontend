@@ -167,6 +167,81 @@
   gap: 16px;
 }
 
+.addresses-container {
+  margin: 24px 0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e8f0fe;
+}
+
+.addresses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.addresses-header h3 {
+  margin: 0;
+  color: #1a73e8;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.add-address-btn {
+  background: #1a73e8;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.add-address-btn:hover {
+  background: #1557b0;
+}
+
+.address-field-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  background: white;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.address-field-container .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.remove-address-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  height: 38px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.remove-address-btn:hover {
+  background: #c82333;
+}
+
 .form-group label {
   font-size: 14px;
   font-weight: 500;

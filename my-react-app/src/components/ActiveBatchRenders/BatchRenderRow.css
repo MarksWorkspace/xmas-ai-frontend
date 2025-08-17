@@ -53,30 +53,36 @@
 .batch-subtitle {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
   font-size: 14px;
   color: #666;
   line-height: 1.4;
   margin-top: 2px;
+  flex-wrap: wrap;
 }
 
 .batch-subtitle span {
-  display: flex;
+  display: inline-flex;
   align-items: center;
 }
 
-.batch-subtitle .addresses {
+.batch-subtitle .streets {
   font-weight: 500;
   color: #444;
-  font-style: italic;
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.batch-subtitle span:not(:last-child)::after {
-  content: "•";
-  margin-left: 12px;
+.batch-subtitle .separator {
   color: #ccc;
-  font-weight: 600;
+  margin: 0 4px;
+}
+
+.batch-subtitle .date {
+  color: #666;
+  white-space: nowrap;
 }
 
 .status {
