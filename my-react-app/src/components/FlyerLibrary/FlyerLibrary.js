@@ -73,7 +73,6 @@ const FlyerLibrary = () => {
             streetName={street}
             houseCount={flyers.length}
             thumbnail={flyers[0]?.image}
-            onClick={() => setSelectedStreet(street)}
           />
         ))}
         {Object.keys(completedFlyers).length === 0 && (

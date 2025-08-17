@@ -87,4 +87,33 @@
 
 .download-btn:hover {
   background: #005529;
+}
+
+.street-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.house-count {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.view-street-btn {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.view-street-btn:hover {
+  background-color: #1557b0;
 } 
