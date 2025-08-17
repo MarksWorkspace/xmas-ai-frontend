@@ -168,3 +168,31 @@
   color: #cc0000;
   font-size: 18px;
 }
+
+.show-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  padding: 16px;
+}
+
+.show-more-button {
+  background: #1a73e8;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.show-more-button:hover {
+  background: #1557b0;
+}
+
+.show-more-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

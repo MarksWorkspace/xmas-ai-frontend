@@ -10,6 +10,8 @@ const StreetView = () => {
   const [houses, setHouses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [displayLimit, setDisplayLimit] = useState(20);
+  const ITEMS_PER_PAGE = 20;
 
   useEffect(() => {
     const loadStreetHouses = async () => {
@@ -192,7 +194,7 @@ const StreetView = () => {
       </div>
 
       <div className="houses-grid">
-        {houses.map((house) => (
+        {houses.slice(0, displayLimit).map((house) => (
           <div key={house.id} className="house-card">
             <div className="house-image">
               <AuthImage src={house.image} alt={house.fullAddress} />
@@ -218,6 +220,17 @@ const StreetView = () => {
           </div>
         ))}
       </div>
+      
+      {houses.length > displayLimit && (
+        <div className="show-more-container">
+          <button 
+            className="show-more-button"
+            onClick={() => setDisplayLimit(prev => prev + ITEMS_PER_PAGE)}
+          >
+            Show More
+          </button>
+        </div>
+      )}
     </div>
   );
 };
