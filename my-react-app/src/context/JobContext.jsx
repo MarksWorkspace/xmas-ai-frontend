@@ -6,7 +6,7 @@ const JobContext = createContext();
 
 export const JobProvider = ({ children }) => {
   const [activeJobs, setActiveJobs] = useState([]);
-  const [completedFlyers, setCompletedFlyers] = useState({});  // Organized by street
+  const [completedFlyers, setCompletedFlyers] = useState({});  // Organized by jobId -> street
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useAuth();
@@ -86,18 +86,22 @@ export const JobProvider = ({ children }) => {
 
       setCompletedFlyers(prev => {
         const newState = { ...prev };
-        Object.entries(flyersByStreet).forEach(([street, flyers]) => {
-          const existingJobFlyers = newState[street]?.filter(f => f.jobId === job.id) || [];
-          if (existingJobFlyers.length > 0) {
-            return;
-          }
-          
-          if (!newState[street]) {
-            newState[street] = flyers;
-          } else {
-            newState[street] = [...flyers, ...newState[street]];
-          }
-        });
+        
+        // Create or update the job entry
+        if (!newState[job.id]) {
+          newState[job.id] = {
+            title: job.description || 'Untitled Campaign',
+            createdAt: job.created_at,
+            streets: flyersByStreet
+          };
+        } else {
+          // Update existing job's flyers
+          newState[job.id] = {
+            ...newState[job.id],
+            streets: flyersByStreet
+          };
+        }
+        
         return newState;
       });
     } catch (error) {

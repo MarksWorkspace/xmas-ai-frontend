@@ -117,6 +117,7 @@ const AppContent = () => {
           } />
           <Route path="/create-campaign" element={<CreateCampaign />} />
           <Route path="/street/:streetName" element={<StreetView />} />
+          <Route path="/batch/:batchId" element={<StreetView />} />
         </Routes>
       </div>
     </div>

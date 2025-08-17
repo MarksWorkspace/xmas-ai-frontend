@@ -56,29 +56,44 @@ const FlyerLibrary = () => {
         </div>
       </div>
       <div className="flyer-grid">
-        {Object.entries(completedFlyers).map(([street, flyers]) => (
-          <div key={street} className="flyer-card">
-            <div className="flyer-image">
-              <AuthImage src={flyers[0]?.image} alt={`Houses on ${street}`} />
-            </div>
-            <div className="flyer-details">
-              <h3 className="flyer-address">{street}</h3>
-              <div className="street-card-footer">
-                <p className="house-count">{flyers.length} houses</p>
-                <button 
-                  className="view-street-btn"
-                  onClick={() => {
-                    // Store the flyer data in window for the street view
-                    window.__FLYER_DATA__ = { completedFlyers };
-                    navigate(`/street/${encodeURIComponent(street)}`);
-                  }}
-                >
-                  View
-                </button>
+        {Object.entries(completedFlyers).map(([jobId, jobData]) => {
+          // Combine all flyers from all streets in this batch
+          const allStreets = Object.keys(jobData.streets);
+          const totalHouses = Object.values(jobData.streets).reduce((sum, flyers) => sum + flyers.length, 0);
+          const firstImage = Object.values(jobData.streets)[0]?.[0]?.image;
+          
+          return (
+            <div key={jobId} className="flyer-card">
+              <div className="flyer-image">
+                <AuthImage src={firstImage} alt={`Houses from ${jobData.title}`} />
+              </div>
+              <div className="flyer-details">
+                <h3 className="flyer-address">{allStreets.join(' + ')}</h3>
+                <div className="street-card-footer">
+                  <p className="house-count">{totalHouses} houses</p>
+                  <button 
+                    className="view-street-btn"
+                    onClick={() => {
+                      // Combine all flyers from all streets into a single list
+                      const allFlyers = Object.values(jobData.streets).flat();
+                      const combinedStreetName = allStreets.join(' + ');
+                      
+                      // Store the data in the expected format
+                      window.__FLYER_DATA__ = { 
+                        completedFlyers: {
+                          [combinedStreetName]: allFlyers
+                        }
+                      };
+                      navigate(`/street/${encodeURIComponent(combinedStreetName)}?batch=${jobId}`);
+                    }}
+                  >
+                    View
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         {Object.keys(completedFlyers).length === 0 && (
           <div className="no-flyers-message">No completed flyers yet</div>
         )}
