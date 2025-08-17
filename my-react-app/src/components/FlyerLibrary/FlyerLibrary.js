@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './FlyerLibrary.css';
 import FlyerCard from './FlyerCard';
-import StreetCard from './StreetCard';
-import StreetDetail from './StreetDetail';
 import { useJobs } from '../../context/JobContext';
 import { makeRequest, API_ROUTES } from '../../config/api';
+import AuthImage from '../common/AuthImage';
 
 const FlyerLibrary = () => {
-  const { completedFlyers, activeJobs } = useJobs();
-  const [selectedStreet, setSelectedStreet] = useState(null);
+  const navigate = useNavigate();
+  const { completedFlyers } = useJobs();
   
-  console.log('FlyerLibrary - completedFlyers:', completedFlyers);
-  console.log('FlyerLibrary - activeJobs:', activeJobs);
-  
-  // Log whenever completedFlyers changes
-  useEffect(() => {
-    console.log('CompletedFlyers updated:', completedFlyers);
-  }, [completedFlyers]);
-
   const handleShare = async (flyerId) => {
     console.log('Share flyer:', flyerId);
     // Implement sharing functionality
@@ -42,18 +34,6 @@ const FlyerLibrary = () => {
     }
   };
 
-  if (selectedStreet) {
-    return (
-      <StreetDetail
-        street={selectedStreet}
-        flyers={completedFlyers[selectedStreet]}
-        onBack={() => setSelectedStreet(null)}
-        onShare={handleShare}
-        onDownload={handleDownload}
-      />
-    );
-  }
-
   return (
     <div className="flyer-library">
       <div className="flyer-library-header">
@@ -68,12 +48,27 @@ const FlyerLibrary = () => {
       </div>
       <div className="flyer-grid">
         {Object.entries(completedFlyers).map(([street, flyers]) => (
-          <StreetCard
-            key={street}
-            streetName={street}
-            houseCount={flyers.length}
-            thumbnail={flyers[0]?.image}
-          />
+          <div key={street} className="flyer-card">
+            <div className="flyer-image">
+              <AuthImage src={flyers[0]?.image} alt={`Houses on ${street}`} />
+            </div>
+            <div className="flyer-details">
+              <h3 className="flyer-address">{street}</h3>
+              <div className="street-card-footer">
+                <p className="house-count">{flyers.length} houses</p>
+                <button 
+                  className="view-street-btn"
+                  onClick={() => {
+                    // Store the flyer data in window for the street view
+                    window.__FLYER_DATA__ = { completedFlyers };
+                    navigate(`/street/${encodeURIComponent(street)}`);
+                  }}
+                >
+                  View
+                </button>
+              </div>
+            </div>
+          </div>
         ))}
         {Object.keys(completedFlyers).length === 0 && (
           <div className="no-flyers-message">No completed flyers yet</div>

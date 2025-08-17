@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://luminate-ai.onrender.com';
+export const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://luminate-ai.onrender.com';
 
 export const API_ROUTES = {
   login: `${API_BASE_URL}/users/token`,

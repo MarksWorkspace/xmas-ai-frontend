@@ -13,6 +13,7 @@ import FlyerLibrary from './components/FlyerLibrary/FlyerLibrary';
 import CreateCampaign from './components/CreateCampaign/CreateCampaign';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
+import StreetView from './components/StreetView/StreetView';
 
 const AppContent = () => {
   const navigate = useNavigate();
@@ -55,9 +56,6 @@ const AppContent = () => {
     return <div>{location.pathname === '/login' ? <Login /> : <Register />}</div>;
   }
 
-  const isDashboard = location.pathname === '/' || location.pathname === '/dashboard';
-  const isCreateCampaign = location.pathname === '/create-campaign';
-
   return (
     <div className="app">
       <Sidebar />
@@ -68,32 +66,58 @@ const AppContent = () => {
       </div>
       <div className="main-content">
         <TopBar />
-        {isDashboard ? (
-          <div className="gradient-background">
-            <WelcomeBanner />
-            <div className="stats-container">
-              {statsData.map((stat, index) => (
-                <StatCard 
-                  key={index}
-                  icon={stat.icon}
-                  value={stat.value}
-                  label={stat.label}
-                />
-              ))}
-            </div>
-            <div className="dashboard-row">
-              <div className="dashboard-main">
-                <ActiveBatchRenders />
+        <Routes>
+          <Route path="/" element={
+            <div className="gradient-background">
+              <WelcomeBanner />
+              <div className="stats-container">
+                {statsData.map((stat, index) => (
+                  <StatCard 
+                    key={index}
+                    icon={stat.icon}
+                    value={stat.value}
+                    label={stat.label}
+                  />
+                ))}
               </div>
-              <div className="dashboard-side">
-                <NewCampaign />
+              <div className="dashboard-row">
+                <div className="dashboard-main">
+                  <ActiveBatchRenders />
+                </div>
+                <div className="dashboard-side">
+                  <NewCampaign />
+                </div>
               </div>
+              <FlyerLibrary />
             </div>
-            <FlyerLibrary />
-          </div>
-        ) : isCreateCampaign ? (
-          <CreateCampaign />
-        ) : null}
+          } />
+          <Route path="/dashboard" element={
+            <div className="gradient-background">
+              <WelcomeBanner />
+              <div className="stats-container">
+                {statsData.map((stat, index) => (
+                  <StatCard 
+                    key={index}
+                    icon={stat.icon}
+                    value={stat.value}
+                    label={stat.label}
+                  />
+                ))}
+              </div>
+              <div className="dashboard-row">
+                <div className="dashboard-main">
+                  <ActiveBatchRenders />
+                </div>
+                <div className="dashboard-side">
+                  <NewCampaign />
+                </div>
+              </div>
+              <FlyerLibrary />
+            </div>
+          } />
+          <Route path="/create-campaign" element={<CreateCampaign />} />
+          <Route path="/street/:streetName" element={<StreetView />} />
+        </Routes>
       </div>
     </div>
   );

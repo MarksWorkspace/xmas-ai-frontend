@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { makeRequest, API_ROUTES } from '../config/api';
+import { makeRequest, API_ROUTES, API_BASE_URL } from '../config/api';
 import { useAuth } from './AuthContext';
 
 const JobContext = createContext();
@@ -44,18 +44,17 @@ export const JobProvider = ({ children }) => {
   // Handle job completion and organize flyers by street
   const handleJobCompletion = async (job) => {
     try {
-      console.log('Processing completed job:', job);
+      // console.log('Processing completed job:', job);
       
       // If job doesn't have required fields, fetch full job details first
       if (!job.total_addresses || !job.processed_addresses) {
-        console.log('Fetching full job details...');
+        // console.log('Fetching full job details...');
         const jobDetails = await makeRequest(`${API_ROUTES.jobs}${job.id}`, 'GET');
         job = { ...job, ...jobDetails };
       }
       
-      console.log('Making request to:', API_ROUTES.jobAddresses(job.id));
       const addresses = await makeRequest(API_ROUTES.jobAddresses(job.id), 'GET');
-      console.log('Received addresses:', addresses);
+      console.log('DEBUG - Addresses received:', addresses);
       
       if (!addresses || !Array.isArray(addresses) || addresses.length === 0) {
         console.warn('No addresses received for completed job');
@@ -67,19 +66,21 @@ export const JobProvider = ({ children }) => {
       
       for (const address of addresses) {
         try {
-          console.log('Processing address:', address);
-          const images = await makeRequest(API_ROUTES.jobAddressImages(job.id, address.id), 'GET');
-          console.log('Received images:', images);
-          const outputImageUrl = images.output_url || images.input_url; // fallback to input if output not available
-          console.log('Using image URL:', outputImageUrl);
+          // Construct the direct image URL using the output-image endpoint
+          const imageUrl = `${API_BASE_URL}/jobs/${job.id}/addresses/${address.id}/output-image`;
+          console.log('DEBUG - Processing address:', {
+            jobId: job.id,
+            addressId: address.id,
+            fullAddress: address.full_address,
+            imageUrl: imageUrl.split('?')[0] // Log URL without token
+          });
           
           // Extract street name from address components
           const streetName = address.street || getStreetName(address.full_address || `${address.house_number} ${address.city}, ${address.state}`);
-          console.log('Extracted street name:', streetName);
         
           const flyer = {
             id: `${job.id}-${address.id}`,
-            image: outputImageUrl,
+            image: imageUrl,
             fullAddress: address.full_address || `${address.house_number} ${address.city}, ${address.state}`,
             houseNumber: address.house_number,
             city: address.city,
@@ -89,8 +90,6 @@ export const JobProvider = ({ children }) => {
             jobId: job.id,
             createdAt: address.created_at
           };
-          console.log('Created flyer object:', flyer);
-          
           if (!flyersByStreet[streetName]) {
             flyersByStreet[streetName] = [];
           }
@@ -102,14 +101,11 @@ export const JobProvider = ({ children }) => {
 
       // Update state with new flyers
       setCompletedFlyers(prev => {
-        console.log('Previous completedFlyers state:', prev);
         const newState = { ...prev };
         Object.entries(flyersByStreet).forEach(([street, flyers]) => {
           // Check if we already have flyers for this job
           const existingJobFlyers = newState[street]?.filter(f => f.jobId === job.id) || [];
           if (existingJobFlyers.length > 0) {
-            // If we already have flyers for this job, don't add them again
-            console.log(`Skipping update for ${street} - job ${job.id} already processed`);
             return;
           }
           
@@ -120,7 +116,7 @@ export const JobProvider = ({ children }) => {
             newState[street] = [...flyers, ...newState[street]];
           }
         });
-        console.log('New completedFlyers state:', newState);
+        console.log('DEBUG - Updated flyers:', newState);
         return newState;
       });
     } catch (error) {
@@ -157,18 +153,14 @@ export const JobProvider = ({ children }) => {
     let pollInterval;
     
     if (user) {  // Only start polling if user is logged in
-      console.log('Starting job polling for user:', user.email);
-      
       // Set up polling
       pollInterval = setInterval(async () => {
         try {
           const response = await makeRequest(API_ROUTES.jobs, 'GET');
-          console.log('Polling jobs fetch:', response);
           
           // Update active jobs and process completed ones
           for (const job of response) {
             if (job.status === 'completed') {
-              console.log('Found completed job during polling:', job);
               await handleJobCompletion(job);
             }
           }
