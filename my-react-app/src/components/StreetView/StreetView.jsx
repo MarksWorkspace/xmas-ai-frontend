@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { makeRequest, API_ROUTES, API_BASE_URL } from '../../config/api';
 import AuthImage from '../common/AuthImage';
 import './StreetView.css';
+import JSZip from 'jszip';
 
 const StreetView = () => {
   const { streetName } = useParams();
@@ -74,19 +75,86 @@ const StreetView = () => {
     }
   };
 
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState(null);
+
+  const downloadImage = async (imageUrl) => {
+    const token = localStorage.getItem('auth_token');
+    const response = await fetch(`${API_BASE_URL}${imageUrl}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'image/jpeg, image/png, image/*'
+      }
+    });
+    if (!response.ok) throw new Error(`Failed to download image: ${response.status}`);
+    const blob = await response.blob();
+    // Ensure we're creating a proper image blob
+    return new Blob([blob], { type: 'image/jpeg' });
+  };
+
   const handleDownloadAll = async () => {
     if (houses.length > 0) {
-      const jobId = houses[0].jobId; // All houses in a street should be from the same job
+      const jobId = houses[0].jobId;
+      setIsDownloading(true);
+      setDownloadError(null);
+      
       try {
-        const downloadUrl = await makeRequest(API_ROUTES.jobDownloadAll(jobId), 'GET');
+        const token = localStorage.getItem('auth_token');
+        const response = await fetch(API_ROUTES.jobDownloadAll(jobId), {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Server error response:', errorText);
+          throw new Error(`Failed to download images: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('API Response:', data);
+
+        // Extract all output image URLs and addresses
+        const imagesToDownload = data.images
+          .filter(img => img.output_image_exists)
+          .map(img => ({
+            url: img.output_image_url,
+            address: img.street ? `${img.house_number} ${img.street}` : `house-${img.address_id}`
+          }));
+
+        if (imagesToDownload.length === 0) {
+          throw new Error('No completed images available for download');
+        }
+
+        // Download all images
+        const blobs = await Promise.all(imagesToDownload.map(img => downloadImage(img.url)));
+        
+        // Create a zip file containing all images
+        const zip = new JSZip();
+        imagesToDownload.forEach((img, index) => {
+          // Use address as filename, sanitize it for file system
+          const safeAddress = img.address.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+          const filename = `${safeAddress}.jpg`;
+          zip.file(filename, blobs[index], { binary: true });
+        });
+
+        // Generate and download the zip file
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const blobUrl = window.URL.createObjectURL(zipBlob);
         const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.setAttribute('download', `${streetName}-all.zip`);
+        link.href = blobUrl;
+        link.download = `${streetName}-all.zip`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
       } catch (error) {
         console.error('Error downloading all images:', error);
+        setDownloadError(error.message);
+      } finally {
+        setIsDownloading(false);
       }
     }
   };
@@ -111,9 +179,16 @@ const StreetView = () => {
             <p>{houses.length} houses rendered</p>
           </div>
         </div>
-        <button className="download-all-button" onClick={handleDownloadAll}>
-          Download All
-        </button>
+        <div className="download-all-container">
+          <button 
+            className="download-all-button" 
+            onClick={handleDownloadAll}
+            disabled={isDownloading}
+          >
+            {isDownloading ? 'Downloading...' : 'Download All'}
+          </button>
+          {downloadError && <div className="download-error">{downloadError}</div>}
+        </div>
       </div>
 
       <div className="houses-grid">
