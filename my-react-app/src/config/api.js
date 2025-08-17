@@ -5,7 +5,9 @@ export const API_ROUTES = {
   register: `${API_BASE_URL}/users/register`,
   jobs: `${API_BASE_URL}/jobs/`,
   jobStatus: (jobId) => `${API_BASE_URL}/jobs/${jobId}/status`,
-  jobAddresses: (jobId) => `${API_BASE_URL}/jobs/${jobId}/addresses`,
+  jobAddresses: (jobId) => `${API_BASE_URL}/jobs/${jobId}/addresses/`,
+  jobAddressImages: (jobId, addressId) => `${API_BASE_URL}/jobs/${jobId}/addresses/${addressId}/images`,
+  jobDownloadAll: (jobId) => `${API_BASE_URL}/jobs/${jobId}/download-all`,
 };
 
 export const makeRequest = async (url, method = 'GET', data = null, isFormEncoded = false) => {

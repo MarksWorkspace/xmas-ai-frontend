@@ -1,61 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './FlyerLibrary.css';
 import FlyerCard from './FlyerCard';
+import StreetCard from './StreetCard';
+import StreetDetail from './StreetDetail';
+import { useJobs } from '../../context/JobContext';
+import { makeRequest, API_ROUTES } from '../../config/api';
 
 const FlyerLibrary = () => {
-  // Sample data - will be replaced with API data later
-  const flyers = [
-    {
-      id: 1,
-      image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&h=600',
-      address: '123 Oak Street'
-    },
-    {
-      id: 2,
-      image: 'https://images.unsplash.com/photo-1599427303058-f04cbcf4756f?auto=format&fit=crop&w=800&h=600',
-      address: '789 Elm Court'
-    },
-    {
-      id: 3,
-      image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=800&h=600',
-      address: '456 Pine Ave'
-    },
-    {
-      id: 4,
-      image: 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=800&h=600',
-      address: '4th Street Deluxe'
-    },
-    {
-      id: 5,
-      image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&h=600',
-      address: '123 Oak Street'
-    },
-    {
-      id: 6,
-      image: 'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&h=600',
-      address: '789 Elm Court'
-    },
-    {
-      id: 7,
-      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&h=600',
-      address: '456 Pine Ave'
-    },
-    {
-      id: 8,
-      image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=800&h=600',
-      address: '456 Pine Ave'
-    }
-  ];
+  const { completedFlyers, activeJobs } = useJobs();
+  const [selectedStreet, setSelectedStreet] = useState(null);
+  
+  console.log('FlyerLibrary - completedFlyers:', completedFlyers);
+  console.log('FlyerLibrary - activeJobs:', activeJobs);
+  
+  // Log whenever completedFlyers changes
+  useEffect(() => {
+    console.log('CompletedFlyers updated:', completedFlyers);
+  }, [completedFlyers]);
 
-  const handleShare = (flyerId) => {
-    // Will be implemented with actual sharing functionality
+  const handleShare = async (flyerId) => {
     console.log('Share flyer:', flyerId);
+    // Implement sharing functionality
   };
 
-  const handleDownload = (flyerId) => {
-    // Will be implemented with actual download functionality
-    console.log('Download flyer:', flyerId);
+  const handleDownload = async (flyerId) => {
+    const [jobId, addressId] = flyerId.split('-');
+    try {
+      // Get the download URL
+      const downloadUrl = await makeRequest(API_ROUTES.jobDownloadAll(jobId), 'GET');
+      console.log('Download URL:', downloadUrl);
+      
+      // Create a temporary link to trigger the download
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.setAttribute('download', `flyer-${jobId}-${addressId}.jpg`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading flyer:', error);
+    }
   };
+
+  if (selectedStreet) {
+    return (
+      <StreetDetail
+        street={selectedStreet}
+        flyers={completedFlyers[selectedStreet]}
+        onBack={() => setSelectedStreet(null)}
+        onShare={handleShare}
+        onDownload={handleDownload}
+      />
+    );
+  }
 
   return (
     <div className="flyer-library">
@@ -70,15 +67,18 @@ const FlyerLibrary = () => {
         </div>
       </div>
       <div className="flyer-grid">
-        {flyers.map((flyer) => (
-          <FlyerCard
-            key={flyer.id}
-            image={flyer.image}
-            address={flyer.address}
-            onShare={() => handleShare(flyer.id)}
-            onDownload={() => handleDownload(flyer.id)}
+        {Object.entries(completedFlyers).map(([street, flyers]) => (
+          <StreetCard
+            key={street}
+            streetName={street}
+            houseCount={flyers.length}
+            thumbnail={flyers[0]?.image}
+            onClick={() => setSelectedStreet(street)}
           />
         ))}
+        {Object.keys(completedFlyers).length === 0 && (
+          <div className="no-flyers-message">No completed flyers yet</div>
+        )}
       </div>
     </div>
   );

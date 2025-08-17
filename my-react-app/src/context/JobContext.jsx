@@ -6,75 +6,149 @@ const JobContext = createContext();
 
 export const JobProvider = ({ children }) => {
   const [activeJobs, setActiveJobs] = useState([]);
+  const [completedFlyers, setCompletedFlyers] = useState({});  // Organized by street
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useAuth();
+
+  // Reset state when user changes
+  useEffect(() => {
+    if (!user) {
+      setActiveJobs([]);
+      setCompletedFlyers({});
+      setError('Please log in to view jobs');
+    } else {
+      setError(null);
+      // Fetch jobs when user logs in
+      fetchJobs();
+    }
+  }, [user]);
+
+  // Helper to extract street name from full address
+  const getStreetName = (fullAddress) => {
+    // This regex matches everything up to the last number in the address
+    const match = fullAddress.match(/(.*?)\s*\d+\s*$/);
+    return match ? match[1].trim() : fullAddress;
+  };
+
+  // Error handling
+  const handleError = (err) => {
+    console.error('API error:', err);
+    if (err.message.includes('Not authenticated')) {
+      setError('Please log in to view jobs');
+      setActiveJobs([]);
+      setCompletedFlyers({});
+    }
+  };
+
+  // Handle job completion and organize flyers by street
+  const handleJobCompletion = async (job) => {
+    try {
+      console.log('Processing completed job:', job);
+      
+      // If job doesn't have required fields, fetch full job details first
+      if (!job.total_addresses || !job.processed_addresses) {
+        console.log('Fetching full job details...');
+        const jobDetails = await makeRequest(`${API_ROUTES.jobs}${job.id}`, 'GET');
+        job = { ...job, ...jobDetails };
+      }
+      
+      console.log('Making request to:', API_ROUTES.jobAddresses(job.id));
+      const addresses = await makeRequest(API_ROUTES.jobAddresses(job.id), 'GET');
+      console.log('Received addresses:', addresses);
+      
+      if (!addresses || !Array.isArray(addresses) || addresses.length === 0) {
+        console.warn('No addresses received for completed job');
+        return;
+      }
+      
+      // Process all addresses and organize by street
+      const flyersByStreet = {};
+      
+      for (const address of addresses) {
+        try {
+          console.log('Processing address:', address);
+          const images = await makeRequest(API_ROUTES.jobAddressImages(job.id, address.id), 'GET');
+          console.log('Received images:', images);
+          const outputImageUrl = images.output_url || images.input_url; // fallback to input if output not available
+          console.log('Using image URL:', outputImageUrl);
+          
+          // Extract street name from address components
+          const streetName = address.street || getStreetName(address.full_address || `${address.house_number} ${address.city}, ${address.state}`);
+          console.log('Extracted street name:', streetName);
+        
+          const flyer = {
+            id: `${job.id}-${address.id}`,
+            image: outputImageUrl,
+            fullAddress: address.full_address || `${address.house_number} ${address.city}, ${address.state}`,
+            houseNumber: address.house_number,
+            city: address.city,
+            state: address.state,
+            latitude: address.latitude,
+            longitude: address.longitude,
+            jobId: job.id,
+            createdAt: address.created_at
+          };
+          console.log('Created flyer object:', flyer);
+          
+          if (!flyersByStreet[streetName]) {
+            flyersByStreet[streetName] = [];
+          }
+          flyersByStreet[streetName].push(flyer);
+        } catch (error) {
+          console.error('Error processing address:', error);
+        }
+      }
+
+      // Update state with new flyers
+      setCompletedFlyers(prev => {
+        console.log('Previous completedFlyers state:', prev);
+        const newState = { ...prev };
+        Object.entries(flyersByStreet).forEach(([street, flyers]) => {
+          // Check if we already have flyers for this job
+          const existingJobFlyers = newState[street]?.filter(f => f.jobId === job.id) || [];
+          if (existingJobFlyers.length > 0) {
+            // If we already have flyers for this job, don't add them again
+            console.log(`Skipping update for ${street} - job ${job.id} already processed`);
+            return;
+          }
+          
+          // Add new flyers for this street
+          if (!newState[street]) {
+            newState[street] = flyers;
+          } else {
+            newState[street] = [...flyers, ...newState[street]];
+          }
+        });
+        console.log('New completedFlyers state:', newState);
+        return newState;
+      });
+    } catch (error) {
+      console.error('Error processing completed job:', error);
+    }
+  };
 
   // Fetch all active jobs
   const fetchJobs = async () => {
     try {
       setIsLoading(true);
       const response = await makeRequest(API_ROUTES.jobs, 'GET');
-      //console.log('All jobs response:', response);
       
-      // Fetch initial status for each job
-      const jobsWithStatus = await Promise.all(
-        response.map(async (job) => {
-          try {
-            const statusResponse = await makeRequest(API_ROUTES.jobStatus(job.id), 'GET');
-            console.log(`Initial status for job ${job.id}:`, statusResponse);
-            return { 
-              ...job, 
-              ...statusResponse,
-              status: statusResponse.status // Make sure we explicitly set the status field
-            };
-          } catch (err) {
-            console.error(`Error fetching status for job ${job.id}:`, err);
-            return job;
-          }
-        })
-      );
+      // Process any completed jobs immediately
+      for (const job of response) {
+        if (job.status === 'completed') {
+          console.log('Found completed job during fetch:', job);
+          await handleJobCompletion(job);
+        }
+      }
       
-      setActiveJobs(jobsWithStatus);
+      setActiveJobs(response);
       setError(null);
     } catch (err) {
       console.error('Error fetching jobs:', err);
-      setError('Failed to fetch jobs');
+      handleError(err);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  // Get a specific job's status
-  const fetchJobStatus = async (jobId) => {
-    try {
-      const statusResponse = await makeRequest(API_ROUTES.jobStatus(jobId), 'GET');
-      //console.log(`Job ${jobId} status response:`, statusResponse);
-      
-      setActiveJobs(prev => prev.map(job => {
-        if (job.id === jobId) {
-          const updatedJob = { 
-            ...job,
-            ...statusResponse,
-            status: statusResponse.status // Use the exact status from the response
-          };
-          console.log('Updated job:', updatedJob);
-          return updatedJob;
-        }
-        return job;
-      }));
-    } catch (err) {
-      console.error(`Error fetching status for job ${jobId}:`, err);
-      
-      // If we get a 401 error, the token might be invalid
-      if (err.message.includes('Not authenticated')) {
-        // Clear the invalid token
-        localStorage.removeItem('auth_token');
-        // Set error state to notify user
-        setError('Your session has expired. Please log in again.');
-        // Stop polling
-        setActiveJobs([]);
-      }
     }
   };
 
@@ -82,46 +156,36 @@ export const JobProvider = ({ children }) => {
   useEffect(() => {
     let pollInterval;
     
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      // Immediate fetch
-      const doInitialFetch = async () => {
-        try {
-          await fetchJobs();
-        } catch (err) {
-          console.error('Initial fetch failed:', err);
-        }
-      };
-      doInitialFetch();
-
+    if (user) {  // Only start polling if user is logged in
+      console.log('Starting job polling for user:', user.email);
+      
       // Set up polling
       pollInterval = setInterval(async () => {
-        const currentToken = localStorage.getItem('auth_token');
-        if (!currentToken) {
-          clearInterval(pollInterval);
-          return;
-        }
-
         try {
-          const currentJobs = activeJobs;
-          for (const job of currentJobs) {
-            if (job.status !== 'completed' && job.status !== 'failed') {
-              await fetchJobStatus(job.id);
+          const response = await makeRequest(API_ROUTES.jobs, 'GET');
+          console.log('Polling jobs fetch:', response);
+          
+          // Update active jobs and process completed ones
+          for (const job of response) {
+            if (job.status === 'completed') {
+              console.log('Found completed job during polling:', job);
+              await handleJobCompletion(job);
             }
           }
+          
+          setActiveJobs(response);
         } catch (err) {
           console.error('Poll update failed:', err);
+          handleError(err);
         }
       }, 5000);
-    } else {
-      setError('Please log in to view jobs');
-    }
 
-    return () => {
-      if (pollInterval) {
-        clearInterval(pollInterval);
-      }
-    };
+      return () => {
+        if (pollInterval) {
+          clearInterval(pollInterval);
+        }
+      };
+    }
   }, [user]); // Only depend on user state
 
   // Format job for display
@@ -131,9 +195,6 @@ export const JobProvider = ({ children }) => {
       if (!job.total_addresses || job.total_addresses === 0) return 0;
       return Math.round((job.completed_addresses / job.total_addresses) * 100);
     };
-
-    // Log job data for debugging
-    console.log('Formatting job:', job);
 
     return {
       id: job.id,
@@ -155,7 +216,7 @@ export const JobProvider = ({ children }) => {
       setError(null);
     } catch (err) {
       console.error('Error deleting job:', err);
-      setError('Failed to delete job');
+      handleError(err);
     } finally {
       setIsLoading(false);
     }
@@ -164,10 +225,11 @@ export const JobProvider = ({ children }) => {
   return (
     <JobContext.Provider value={{ 
       activeJobs: activeJobs.map(formatJobForDisplay),
+      completedFlyers,
       isLoading,
       error,
       fetchJobs,
-      fetchJobStatus,
+      fetchJobStatus: fetchJobs,  // Simplified to just refetch all jobs
       deleteJob
     }}>
       {children}
