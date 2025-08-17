@@ -63,6 +63,79 @@
   padding: 0 8px;
 }
 
+.flyer-card {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.flyer-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.flyer-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.flyer-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flyer-details {
+  padding: 16px;
+}
+
+.flyer-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.flyer-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.street-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.house-count {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.view-street-btn {
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.view-street-btn:hover {
+  background: #1557b0;
+}
+
 @media (max-width: 1200px) {
   .flyer-grid {
     grid-template-columns: repeat(3, 1fr);

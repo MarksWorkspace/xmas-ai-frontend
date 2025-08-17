@@ -68,7 +68,8 @@ const FlyerLibrary = () => {
                 <AuthImage src={firstImage} alt={`Houses from ${jobData.title}`} />
               </div>
               <div className="flyer-details">
-                <h3 className="flyer-address">{allStreets.join(' + ')}</h3>
+                <h3 className="flyer-title">{jobData.title}</h3>
+                <p className="flyer-subtitle">{allStreets.join(' + ')}</p>
                 <div className="street-card-footer">
                   <p className="house-count">{totalHouses} houses</p>
                   <button 
