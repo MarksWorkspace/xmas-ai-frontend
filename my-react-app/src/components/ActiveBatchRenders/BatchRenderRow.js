@@ -4,6 +4,32 @@ import { useJobs } from '../../context/JobContext';
 
 const BatchRenderRow = ({ id, title, homes, startTime, status, progress, thumbnail }) => {
   const { deleteJob } = useJobs();
+  
+  // Format the title to show address and number of homes
+  const formatTitle = (title, homes) => {
+    // Extract the address from the title (assuming format "Generate image for [address]")
+    const addressMatch = title.match(/Generate image for (.+)/i);
+    const address = addressMatch ? addressMatch[1] : title;
+    
+    // If there's more than one home, add indicator
+    if (homes > 1) {
+      return `${address} (+${homes - 1} more)`;
+    }
+    return address;
+  };
+
+  // Format the date to be more readable
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+  };
+
   // Get status display info
   const getStatusInfo = () => {
     const currentStatus = status?.toLowerCase() || 'pending';
@@ -14,6 +40,7 @@ const BatchRenderRow = ({ id, title, homes, startTime, status, progress, thumbna
   };
 
   const statusInfo = getStatusInfo();
+  const formattedTitle = formatTitle(title, homes);
   
   return (
     <div className={`batch-render-row ${statusInfo.className}`}>
@@ -22,10 +49,10 @@ const BatchRenderRow = ({ id, title, homes, startTime, status, progress, thumbna
           <img src={thumbnail} alt={title} />
         </div>
         <div className="batch-info">
-          <h3 className="batch-title">{title}</h3>
+          <h3 className="batch-title">{formattedTitle}</h3>
           <div className="batch-subtitle">
-            <span>{homes} homes</span>
-            <span>{startTime}</span>
+            <span>{homes} {homes === 1 ? 'home' : 'homes'}</span>
+            <span>{formatDate(startTime)}</span>
             <span className={`status ${statusInfo.className}`}>
               {statusInfo.text}
             </span>
