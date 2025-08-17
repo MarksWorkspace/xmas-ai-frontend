@@ -6,6 +6,7 @@ const JobContext = createContext();
 
 export const JobProvider = ({ children }) => {
   const [activeJobs, setActiveJobs] = useState([]);
+  const [formattedJobs, setFormattedJobs] = useState([]);
   const [completedFlyers, setCompletedFlyers] = useState({});  // Organized by street
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -60,6 +61,10 @@ export const JobProvider = ({ children }) => {
         console.warn('No addresses received for completed job');
         return;
       }
+
+      // Update the job with the correct number of addresses
+      job.total_addresses = addresses.length;
+      job.completed_addresses = addresses.length;
       
       // Process all addresses and organize by street
       const flyersByStreet = {};
@@ -99,7 +104,7 @@ export const JobProvider = ({ children }) => {
         }
       }
 
-      // Update state with new flyers
+      // Update state with new flyers and job information
       setCompletedFlyers(prev => {
         const newState = { ...prev };
         Object.entries(flyersByStreet).forEach(([street, flyers]) => {
@@ -119,6 +124,14 @@ export const JobProvider = ({ children }) => {
         console.log('DEBUG - Updated flyers:', newState);
         return newState;
       });
+
+      // Update the active jobs with the correct address count
+      setActiveJobs(prev => 
+        prev.map(j => j.id === job.id 
+          ? { ...j, total_addresses: addresses.length, completed_addresses: addresses.length }
+          : j
+        )
+      );
     } catch (error) {
       console.error('Error processing completed job:', error);
     }
@@ -180,24 +193,7 @@ export const JobProvider = ({ children }) => {
     }
   }, [user]); // Only depend on user state
 
-  // Format job for display
-  const formatJobForDisplay = (job) => {
-    // Calculate progress percentage for processing jobs
-    const calculateProgress = () => {
-      if (!job.total_addresses || job.total_addresses === 0) return 0;
-      return Math.round((job.completed_addresses / job.total_addresses) * 100);
-    };
 
-    return {
-      id: job.id,
-      title: job.description || 'Untitled Campaign',
-      homes: job.total_addresses || '0',
-      startTime: job.created_at ? `Started ${new Date(job.created_at).toLocaleString()}` : 'Starting soon',
-      progress: calculateProgress(),
-      status: job.status || 'pending',
-      thumbnail: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=200&h=150'
-    };
-  };
 
   // Delete a job
   const deleteJob = async (jobId) => {
@@ -214,9 +210,46 @@ export const JobProvider = ({ children }) => {
     }
   };
 
+  // Format jobs with addresses
+  const formatJobs = async () => {
+    const formattedJobs = [];
+    for (const job of activeJobs) {
+      try {
+        const addresses = await makeRequest(API_ROUTES.jobAddresses(job.id), 'GET');
+        const streets = addresses && Array.isArray(addresses) 
+          ? [...new Set(addresses.map(addr => 
+              addr.street || getStreetName(addr.full_address || `${addr.house_number} ${addr.city}, ${addr.state}`)
+            ))]
+          : [];
+        
+        formattedJobs.push({
+          id: job.id,
+          title: job.description || 'Untitled Campaign',
+          addresses: streets,
+          startTime: job.created_at ? new Date(job.created_at).toISOString() : null,
+          progress: Math.round((job.completed_addresses / (job.total_addresses || 1)) * 100),
+          status: job.status || 'pending',
+          thumbnail: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=200&h=150'
+        });
+      } catch (error) {
+        console.error('Error formatting job:', error);
+      }
+    }
+    return formattedJobs;
+  };
+
+  // Update formatted jobs when active jobs change
+  useEffect(() => {
+    const updateFormattedJobs = async () => {
+      const formatted = await formatJobs();
+      setFormattedJobs(formatted);
+    };
+    updateFormattedJobs();
+  }, [activeJobs]);
+
   return (
     <JobContext.Provider value={{ 
-      activeJobs: activeJobs.map(formatJobForDisplay),
+      activeJobs: formattedJobs,
       completedFlyers,
       isLoading,
       error,

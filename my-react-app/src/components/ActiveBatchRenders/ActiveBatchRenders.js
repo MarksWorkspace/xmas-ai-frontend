@@ -51,7 +51,7 @@ const ActiveBatchRenders = () => {
             key={job.id}
             id={job.id}
             title={job.title}
-            homes={job.homes}
+            addresses={job.addresses}
             startTime={job.startTime}
             progress={job.progress}
             status={job.status}

@@ -64,7 +64,12 @@
 .batch-subtitle span {
   display: flex;
   align-items: center;
-  white-space: nowrap;
+}
+
+.batch-subtitle .addresses {
+  font-weight: 500;
+  color: #444;
+  font-style: italic;
 }
 
 .batch-subtitle span:not(:last-child)::after {
