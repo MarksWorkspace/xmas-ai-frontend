@@ -229,6 +229,12 @@ const CreateCampaign = () => {
   const [activeTab, setActiveTab] = useState('address');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({
+    campaignName: '',
+    addresses: '',
+    city: '',
+    state: ''
+  });
   const [success, setSuccess] = useState(null);
   const [isBackendAvailable, setIsBackendAvailable] = useState(true);
 
@@ -260,10 +266,53 @@ const CreateCampaign = () => {
     checkBackendStatus();
   }, []);
 
+  const validateForm = (formData) => {
+    const errors = {};
+    
+    // Check campaign name
+    if (!formData.campaignName.trim()) {
+      errors.campaignName = 'Campaign name is required';
+    }
+
+    // Check if at least one address is entered
+    if (!formData.addresses.some(addr => addr.trim())) {
+      errors.addresses = 'At least one street address is required';
+    }
+
+    // Check city
+    if (!formData.city.trim()) {
+      errors.city = 'City is required';
+    }
+
+    // Check state
+    if (!formData.state) {
+      errors.state = 'State is required';
+    }
+
+    return errors;
+  };
+
   const handleAddressSubmit = async (formData) => {
     setIsLoading(true);
     setError(null);
     setSuccess(null);
+    
+    // Reset field errors
+    setFieldErrors({
+      campaignName: '',
+      addresses: '',
+      city: '',
+      state: ''
+    });
+
+    // Validate form
+    const validationErrors = validateForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setFieldErrors(validationErrors);
+      setError('Please fill in all required fields');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const requestData = {
@@ -331,6 +380,8 @@ const CreateCampaign = () => {
         required
         variant="outlined"
         size="medium"
+        error={!!fieldErrors.campaignName}
+        helperText={fieldErrors.campaignName}
         sx={{ mb: 3 }}
       />
       
@@ -394,6 +445,8 @@ const CreateCampaign = () => {
           required
           variant="outlined"
           size="medium"
+          error={!!fieldErrors.city}
+          helperText={fieldErrors.city}
           sx={{ minHeight: '56px' }}
         />
         <TextField
@@ -406,6 +459,8 @@ const CreateCampaign = () => {
           required
           variant="outlined"
           size="medium"
+          error={!!fieldErrors.state}
+          helperText={fieldErrors.state}
           sx={{ 
             minHeight: '56px',
             '& .MuiSelect-select': {
@@ -432,7 +487,14 @@ const CreateCampaign = () => {
         variant="contained"
         color="primary"
         fullWidth
-        disabled={isLoading || !isBackendAvailable}
+        disabled={
+          isLoading || 
+          !isBackendAvailable || 
+          !formData.campaignName.trim() || 
+          !formData.addresses.some(addr => addr.trim()) || 
+          !formData.city.trim() || 
+          !formData.state
+        }
         sx={{ 
           mt: 3, 
           textTransform: 'none',
