@@ -1,0 +1,29 @@
+.new-neighborhood-btn {
+  background-color: #002f1c;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  height: 36px;
+  margin-top: 28px;
+  width: auto;
+}
+
+.new-neighborhood-btn:hover {
+  background-color: #00402a;
+}
+
+@media (max-width: 768px) {
+  .new-neighborhood-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -6,6 +6,7 @@ import { JobProvider } from './context/JobContext';
 import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
+import NewNeighborhoodButton from './components/NewNeighborhoodButton/NewNeighborhoodButton';
 import ActiveBatchRenders from './components/ActiveBatchRenders/ActiveBatchRenders';
 import NewCampaign from './components/NewCampaign/NewCampaign';
 import StatCard from './components/StatCard/StatCard';
@@ -85,7 +86,10 @@ const AppContent = () => {
           <Route path="/" element={
             <ProtectedRoute>
               <div className="gradient-background">
-                <WelcomeBanner />
+                <div className="welcome-wrapper">
+                  <WelcomeBanner />
+                  <NewNeighborhoodButton />
+                </div>
                 <div className="stats-container">
                   {statsData.map((stat, index) => (
                     <StatCard 
@@ -111,7 +115,10 @@ const AppContent = () => {
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <div className="gradient-background">
-                <WelcomeBanner />
+                <div className="welcome-wrapper">
+                  <WelcomeBanner />
+                  <NewNeighborhoodButton />
+                </div>
                 <div className="stats-container">
                   {statsData.map((stat, index) => (
                     <StatCard 
