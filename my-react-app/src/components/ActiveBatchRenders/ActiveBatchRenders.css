@@ -40,7 +40,7 @@
 
 .batch-renders-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   width: 100%;
   overflow-x: auto;
@@ -82,43 +82,18 @@
   grid-column: 1 / -1;
 }
 
-@media (max-width: 1600px) {
-  .batch-renders-list {
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-  }
-}
-
-@media (max-width: 1400px) {
-  .batch-renders-list {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  }
-}
-
 @media (max-width: 1200px) {
   .batch-renders-list {
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
-}
-
-@media (max-width: 1000px) {
-  .batch-renders-list {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  }
-}
-
-@media (max-width: 800px) {
-  .batch-renders-list {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  
+  .active-batch-renders {
+    padding: 12px;
   }
 }
 
 @media (max-width: 600px) {
-  .batch-renders-list {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-}
-
-@media (max-width: 500px) {
   .batch-renders-list {
     grid-template-columns: 1fr;
   }

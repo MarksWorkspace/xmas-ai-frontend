@@ -101,7 +101,7 @@
   gap: 24px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 800px) {
   .dashboard-row {
     flex-direction: column;
   }

@@ -153,6 +153,31 @@
   display: none;
 }
 
+@media (max-width: 1200px) {
+  .batch-render-row {
+    padding: 8px;
+    min-height: 90px;
+  }
+
+  .batch-content {
+    gap: 10px;
+  }
+
+  .thumbnail {
+    width: 100px;
+    height: 100px;
+    min-width: 100px;
+  }
+
+  .batch-title {
+    font-size: 14px;
+  }
+
+  .batch-subtitle {
+    font-size: 12px;
+  }
+}
+
 @media (max-width: 768px) {
   .batch-render-row {
     padding: 8px;
