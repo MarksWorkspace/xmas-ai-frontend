@@ -15,11 +15,6 @@ const TopBar = () => {
           <FiSearch size={18} />
         </span>
       </div>
-      <div className="topbar-right">
-        <div className="topbar-avatar">
-          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" />
-        </div>
-      </div>
     </div>
   );
 };

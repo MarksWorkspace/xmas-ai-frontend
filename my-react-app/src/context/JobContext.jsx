@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { makeRequest, API_ROUTES, API_BASE_URL } from '../config/api';
 import { useAuth } from './AuthContext';
 
@@ -11,35 +11,23 @@ export const JobProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const { user } = useAuth();
 
-  // Reset state when user changes
-  useEffect(() => {
-    if (!user) {
-      setActiveJobs([]);
-      setCompletedFlyers({});
-      setError('Please log in to view jobs');
-    } else {
-      setError(null);
-      fetchJobs();
-    }
-  }, [user]);
-
   // Helper to extract street name from full address
-  const getStreetName = (fullAddress) => {
+  const getStreetName = useCallback((fullAddress) => {
     const match = fullAddress.match(/(.*?)\s*\d+\s*$/);
     return match ? match[1].trim() : fullAddress;
-  };
+  }, []);
 
   // Error handling
-  const handleError = (err) => {
+  const handleError = useCallback((err) => {
     if (err.message.includes('Not authenticated')) {
       setError('Please log in to view jobs');
       setActiveJobs([]);
       setCompletedFlyers({});
     }
-  };
+  }, []);
 
   // Handle job completion and organize flyers by street
-  const handleJobCompletion = async (job) => {
+  const handleJobCompletion = useCallback(async (job) => {
     try {
       if (!job.total_addresses || !job.processed_addresses) {
         const jobDetails = await makeRequest(`${API_ROUTES.jobs}${job.id}`, 'GET');
@@ -107,10 +95,10 @@ export const JobProvider = ({ children }) => {
     } catch (error) {
       console.error('Error processing completed job:', error);
     }
-  };
+  }, [getStreetName]);
 
   // Fetch all active jobs
-  const fetchJobs = async () => {
+  const fetchJobs = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await makeRequest(API_ROUTES.jobs, 'GET');
@@ -147,7 +135,21 @@ export const JobProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [handleJobCompletion, handleError]);
+
+  // Reset state when user changes
+  useEffect(() => {
+    if (!user) {
+      setActiveJobs([]);
+      setCompletedFlyers({});
+      setError('Please log in to view jobs');
+    } else {
+      setError(null);
+      fetchJobs();
+    }
+  }, [user, fetchJobs]);
+
+
 
   // Poll for updates
   useEffect(() => {
@@ -176,43 +178,12 @@ export const JobProvider = ({ children }) => {
         }
       };
     }
-  }, [user]);
+  }, [user, handleJobCompletion, handleError]);
 
-  // Format job for display
-  const formatJobForDisplay = async (job) => {
-    let streets = [];
-    try {
-      const addresses = await makeRequest(API_ROUTES.jobAddresses(job.id), 'GET');
-      if (addresses && Array.isArray(addresses)) {
-        // Extract unique street names
-        streets = [...new Set(addresses.map(addr => {
-          const match = addr.full_address?.match(/^(.+?)(?=\s+\d+|$)/);
-          return match ? match[1].trim() : '';
-        }).filter(Boolean))];
-      }
-    } catch (error) {
-      console.error('Error fetching addresses:', error);
-    }
 
-    // Extract campaign name from metadata or description
-    const campaignName = job.metadata?.campaign_name || 
-                       job.campaign_name || 
-                       (job.description && job.description.split('-')[0].trim()) ||
-                       'Untitled Campaign';
-
-    return {
-      id: job.id,
-      title: campaignName,
-      streets: streets,
-      startTime: job.created_at ? new Date(job.created_at).toISOString() : null,
-      progress: Math.round((job.completed_addresses / (job.total_addresses || 1)) * 100),
-      status: job.status || 'pending',
-      thumbnail: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=200&h=150'
-    };
-  };
 
   // Delete a job
-  const deleteJob = async (jobId) => {
+  const deleteJob = useCallback(async (jobId) => {
     try {
       setIsLoading(true);
       await makeRequest(`${API_ROUTES.jobs}${jobId}`, 'DELETE');
@@ -224,7 +195,7 @@ export const JobProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [handleError]);
 
   return (
     <JobContext.Provider value={{ 

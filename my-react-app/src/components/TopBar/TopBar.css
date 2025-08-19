@@ -51,25 +51,7 @@
   align-items: center;
 }
 
-.topbar-right {
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-}
 
-.topbar-avatar {
-  width: clamp(28px, 3vw, 32px);
-  height: clamp(28px, 3vw, 32px);
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.topbar-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 2px solid #eaeaea;
-}
 
 @media (max-width: 768px) {
   .topbar {

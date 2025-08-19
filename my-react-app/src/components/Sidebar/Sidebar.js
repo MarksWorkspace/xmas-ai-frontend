@@ -17,18 +17,22 @@ const Sidebar = () => {
     }
   };
 
+  const handleNavigation = (route) => {
+    navigate(route);
+  };
+
   const mainMenuItems = [
-    { icon: <RiDashboardLine size={20} />, label: "Dashboard", active: true },
-    { icon: <RiBuilding2Line size={20} />, label: "Neighborhoods" },
-    { icon: <RiImageLine size={20} />, label: "Render Batches" },
-    { icon: <RiFileList2Line size={20} />, label: "Flyers Library" },
-    { icon: <RiPriceTag3Line size={20} />, label: "CRM Tags" },
-    { icon: <RiPaintLine size={20} />, label: "Branding" }
+    { icon: <RiDashboardLine size={20} />, label: "Dashboard", route: "/dashboard", active: true },
+    { icon: <RiBuilding2Line size={20} />, label: "Neighborhoods", route: "/neighborhoods" },
+    { icon: <RiImageLine size={20} />, label: "Render Batches", route: "/render-batches" },
+    { icon: <RiFileList2Line size={20} />, label: "Flyers Library", route: "/flyers-library" },
+    { icon: <RiPriceTag3Line size={20} />, label: "CRM Tags", route: "/crm-tags" },
+    { icon: <RiPaintLine size={20} />, label: "Branding", route: "/branding" }
   ];
 
   const systemMenuItems = [
-    { icon: <RiWalletLine size={20} />, label: "Billing" },
-    { icon: <RiSettings3Line size={20} />, label: "Settings" }
+    { icon: <RiWalletLine size={20} />, label: "Billing", route: "/billing" },
+    { icon: <RiSettings3Line size={20} />, label: "Settings", route: "/settings" }
   ];
 
   return (
@@ -42,6 +46,9 @@ const Sidebar = () => {
           <div 
             key={index} 
             className={`nav-item ${item.active ? 'active' : ''}`}
+            onClick={() => handleNavigation(item.route)}
+            role="button"
+            tabIndex={0}
           >
             <span className="nav-icon">{item.icon}</span>
             <span className="nav-label">{item.label}</span>
@@ -53,6 +60,9 @@ const Sidebar = () => {
             <div 
               key={index} 
               className="nav-item"
+              onClick={() => handleNavigation(item.route)}
+              role="button"
+              tabIndex={0}
             >
               <span className="nav-icon">{item.icon}</span>
               <span className="nav-label">{item.label}</span>
