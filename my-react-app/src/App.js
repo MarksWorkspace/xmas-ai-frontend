@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, useNavigate, useLocation, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { JobProvider } from './context/JobContext';
+import { JobProvider, useJobs } from './context/JobContext';
 import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
@@ -21,6 +21,7 @@ const AppContent = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuth();
+  const { completedFlyers, activeJobs } = useJobs();
 
   const handleLogout = () => {
     try {
@@ -31,21 +32,50 @@ const AppContent = () => {
     }
   };
 
+  // Calculate real stats from the data
+  const calculateNeighborhoodCount = () => {
+    const allNeighborhoods = new Set();
+    
+    // Count unique neighborhoods from completed flyers
+    Object.values(completedFlyers).forEach(jobData => {
+      Object.keys(jobData.streets || {}).forEach(streetName => {
+        allNeighborhoods.add(streetName);
+      });
+    });
+    
+    return allNeighborhoods.size;
+  };
+
+  const calculateProcessingJobs = () => {
+    // Count jobs that are currently processing (not completed)
+    return activeJobs.filter(job => job.status !== 'completed').length;
+  };
+
+  const calculateTotalFlyers = () => {
+    let total = 0;
+    Object.values(completedFlyers).forEach(jobData => {
+      Object.values(jobData.streets || {}).forEach(streetFlyers => {
+        total += streetFlyers.length;
+      });
+    });
+    return total;
+  };
+
   const statsData = [
     {
       icon: "neighborhoods",
-      value: "12",
+      value: calculateNeighborhoodCount().toString(),
       label: "Neighborhoods Targeted"
     },
     {
       icon: "jobs",
-      value: "5",
+      value: calculateProcessingJobs().toString(),
       label: "Batch Jobs in Progress"
     },
     {
       icon: "flyers",
-      value: "247",
-      label: "Flyers Generated This Week"
+      value: calculateTotalFlyers().toString(),
+      label: "Flyers Generated"
     },
     {
       icon: "conversion",
