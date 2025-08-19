@@ -14,6 +14,7 @@ import CreateCampaign from './components/CreateCampaign/CreateCampaign';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import StreetView from './components/StreetView/StreetView';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const AppContent = () => {
   const navigate = useNavigate();
@@ -52,72 +53,90 @@ const AppContent = () => {
     }
   ];
 
+  const { user } = useAuth();
+  
+  // If on login or register page, only show those components
   if (location.pathname === '/login' || location.pathname === '/register') {
-    return <div>{location.pathname === '/login' ? <Login /> : <Register />}</div>;
+    return (
+      <div className="auth-container">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </div>
+    );
   }
 
   return (
     <div className="app">
-      <Sidebar />
-      <div className="header">
-        <button onClick={handleLogout} className="logout-button">
-          Logout
-        </button>
-      </div>
-      <div className="main-content">
-        <TopBar />
+      {user && <Sidebar />}
+      {user && (
+        <div className="header">
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
+        </div>
+      )}
+      <div className={`main-content ${!user ? 'full-width' : ''}`}>
+        {user && <TopBar />}
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={
-            <div className="gradient-background">
-              <WelcomeBanner />
-              <div className="stats-container">
-                {statsData.map((stat, index) => (
-                  <StatCard 
-                    key={index}
-                    icon={stat.icon}
-                    value={stat.value}
-                    label={stat.label}
-                  />
-                ))}
-              </div>
-              <div className="dashboard-row">
-                <div className="dashboard-main">
-                  <ActiveBatchRenders />
+            <ProtectedRoute>
+              <div className="gradient-background">
+                <WelcomeBanner />
+                <div className="stats-container">
+                  {statsData.map((stat, index) => (
+                    <StatCard 
+                      key={index}
+                      icon={stat.icon}
+                      value={stat.value}
+                      label={stat.label}
+                    />
+                  ))}
                 </div>
-                <div className="dashboard-side">
-                  <NewCampaign />
+                <div className="dashboard-row">
+                  <div className="dashboard-main">
+                    <ActiveBatchRenders />
+                  </div>
+                  <div className="dashboard-side">
+                    <NewCampaign />
+                  </div>
                 </div>
+                <FlyerLibrary />
               </div>
-              <FlyerLibrary />
-            </div>
+            </ProtectedRoute>
           } />
           <Route path="/dashboard" element={
-            <div className="gradient-background">
-              <WelcomeBanner />
-              <div className="stats-container">
-                {statsData.map((stat, index) => (
-                  <StatCard 
-                    key={index}
-                    icon={stat.icon}
-                    value={stat.value}
-                    label={stat.label}
-                  />
-                ))}
-              </div>
-              <div className="dashboard-row">
-                <div className="dashboard-main">
-                  <ActiveBatchRenders />
+            <ProtectedRoute>
+              <div className="gradient-background">
+                <WelcomeBanner />
+                <div className="stats-container">
+                  {statsData.map((stat, index) => (
+                    <StatCard 
+                      key={index}
+                      icon={stat.icon}
+                      value={stat.value}
+                      label={stat.label}
+                    />
+                  ))}
                 </div>
-                <div className="dashboard-side">
-                  <NewCampaign />
+                <div className="dashboard-row">
+                  <div className="dashboard-main">
+                    <ActiveBatchRenders />
+                  </div>
+                  <div className="dashboard-side">
+                    <NewCampaign />
+                  </div>
                 </div>
+                <FlyerLibrary />
               </div>
-              <FlyerLibrary />
-            </div>
+            </ProtectedRoute>
           } />
-          <Route path="/create-campaign" element={<CreateCampaign />} />
-          <Route path="/street/:streetName" element={<StreetView />} />
-          <Route path="/batch/:batchId" element={<StreetView />} />
+          <Route path="/create-campaign" element={<ProtectedRoute><CreateCampaign /></ProtectedRoute>} />
+          <Route path="/street/:streetName" element={<ProtectedRoute><StreetView /></ProtectedRoute>} />
+          <Route path="/batch/:batchId" element={<ProtectedRoute><StreetView /></ProtectedRoute>} />
         </Routes>
       </div>
     </div>
