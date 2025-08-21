@@ -30,6 +30,50 @@
   flex-grow: 1;
 }
 
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .campaign-section {
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .campaign-header {
+    padding: 28px 36px;
+    font-size: 28px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .campaign-steps {
+    gap: 28px;
+    padding: 36px;
+    font-size: 50px;
+  }
+
+  .campaign-step {
+    padding-left: 28px;
+  }
+
+  .campaign-step::before {
+    width: 5px;
+    border-radius: 3px;
+  }
+
+  .step-number {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-size: 24px;
+  }
+
+  .start-campaign-btn {
+    padding: 24px 0;
+    font-size: 24px;
+    border-radius: 0 0 12px 12px;
+  }
+}
+
 @media (max-width: 1200px) {
   .campaign-steps {
     gap: 24px;

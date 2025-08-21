@@ -69,8 +69,52 @@ button {
   gap: 16px;
 }
 
-/* Large screens */
-@media (min-width: 1440px) {
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .main-content {
+    margin-left: 280px;
+    padding-top: 80px;
+  }
+
+  body.sidebar-collapsed .main-content {
+    margin-left: 60px;
+  }
+
+  .dashboard-row {
+    margin: 24px 0;
+    gap: 24px;
+    padding: 0 24px;
+  }
+  
+  .dashboard-side {
+    width: 350px;
+    min-width: 350px;
+  }
+  
+  /* Scale up form elements */
+  input {
+    padding: 12px 16px;
+    font-size: 18px;
+    border-radius: 6px;
+  }
+  
+  button {
+    font-size: 16px;
+    padding: 12px 20px;
+    border-radius: 6px;
+  }
+}
+
+/* Large screens (1440px - 1599px) */
+@media (min-width: 1440px) and (max-width: 1599px) {
+  .main-content {
+    margin-left: 240px;
+  }
+
+  body.sidebar-collapsed .main-content {
+    margin-left: 50px;
+  }
+
   .dashboard-row {
     max-width: 1400px;
     margin: 24px auto;

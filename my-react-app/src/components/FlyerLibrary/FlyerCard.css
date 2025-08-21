@@ -116,4 +116,52 @@
 
 .view-street-btn:hover {
   background-color: #1557b0;
+}
+
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .flyer-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .flyer-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .flyer-details {
+    padding: 16px;
+  }
+
+  .flyer-address {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .flyer-actions {
+    gap: 12px;
+    padding: 0 3px;
+  }
+
+  .action-btn {
+    padding: 10px 0;
+    border-radius: 6px;
+    font-size: 16px;
+    min-height: 40px;
+  }
+
+  .street-card-footer {
+    margin-top: 12px;
+  }
+
+  .house-count {
+    font-size: 16px;
+  }
+
+  .view-street-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+  }
 } 

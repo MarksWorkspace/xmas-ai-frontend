@@ -58,6 +58,29 @@
   color: #1b4332;
 }
 
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .topbar {
+    left: 280px;
+    height: 80px;
+    padding: 0 48px 0 24px;
+  }
+
+  .topbar-search {
+    min-width: 300px;
+    max-width: 500px;
+    height: 48px;
+    border-radius: 24px;
+    padding: 0 48px 0 20px;
+    font-size: 18px;
+  }
+
+  .topbar-search-icon {
+    right: calc(100% - 480px);
+    font-size: 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .topbar {
     padding: 0 16px;

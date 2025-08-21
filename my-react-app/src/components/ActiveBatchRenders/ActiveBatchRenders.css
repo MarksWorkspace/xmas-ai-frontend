@@ -9,7 +9,6 @@
 }
 
 .active-batch-renders * {
-  font-size: 13px !important;
   padding: 0 !important;
   margin: 0 !important;
   box-sizing: border-box !important;
@@ -139,6 +138,71 @@
   grid-column: 1 / -1;
 }
 
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .active-batch-renders {
+    padding: 32px;
+    margin-bottom: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .active-batch-renders-container {
+    gap: 24px !important;
+    padding: 24px !important;
+  }
+
+  .batch-render-card {
+    padding: 24px;
+    gap: 24px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .batch-render-card img {
+    width: 140px;
+    height: 140px;
+    border-radius: 10px;
+  }
+
+  .batch-render-card-content h3 {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .batch-render-card-content p {
+    font-size: 22px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .batch-renders-title h2 {
+    font-size: 28px;
+  }
+
+  .icon-batch {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .batch-renders-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .loading-spinner {
+    width: 48px;
+    height: 48px;
+    border-width: 5px;
+  }
+
+  .error-message,
+  .no-jobs-message {
+    font-size: 24px;
+    padding: 24px;
+    border-radius: 10px;
+  }
+}
+
 @media (max-width: 1200px) {
   .batch-renders-list {
     grid-template-columns: repeat(2, 1fr);
@@ -238,8 +302,8 @@
   line-height: 1.2;
 }
 
-/* Large screens */
-@media (min-width: 1440px) {
+/* Large screens (1440px - 1599px) */
+@media (min-width: 1440px) and (max-width: 1599px) {
   .active-batch-renders {
     padding: 24px;
     margin-bottom: 24px;
