@@ -97,17 +97,9 @@ const AppContent = () => {
       </div>
     );
   }
-
   return (
     <div className="app">
       {user && <Sidebar />}
-      {user && (
-        <div className="header">
-          <button onClick={handleLogout} className="logout-button">
-            Logout
-          </button>
-        </div>
-      )}
       <div className={`main-content ${!user ? 'full-width' : ''}`}>
         {user && <TopBar />}
         <Routes>

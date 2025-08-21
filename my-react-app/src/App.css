@@ -43,3 +43,23 @@ input {
 button {
   cursor: pointer;
 }
+
+.dashboard-row {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+  padding: 0 16px;
+}
+
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-side {
+  width: 280px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
