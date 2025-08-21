@@ -49,19 +49,17 @@
   -webkit-user-select: none;
   outline: none;
   min-height: 36px;
+  position: relative;
 }
 
 .nav-item:hover {
-  background-color: #f5f5f5;
-}
-
-.nav-item.active {
   background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
   color: #ffffff;
 }
 
-.nav-item:hover:not(.active) {
-  background: linear-gradient(90deg, #f5f5f5 0%, #eaeaea 100%);
+.nav-item.active {
+  color: #1b4332;
+  font-weight: 500;
 }
 
 .nav-icon {
@@ -83,10 +81,17 @@
   text-overflow: ellipsis;
 }
 
+.nav-item:hover .nav-label,
+.nav-item:hover .nav-icon {
+  opacity: 1;
+  color: #ffffff;
+}
+
 .active .nav-label,
 .active .nav-icon {
   opacity: 1;
-  color: #ffffff;
+  color: #1b4332;
+  font-weight: 500;
 }
 
 .system-menu {
@@ -102,12 +107,13 @@
 }
 
 .logout-section .nav-item {
-  color: #000000;
+  color: #666;
+  transition: all 0.3s ease;
 }
 
 .logout-section .nav-item:hover {
-  background: linear-gradient(90deg, #f5f5f5 0%, #eaeaea 100%);
-  color: #333333;
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
+  color: #ffffff;
 }
 
 @media (max-height: 600px) {
