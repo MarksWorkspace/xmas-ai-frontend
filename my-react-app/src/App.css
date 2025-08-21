@@ -10,10 +10,15 @@
   margin-left: 200px;
   padding-top: 48px;
   overflow-x: hidden;
+  transition: margin-left 0.3s ease;
 }
 
 .main-content.full-width {
   margin-left: 0;
+}
+
+body.sidebar-collapsed .main-content {
+  margin-left: 50px;
 }
 
 /* Reset some basic elements */

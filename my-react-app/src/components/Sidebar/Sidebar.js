@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
@@ -7,6 +7,7 @@ import { RiDashboardLine, RiBuilding2Line, RiImageLine, RiFileList2Line, RiPrice
 const Sidebar = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const handleLogout = () => {
     try {
@@ -19,6 +20,11 @@ const Sidebar = () => {
 
   const handleNavigation = (route) => {
     navigate(route);
+  };
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+    document.body.classList.toggle('sidebar-collapsed');
   };
 
   const mainMenuItems = [
@@ -36,9 +42,16 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="sidebar">
-      <div className="logo-container">
-        <h2>Light Craft</h2>
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="sidebar-header">
+        <h1 className="sidebar-title">Light Craft</h1>
+        <button className="hamburger-button" onClick={toggleSidebar}>
+          <div className="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
       </div>
       
       <nav className="nav-menu">
@@ -81,4 +94,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

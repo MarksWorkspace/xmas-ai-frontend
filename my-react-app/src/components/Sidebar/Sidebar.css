@@ -13,7 +13,104 @@
   user-select: none;
   overflow-y: auto;
   z-index: 1000;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 50px;
+  padding: 12px 8px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 0 4px;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.hamburger-button {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger-icon {
+  width: 20px;
+  height: 14px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.hamburger-icon span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-icon span:first-child {
+  top: 0;
+}
+
+.hamburger-icon span:nth-child(2) {
+  top: 6px;
+}
+
+.hamburger-icon span:last-child {
+  top: 12px;
+}
+
+.sidebar.collapsed .hamburger-icon span:first-child {
+  transform: rotate(45deg);
+  top: 6px;
+}
+
+.sidebar.collapsed .hamburger-icon span:nth-child(2) {
+  opacity: 0;
+}
+
+.sidebar.collapsed .hamburger-icon span:last-child {
+  transform: rotate(-45deg);
+  top: 6px;
+}
+
+/* Hide text when collapsed */
+.sidebar.collapsed .nav-label {
+  display: none;
+}
+
+.sidebar.collapsed .nav-item {
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.sidebar.collapsed .sidebar-title {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar.collapsed .hamburger-button {
+  margin: 0;
 }
 
 .logo-container {
