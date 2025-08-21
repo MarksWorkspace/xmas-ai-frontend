@@ -49,6 +49,25 @@
     padding: 16px 0;
     font-size: 16px;
   }
+
+  .new-campaign-container {
+    padding: 4px !important;
+    font-size: 0.8rem !important;
+    max-width: 180px !important;
+  }
+  .new-campaign-header {
+    font-size: 0.9rem !important;
+    padding: 4px !important;
+  }
+  .new-campaign-step {
+    font-size: 0.8rem !important;
+    padding: 2px !important;
+    margin-bottom: 4px !important;
+  }
+  .new-campaign-action {
+    font-size: 0.8rem !important;
+    padding: 4px 0 !important;
+  }
 }
 
 .campaign-step {

@@ -1,20 +1,76 @@
 .active-batch-renders {
-  background: #fff;
-  border-radius: 8px;
-  padding: 16px;
-  width: 100%;
-  box-sizing: border-box;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  min-height: 200px;
-  margin-bottom: 20px;
+  background: #fff !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
+  width: 100% !important;
+  max-width: 900px !important;
+  margin: 0 auto 12px auto !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  overflow: hidden !important;
+  min-height: 120px !important;
+  font-size: 13px !important;
+}
+
+.active-batch-renders * {
+  font-size: 13px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Container for batch renders */
+.active-batch-renders-container {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px !important;
+  padding: 6px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Card styling */
+.batch-render-card {
+  background: #fff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  padding: 6px !important;
+  width: 100% !important;
+  max-width: 320px !important;
+  box-sizing: border-box !important;
+  gap: 6px !important;
+}
+
+.batch-render-card img {
+  width: 60px !important;
+  height: 60px !important;
+  object-fit: cover !important;
+  border-radius: 6px !important;
+  flex-shrink: 0 !important;
+}
+
+.batch-render-card-content {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.batch-render-card-content h3,
+.batch-render-card-content p {
+  margin: 0 0 2px 0 !important;
+  word-break: break-word !important;
+  font-size: 13px !important;
 }
 
 .batch-renders-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 16px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+  margin-bottom: 6px !important;
 }
 
 .batch-renders-title {
@@ -24,26 +80,26 @@
 }
 
 .batch-renders-title h2 {
-  font-size: 15px;
-  font-weight: 600;
-  color: #111;
-  margin: 0;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #111 !important;
+  margin: 0 !important;
 }
 
 .icon-batch {
-  width: 16px;
-  height: 16px;
+  width: 12px !important;
+  height: 12px !important;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .batch-renders-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  width: 100%;
-  overflow-x: auto;
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px !important;
+  width: 100% !important;
+  overflow-x: unset !important;
 }
 
 /* Loading and error states */
@@ -89,30 +145,73 @@
   }
   
   .active-batch-renders {
-    padding: 12px;
+    padding: 6px;
+  }
+
+  .batch-render-card {
+    max-width: 100%;
+    gap: 6px;
+    padding: 6px;
+  }
+  .batch-render-card img {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .active-batch-renders {
+    padding: 2px !important;
+    font-size: 9px !important;
+    max-width: 500px !important;
+  }
+  .active-batch-renders-container {
+    gap: 4px !important;
+    padding: 2px !important;
+  }
+  .batch-render-card {
+    padding: 2px !important;
+    max-width: 140px !important;
+    gap: 2px !important;
+  }
+  .batch-render-card img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .batch-render-card-content h3,
+  .batch-render-card-content p {
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .batch-renders-list, .active-batch-renders-container {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
   }
 }
 
 @media (max-width: 600px) {
   .batch-renders-list {
     grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
 
 @media (max-width: 768px) {
   .active-batch-renders {
-    margin-bottom: 16px;
-    padding: 12px;
+    margin-bottom: 8px;
+    padding: 6px;
   }
 
   .batch-renders-header {
-    margin-bottom: 12px;
+    margin-bottom: 6px;
   }
 }
 
 @media (max-width: 480px) {
   .active-batch-renders {
-    margin-bottom: 12px;
-    padding: 8px;
+    margin-bottom: 6px;
+    padding: 4px;
   }
 }

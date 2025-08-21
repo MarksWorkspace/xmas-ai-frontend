@@ -1,13 +1,21 @@
 .welcome-section {
-  margin-bottom: clamp(16px, 2vw, 24px);
-  border-radius: clamp(8px, 1vw, 12px);
-  padding: clamp(16px, 2vw, 24px);
+  margin-bottom: 16px;
+  border-radius: 8px;
+  padding: 12px;
   width: 100%;
 }
 
 .welcome-banner {
   display: flex;
+  gap: 12px;
+}
+
+.welcome-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   gap: 16px;
+  margin-bottom: 24px;
 }
 
 .welcome-content {
@@ -16,30 +24,40 @@
 }
 
 .welcome-content h1 {
-  font-weight: 700;
+  font-weight: 600;
   color: #111;
   margin-bottom: 4px;
-  font-size: 40px;
+  font-size: 20px;
 }
 
 .welcome-content p {
   color: #666;
   opacity: 0.9;
   max-width: 600px;
-  font-size: 16px;
+  font-size: 13px;
 }
-
-
 
 .stats-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(8px, 1vw, 16px);
-  margin-bottom: 24px;
-  padding: 0 24px;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 0 12px;
 }
 
 @media (max-width: 1200px) {
+  .welcome-banner {
+    font-size: 1.2rem !important;
+    padding: 8px !important;
+  }
+  .welcome-banner h1 {
+    font-size: 1.2rem !important;
+    margin-bottom: 4px !important;
+  }
+  .welcome-banner p {
+    font-size: 0.8rem !important;
+    margin-bottom: 4px !important;
+  }
   .stats-container {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
@@ -56,4 +74,4 @@
     gap: 12px;
     padding: 0 16px;
   }
-} 
+}
