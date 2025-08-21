@@ -179,3 +179,57 @@
     gap: 6px;
   }
 }
+
+/* Large screens */
+@media (min-width: 1440px) {
+  .flyer-library {
+    max-width: 1400px;
+    margin: 0 auto 24px;
+    padding: 24px;
+  }
+
+  .flyer-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+}
+
+/* Default laptop view remains unchanged */
+
+/* Small laptop */
+@media (max-width: 1200px) {
+  .flyer-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .flyer-library {
+    padding: 12px;
+    margin: 0 12px 12px;
+  }
+
+  .flyer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .flyer-library {
+    padding: 10px;
+    margin: 0 8px 8px;
+  }
+
+  .flyer-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .flyer-library-title h2 {
+    font-size: 18px;
+  }
+}

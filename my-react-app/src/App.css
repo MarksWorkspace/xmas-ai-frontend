@@ -63,3 +63,45 @@ button {
   flex-direction: column;
   gap: 16px;
 }
+
+/* Large screens */
+@media (min-width: 1440px) {
+  .dashboard-row {
+    max-width: 1400px;
+    margin: 24px auto;
+    gap: 24px;
+    padding: 0 32px;
+  }
+  
+  .dashboard-side {
+    width: 320px;
+    min-width: 320px;
+  }
+}
+
+/* Small laptop and tablet */
+@media (max-width: 1024px) {
+  .dashboard-row {
+    gap: 12px;
+    padding: 0 12px;
+  }
+  
+  .dashboard-side {
+    width: 240px;
+    min-width: 240px;
+  }
+}
+
+/* Mobile and small tablets */
+@media (max-width: 768px) {
+  .dashboard-row {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 12px;
+  }
+  
+  .dashboard-side {
+    width: 100%;
+    min-width: 100%;
+  }
+}

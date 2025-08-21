@@ -237,3 +237,56 @@
   color: #34a853;
   line-height: 1.2;
 }
+
+/* Large screens */
+@media (min-width: 1440px) {
+  .active-batch-renders {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .batch-renders-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  
+  .batch-renders-title h2 {
+    font-size: 16px;
+  }
+}
+
+/* Small laptop */
+@media (max-width: 1200px) {
+  .batch-renders-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .active-batch-renders {
+    padding: 14px;
+  }
+
+  .batch-renders-list {
+    gap: 12px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .active-batch-renders {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .batch-renders-list {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .batch-renders-title h2 {
+    font-size: 14px;
+  }
+}
