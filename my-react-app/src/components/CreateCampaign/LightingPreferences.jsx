@@ -50,7 +50,7 @@ const LightingPreferences = ({ preferences, onToggle }) => {
       
       <Stack spacing={3}>
         <Paper sx={{ p: 2 }}>
-          <Typography variant="subtitle1" color="primary" gutterBottom>Scene Settings</Typography>
+          <Typography variant="subtitle1" className="section-title" gutterBottom>Scene Settings</Typography>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
@@ -141,7 +141,7 @@ const LightingPreferences = ({ preferences, onToggle }) => {
         </Paper>
 
         <Paper sx={{ p: 2 }}>
-          <Typography variant="subtitle1" color="primary" gutterBottom>General Lighting</Typography>
+          <Typography variant="subtitle1" className="section-title" gutterBottom>General Lighting</Typography>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
@@ -233,7 +233,7 @@ const LightingPreferences = ({ preferences, onToggle }) => {
 
         <Paper sx={{ p: 2 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-            <Typography variant="subtitle1" color="primary">Roof Lights</Typography>
+            <Typography variant="subtitle1" className="section-title">Roof Lights</Typography>
             <Switch
               checked={preferences.roof_lights.enabled}
               onChange={(e) => handleToggle('roof_lights', e.target.checked)}
@@ -304,7 +304,7 @@ const LightingPreferences = ({ preferences, onToggle }) => {
 
         <Paper sx={{ p: 2 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-            <Typography variant="subtitle1" color="primary">Window Lights</Typography>
+            <Typography variant="subtitle1" className="section-title">Window Lights</Typography>
             <Switch
               checked={preferences.window_lights.enabled}
               onChange={(e) => handleToggle('window_lights', e.target.checked)}
@@ -370,7 +370,7 @@ const LightingPreferences = ({ preferences, onToggle }) => {
         </Paper>
 
         <Paper sx={{ p: 2 }}>
-          <Typography variant="subtitle1" color="primary" gutterBottom>Image Settings</Typography>
+          <Typography variant="subtitle1" className="section-title" gutterBottom>Image Settings</Typography>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField

@@ -387,17 +387,12 @@ const CreateCampaign = () => {
       
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Typography variant="subtitle1" color="primary" sx={{ mr: 2, minWidth: 'fit-content' }}>Addresses</Typography>
+          <Typography variant="subtitle1" className="section-title" sx={{ mr: 2, minWidth: 'fit-content' }}>Addresses</Typography>
           <Button
             variant="contained"
-            color="primary"
             onClick={addAddressField}
             fullWidth
-            sx={{ 
-              textTransform: 'none',
-              height: '40px',
-              fontSize: '14px'
-            }}
+            className="add-address-button"
           >
             + ADD ADDRESS
           </Button>
@@ -485,7 +480,6 @@ const CreateCampaign = () => {
       <Button
         type="submit"
         variant="contained"
-        color="primary"
         fullWidth
         disabled={
           isLoading || 
@@ -495,12 +489,7 @@ const CreateCampaign = () => {
           !formData.city.trim() || 
           !formData.state
         }
-        sx={{ 
-          mt: 3, 
-          textTransform: 'none',
-          height: '48px',
-          fontSize: '16px'
-        }}
+        className="create-campaign-button"
       >
         {isLoading ? 'Creating Campaign...' : 
          !isBackendAvailable ? 'Server Unavailable' : 
@@ -533,6 +522,7 @@ const CreateCampaign = () => {
         <Button
           startIcon={<FaMapMarkerAlt />}
           variant={activeTab === 'map' ? 'contained' : 'outlined'}
+          className={activeTab === 'map' ? 'tab-button-contained' : 'tab-button-outlined'}
           onClick={() => setActiveTab('map')}
         >
           Map Link
@@ -540,6 +530,7 @@ const CreateCampaign = () => {
         <Button
           startIcon={<FaMapMarkerAlt />}
           variant={activeTab === 'address' ? 'contained' : 'outlined'}
+          className={activeTab === 'address' ? 'tab-button-contained' : 'tab-button-outlined'}
           onClick={() => setActiveTab('address')}
         >
           Enter Address
@@ -547,6 +538,7 @@ const CreateCampaign = () => {
         <Button
           startIcon={<IoCloudUploadOutline />}
           variant={activeTab === 'upload' ? 'contained' : 'outlined'}
+          className={activeTab === 'upload' ? 'tab-button-contained' : 'tab-button-outlined'}
           onClick={() => setActiveTab('upload')}
         >
           Upload CSV

@@ -185,13 +185,13 @@
 
 .addresses-header h3 {
   margin: 0;
-  color: #1a73e8;
+  color: #1b4332;
   font-size: 16px;
   font-weight: 600;
 }
 
 .add-address-btn {
-  background: #1a73e8;
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -206,7 +206,7 @@
 }
 
 .add-address-btn:hover {
-  background: #1557b0;
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%);
 }
 
 .address-field-container {
@@ -366,7 +366,7 @@
 .lighting-preferences select:hover,
 .lighting-preferences input[type="text"]:hover,
 .form-group input[type="text"]:hover {
-  border-color: #1a73e8;
+  border-color: #1b4332;
   background-color: #f8f9fa;
 }
 
@@ -390,10 +390,10 @@
 .preferences-section h3 {
   font-size: 15px;
   font-weight: 600;
-  color: #1a73e8;
+  color: #1b4332;
   margin: 0 0 16px 0;
   padding-bottom: 12px;
-  border-bottom: 2px solid #e8f0fe;
+  border-bottom: 2px solid #e8f4f0;
 }
 
 /* Style the sections */
@@ -403,7 +403,7 @@
   padding: 20px;
   margin-bottom: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e8f0fe;
+  border: 1px solid #e8f4f0;
 }
 
 /* Style checkboxes */
@@ -419,7 +419,7 @@
 .checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  border: 2px solid #1a73e8;
+  border: 2px solid #1b4332;
   border-radius: 4px;
   cursor: pointer;
   margin: 0;
@@ -511,4 +511,60 @@ input[list]::-webkit-calendar-picker-indicator {
 .submit-btn:disabled {
   background-color: #dadce0;
   cursor: not-allowed;
+}
+
+/* Material-UI Button Overrides */
+.tab-button-contained {
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.tab-button-contained:hover {
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%) !important;
+}
+
+.tab-button-outlined {
+  border: 1px solid #58ad8a !important;
+  color: #1b4332 !important;
+  background: transparent !important;
+}
+
+.tab-button-outlined:hover {
+  background: rgba(27, 67, 50, 0.05) !important;
+  border-color: #1b4332 !important;
+}
+
+.add-address-button {
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%) !important;
+  color: white !important;
+  text-transform: none !important;
+  height: 40px !important;
+  font-size: 14px !important;
+}
+
+.add-address-button:hover {
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%) !important;
+}
+
+.create-campaign-button {
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%) !important;
+  color: white !important;
+  text-transform: none !important;
+  height: 48px !important;
+  font-size: 16px !important;
+  margin-top: 24px !important;
+}
+
+.create-campaign-button:hover {
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%) !important;
+}
+
+.create-campaign-button:disabled {
+  background: #dadce0 !important;
+  color: #666 !important;
+}
+
+.section-title {
+  color: #1b4332 !important;
 }
