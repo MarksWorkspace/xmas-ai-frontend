@@ -2,10 +2,9 @@
   background: white;
   border-radius: 8px;
   padding: 12px;
-  margin: 16px 0;
+  margin: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  width: calc(100% - 32px);
 }
 
 .flyer-library-header {
@@ -131,7 +130,7 @@
 }
 
 .view-street-btn {
-  background: #1a73e8;
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
   color: white;
   border: none;
   border-radius: 4px;
@@ -142,13 +141,13 @@
 }
 
 .view-street-btn:hover {
-  background: #1557b0;
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%);
 }
 
 /* Large monitor screens (1600px+) */
 @media (min-width: 1600px) {
   .flyer-library {
-    margin: 0 0 32px 0;
+    margin: 24px;
     padding: 24px;
     border-radius: 10px;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
@@ -232,8 +231,7 @@
 
 @media (max-width: 900px) {
   .flyer-library {
-    margin: 12px 0;
-    width: calc(100% - 24px);
+    margin: 12px;
   }
   
   .flyer-grid {
@@ -244,9 +242,8 @@
 
 @media (max-width: 600px) {
   .flyer-library {
-    margin: 8px 0;
+    margin: 8px;
     padding: 8px;
-    width: calc(100% - 16px);
   }
   
   .flyer-grid {
@@ -258,7 +255,7 @@
 /* Large screens (1440px - 1599px) */
 @media (min-width: 1440px) and (max-width: 1599px) {
   .flyer-library {
-    margin: 0 0 24px 0;
+    margin: 24px 32px;
     padding: 24px;
   }
 
@@ -282,7 +279,7 @@
 @media (max-width: 1024px) {
   .flyer-library {
     padding: 12px;
-    margin: 0 12px 12px;
+    margin: 12px;
   }
 
   .flyer-grid {
@@ -295,7 +292,7 @@
 @media (max-width: 640px) {
   .flyer-library {
     padding: 10px;
-    margin: 0 8px 8px;
+    margin: 8px;
   }
 
   .flyer-grid {
