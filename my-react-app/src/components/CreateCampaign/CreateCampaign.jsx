@@ -519,7 +519,7 @@ const CreateCampaign = () => {
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 4, p: 3 }}>
       <Stack direction="row" alignItems="center" spacing={2} mb={2}>
-        <FaHome size={24} color="#1976d2" />
+        <FaHome size={24} color="#f7f9fbff" />
         <Typography variant="h4" component="h1">
           Neighborhood / Address Selection
         </Typography>
