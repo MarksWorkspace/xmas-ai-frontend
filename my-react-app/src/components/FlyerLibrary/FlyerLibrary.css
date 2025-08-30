@@ -64,6 +64,14 @@
   padding: 0;
 }
 
+/* Laptop screens (1024px - 1440px) */
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .flyer-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
+    justify-content: start;
+  }
+}
+
 .flyer-card {
   background: #fff;
   border: 1px solid #eaeaea;
