@@ -7,7 +7,7 @@ const CurrentSubscription = ({ subscription, isActive, onCancel }) => {
       <div className="current-subscription no-subscription">
         <div className="subscription-status">
           <h2>No Active Subscription</h2>
-          <p>Subscribe to unlock unlimited Christmas lights image generation</p>
+          <p>Subscribe to generate 300 Christmas lights images</p>
         </div>
       </div>
     );
@@ -63,7 +63,7 @@ const CurrentSubscription = ({ subscription, isActive, onCancel }) => {
         <div className="subscription-info">
           <div className="info-item">
             <label>Plan</label>
-            <span>Yearly Unlimited</span>
+            <span>Yearly 300 Images</span>
           </div>
           
           <div className="info-item">
@@ -114,7 +114,7 @@ const CurrentSubscription = ({ subscription, isActive, onCancel }) => {
             <div className="expired-notice">
               <p>
                 Your subscription expired on {formatDate(subscription.current_period_end)}.
-                Subscribe again to continue using unlimited features.
+                Subscribe again to continue generating images.
               </p>
             </div>
           )}
@@ -127,7 +127,7 @@ const CurrentSubscription = ({ subscription, isActive, onCancel }) => {
           <div className="benefits-list">
             <div className="benefit-item">
               <span className="benefit-icon">🎄</span>
-              <span>Unlimited Christmas lights images</span>
+              <span>300 Christmas lights images</span>
             </div>
             <div className="benefit-item">
               <span className="benefit-icon">⚡</span>

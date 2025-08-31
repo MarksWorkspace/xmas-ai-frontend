@@ -119,7 +119,7 @@ const Billing = () => {
     <div className="billing-container">
       <div className="billing-header">
         <h1>Billing & Subscription</h1>
-        <p>Unlock unlimited Christmas lights image generation with our yearly subscription</p>
+        <p>Generate 300 Christmas lights images with our yearly subscription</p>
       </div>
 
       {error && (
@@ -159,12 +159,12 @@ const Billing = () => {
 
       {/* Features Section */}
       <div className="billing-features">
-        <h2>Why Choose Yearly Unlimited?</h2>
+        <h2>Why Choose Our Yearly Plan?</h2>
         <div className="features-grid">
           <div className="feature-item">
             <div className="feature-icon">🎄</div>
-            <h3>Unlimited Generation</h3>
-            <p>Generate as many Christmas lights images as you need throughout the year</p>
+            <h3>300 Images Included</h3>
+            <p>Generate up to 300 Christmas lights images throughout the year</p>
           </div>
           <div className="feature-item">
             <div className="feature-icon">🏠</div>
@@ -199,7 +199,7 @@ const Billing = () => {
         <h2>Frequently Asked Questions</h2>
         <div className="faq-item">
           <h3>How does billing work?</h3>
-          <p>You pay once per year for unlimited access. Your subscription automatically renews unless cancelled.</p>
+          <p>You pay once per year for 300 image generations. Your subscription automatically renews unless cancelled.</p>
         </div>
         <div className="faq-item">
           <h3>Can I cancel anytime?</h3>
