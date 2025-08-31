@@ -16,6 +16,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import StreetView from './components/StreetView/StreetView';
 import ProtectedRoute from './components/ProtectedRoute';
+import { Billing, PaymentSuccess } from './components/Billing';
 
 const AppContent = () => {
   const navigate = useNavigate();
@@ -164,6 +165,8 @@ const AppContent = () => {
             </ProtectedRoute>
           } />
           <Route path="/create-campaign" element={<ProtectedRoute><CreateCampaign /></ProtectedRoute>} />
+          <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
+          <Route path="/billing/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
           <Route path="/street/:streetName" element={<ProtectedRoute><StreetView /></ProtectedRoute>} />
           <Route path="/batch/:batchId" element={<ProtectedRoute><StreetView /></ProtectedRoute>} />
         </Routes>

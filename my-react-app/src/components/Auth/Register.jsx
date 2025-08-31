@@ -7,13 +7,24 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [companyName, setCompanyName] = useState('');
   const { register, loading, error } = useAuth();
   const navigate = useNavigate();
+
+  // Check if all fields are filled out
+  const isFormValid = () => {
+    return username.trim() && 
+           email.trim() && 
+           phone.trim() && 
+           companyName.trim() && 
+           password.trim();
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(username, email, password);
+      await register(username, email, password, phone, companyName);
       // After successful registration, redirect to login
       navigate('/login');
     } catch (err) {
@@ -37,7 +48,7 @@ const Register = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-
+              autoComplete="username"
             />
           </div>
           <div className="form-group">
@@ -48,7 +59,31 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-
+              autoComplete="email"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="phone">Phone Number</label>
+            <input
+              type="tel"
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="e.g., +1 (555) 123-4567"
+              required
+              autoComplete="tel"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="companyName">Company Name</label>
+            <input
+              type="text"
+              id="companyName"
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder="e.g., ABC Christmas Decorating"
+              required
+              autoComplete="organization"
             />
           </div>
           <div className="form-group">
@@ -59,11 +94,12 @@ const Register = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="new-password"
             />
           </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
-          </button>
+                     <button type="submit" disabled={loading || !isFormValid()}>
+             {loading ? 'Registering...' : 'Register'}
+           </button>
         </form>
         <p className="auth-switch">
           Already have an account?{' '}

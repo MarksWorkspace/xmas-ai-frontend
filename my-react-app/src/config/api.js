@@ -8,6 +8,12 @@ export const API_ROUTES = {
   jobAddresses: (jobId) => `${API_BASE_URL}/jobs/${jobId}/addresses/`,
   jobAddressImages: (jobId, addressId) => `${API_BASE_URL}/jobs/${jobId}/addresses/${addressId}/images`,
   jobDownloadAll: (jobId) => `${API_BASE_URL}/jobs/${jobId}/download-all`,
+  // Billing routes
+  subscriptionPlans: `${API_BASE_URL}/billing/subscription-plans`,
+  paymentLink: `${API_BASE_URL}/billing/payment-link`,
+  createPaymentLink: `${API_BASE_URL}/billing/create-payment-link`,
+  mySubscription: `${API_BASE_URL}/billing/my-subscription`,
+  cancelSubscription: `${API_BASE_URL}/billing/cancel-subscription`,
 };
 
 export const makeRequest = async (url, method = 'GET', data = null, isFormEncoded = false) => {
