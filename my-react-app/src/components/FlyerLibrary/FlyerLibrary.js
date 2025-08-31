@@ -47,13 +47,10 @@ const FlyerLibrary = () => {
     <div className="flyer-library">
       <div className="flyer-library-header">
         <div className="flyer-library-title">
-          <i className="icon-flyer"></i>
-          <h2>Flyer Library</h2>
+          <span className="icon-completed">✅</span>
+          <h2>Completed Jobs</h2>
         </div>
-        <div className="branding-notice">
-          <span>Your branding is live on all flyers</span>
-          <button className="edit-branding-btn">Edit Branding</button>
-        </div>
+        
       </div>
       <div className="flyer-grid">
         {Object.entries(completedFlyers)

@@ -66,7 +66,7 @@ const AppContent = () => {
     {
       icon: "neighborhoods",
       value: calculateNeighborhoodCount().toString(),
-      label: "Neighborhoods Targeted"
+      label: "Completed Jobs"
     },
     {
       icon: "jobs",

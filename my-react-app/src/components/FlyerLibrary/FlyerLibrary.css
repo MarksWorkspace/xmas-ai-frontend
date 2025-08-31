@@ -27,11 +27,10 @@
   margin: 0;
 }
 
-.icon-flyer {
-  width: 20px;
-  height: 20px;
-  background-color: #e6e6e6;
-  border-radius: 6px;
+.icon-completed {
+  font-size: 20px;
+  display: inline-block;
+  margin-right: 2px;
 }
 
 .branding-notice {
@@ -177,10 +176,8 @@
     font-size: 28px;
   }
 
-  .icon-flyer {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
+  .icon-completed {
+    font-size: 28px;
   }
 
   .branding-notice {
