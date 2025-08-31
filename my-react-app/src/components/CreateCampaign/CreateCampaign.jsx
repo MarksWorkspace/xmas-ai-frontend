@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './CreateCampaign.css';
 import { FaHome, FaMapMarkerAlt } from 'react-icons/fa';
-import { IoCloudUploadOutline } from 'react-icons/io5';
+
 import { 
   TextField, 
   Button, 
@@ -226,7 +226,6 @@ FormInput.propTypes = {
 
 // Main Component
 const CreateCampaign = () => {
-  const [activeTab, setActiveTab] = useState('address');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({
@@ -510,7 +509,7 @@ const CreateCampaign = () => {
   );
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 4, p: 3 }}>
+    <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4, p: 3 }}>
       <Stack direction="row" alignItems="center" spacing={2} mb={2}>
         <FaHome size={24} color="#f7f9fbff" />
         <Typography variant="h4" component="h1">
@@ -518,36 +517,11 @@ const CreateCampaign = () => {
         </Typography>
       </Stack>
       
-      <Typography variant="subtitle1" color="text.secondary" mb={4}>
-        Search, map, or upload addresses to generate marketing flyers
+      <Typography variant="subtitle1" color="text.secondary" mb={4} sx={{ ml: '40px' }}>
+        Enter street names to generate marketing flyers
       </Typography>
 
-      <Stack direction="row" spacing={2} mb={4}>
-        <Button
-          startIcon={<FaMapMarkerAlt />}
-          variant={activeTab === 'map' ? 'contained' : 'outlined'}
-          className={activeTab === 'map' ? 'tab-button-contained' : 'tab-button-outlined'}
-          onClick={() => setActiveTab('map')}
-        >
-          Map Link
-        </Button>
-        <Button
-          startIcon={<FaMapMarkerAlt />}
-          variant={activeTab === 'address' ? 'contained' : 'outlined'}
-          className={activeTab === 'address' ? 'tab-button-contained' : 'tab-button-outlined'}
-          onClick={() => setActiveTab('address')}
-        >
-          Enter Address
-        </Button>
-        <Button
-          startIcon={<IoCloudUploadOutline />}
-          variant={activeTab === 'upload' ? 'contained' : 'outlined'}
-          className={activeTab === 'upload' ? 'tab-button-contained' : 'tab-button-outlined'}
-          onClick={() => setActiveTab('upload')}
-        >
-          Upload CSV
-        </Button>
-      </Stack>
+
 
       {renderAddressForm()}
     </Box>
