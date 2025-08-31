@@ -387,16 +387,20 @@ const CreateCampaign = () => {
       
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Typography variant="subtitle1" className="section-title" sx={{ mr: 2, minWidth: 'fit-content' }}>Addresses</Typography>
+          <Typography variant="subtitle1" className="section-title" sx={{ mr: 2, minWidth: 'fit-content' }}>Streets</Typography>
           <Button
             variant="contained"
             onClick={addAddressField}
             fullWidth
             className="add-address-button"
           >
-            + ADD ADDRESS
+            + ADD STREET
           </Button>
         </Box>
+        
+        <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary', fontStyle: 'italic' }}>
+          Enter street names only (e.g., "Main Street"). Do not include house numbers.
+        </Typography>
         
         <Stack spacing={2}>
           {formData.addresses.map((address, index) => (
@@ -407,7 +411,7 @@ const CreateCampaign = () => {
                 name="address"
                 value={address}
                 onChange={(e) => handleInputChange(e, index)}
-                placeholder="Enter street address"
+                placeholder="Enter street name (e.g., Main Street)"
                 required
                 variant="outlined"
                 size="medium"
