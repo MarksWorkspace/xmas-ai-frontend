@@ -46,6 +46,21 @@
   line-height: 1.2;
 }
 
+.completion-date {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.completion-date::before {
+  content: "📅";
+  font-size: 12px;
+}
+
 .flyer-actions {
   display: flex;
   gap: 10px;
@@ -137,6 +152,15 @@
   .flyer-address {
     font-size: 20px;
     margin-bottom: 12px;
+  }
+
+  .completion-date {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  .completion-date::before {
+    font-size: 14px;
   }
 
   .flyer-actions {

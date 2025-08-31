@@ -80,12 +80,14 @@ export const JobProvider = ({ children }) => {
           newState[job.id] = {
             title: job.description || 'Untitled Campaign',
             createdAt: job.created_at,
+            completedAt: job.updated_at || new Date().toISOString(), // Use updated_at or current time as completion date
             streets: flyersByStreet
           };
         } else {
           // Update existing job's flyers
           newState[job.id] = {
             ...newState[job.id],
+            completedAt: job.updated_at || new Date().toISOString(), // Update completion date
             streets: flyersByStreet
           };
         }

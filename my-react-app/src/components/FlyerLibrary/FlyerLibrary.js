@@ -56,7 +56,14 @@ const FlyerLibrary = () => {
         </div>
       </div>
       <div className="flyer-grid">
-        {Object.entries(completedFlyers).map(([jobId, jobData]) => {
+        {Object.entries(completedFlyers)
+          .sort(([, a], [, b]) => {
+            // Sort by completion date, newest first
+            const dateA = new Date(a.completedAt || a.createdAt || 0);
+            const dateB = new Date(b.completedAt || b.createdAt || 0);
+            return dateB - dateA;
+          })
+          .map(([jobId, jobData]) => {
           // Combine all flyers from all streets in this batch
           const allStreets = Object.keys(jobData.streets);
           const totalHouses = Object.values(jobData.streets).reduce((sum, flyers) => sum + flyers.length, 0);
@@ -70,6 +77,15 @@ const FlyerLibrary = () => {
               <div className="flyer-details">
                 <h3 className="flyer-title">{jobData.title}</h3>
                 <p className="flyer-subtitle">{allStreets.join(' + ')}</p>
+                {jobData.completedAt && (
+                  <p className="completion-date">
+                    Completed: {new Date(jobData.completedAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </p>
+                )}
                 <div className="street-card-footer">
                   <p className="house-count">{totalHouses} houses</p>
                   <button 
