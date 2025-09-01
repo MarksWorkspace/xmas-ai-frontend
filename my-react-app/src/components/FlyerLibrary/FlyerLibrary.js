@@ -8,7 +8,7 @@ import AuthImage from '../common/AuthImage';
 
 const FlyerLibrary = () => {
   const navigate = useNavigate();
-  const { completedFlyers } = useJobs();
+  const { completedFlyers, sortedJobIds } = useJobs();
   
   const handleShare = async (flyerId) => {
     console.log('Share flyer:', flyerId);
@@ -53,14 +53,8 @@ const FlyerLibrary = () => {
         
       </div>
       <div className="flyer-grid">
-        {Object.entries(completedFlyers)
-          .sort(([, a], [, b]) => {
-            // Sort by completion date, newest first
-            const dateA = new Date(a.completedAt || a.createdAt || 0);
-            const dateB = new Date(b.completedAt || b.createdAt || 0);
-            return dateB - dateA;
-          })
-          .map(([jobId, jobData]) => {
+        {sortedJobIds.map(jobId => {
+          const jobData = completedFlyers[jobId];
           // Combine all flyers from all streets in this batch
           const allStreets = Object.keys(jobData.streets);
           const totalHouses = Object.values(jobData.streets).reduce((sum, flyers) => sum + flyers.length, 0);

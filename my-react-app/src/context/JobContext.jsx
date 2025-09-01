@@ -7,6 +7,7 @@ const JobContext = createContext();
 export const JobProvider = ({ children }) => {
   const [activeJobs, setActiveJobs] = useState([]);
   const [completedFlyers, setCompletedFlyers] = useState({});  // Organized by jobId -> street
+  const [sortedJobIds, setSortedJobIds] = useState([]);  // Maintain stable sort order
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useAuth();
@@ -74,25 +75,36 @@ export const JobProvider = ({ children }) => {
 
       setCompletedFlyers(prev => {
         const newState = { ...prev };
+        const completionDate = job.updated_at || new Date().toISOString();
         
         // Create or update the job entry
         if (!newState[job.id]) {
           newState[job.id] = {
             title: job.description || 'Untitled Campaign',
             createdAt: job.created_at,
-            completedAt: job.updated_at || new Date().toISOString(), // Use updated_at or current time as completion date
+            completedAt: completionDate,
             streets: flyersByStreet
           };
         } else {
           // Update existing job's flyers
           newState[job.id] = {
             ...newState[job.id],
-            completedAt: job.updated_at || new Date().toISOString(), // Update completion date
+            completedAt: completionDate,
             streets: flyersByStreet
           };
         }
         
         return newState;
+      });
+
+      // Update sorted job IDs
+      setSortedJobIds(prev => {
+        const allIds = new Set([...prev, job.id]);
+        return Array.from(allIds).sort((a, b) => {
+          const dateA = new Date(completedFlyers[a]?.completedAt || completedFlyers[a]?.createdAt || 0);
+          const dateB = new Date(completedFlyers[b]?.completedAt || completedFlyers[b]?.createdAt || 0);
+          return dateB - dateA;
+        });
       });
     } catch (error) {
       console.error('Error processing completed job:', error);
@@ -228,6 +240,7 @@ export const JobProvider = ({ children }) => {
         };
       }),
       completedFlyers,
+      sortedJobIds,
       isLoading,
       error,
       fetchJobs,
