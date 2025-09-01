@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
-import { RiDashboardLine, RiAddLine, RiWalletLine, RiLogoutBoxRLine } from 'react-icons/ri';
+import { RiDashboardLine, RiAddLine, RiWalletLine, RiLogoutBoxRLine, RiCustomerService2Line } from 'react-icons/ri';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -33,7 +33,8 @@ const Sidebar = () => {
   ];
 
   const systemMenuItems = [
-    { icon: <RiWalletLine size={20} />, label: "Billing", route: "/billing" }
+    { icon: <RiWalletLine size={20} />, label: "Billing", route: "/billing" },
+    { icon: <RiCustomerService2Line size={20} />, label: "Contact Us", route: "/contact" }
   ];
 
   return (
