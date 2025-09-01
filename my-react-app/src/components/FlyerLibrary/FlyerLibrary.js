@@ -77,6 +77,8 @@ const FlyerLibrary = () => {
       <div className="flyer-grid">
         {sortedJobIds.map(jobId => {
           const jobData = completedFlyers[jobId];
+          if (!jobData || !jobData.streets) return null;
+          
           // Combine all flyers from all streets in this batch
           const allStreets = Object.keys(jobData.streets);
           const totalHouses = Object.values(jobData.streets).reduce((sum, flyers) => sum + flyers.length, 0);

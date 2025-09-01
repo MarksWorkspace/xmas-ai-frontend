@@ -7,7 +7,7 @@ import { JobProvider, useJobs } from './context/JobContext';
 import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
-import NewNeighborhoodButton from './components/NewNeighborhoodButton/NewNeighborhoodButton';
+
 import ActiveBatchRenders from './components/ActiveBatchRenders/ActiveBatchRenders';
 import NewCampaign from './components/NewCampaign/NewCampaign';
 import StatCard from './components/StatCard/StatCard';
@@ -136,7 +136,6 @@ const AppContent = () => {
               <div className="gradient-background">
                 <div className="welcome-wrapper">
                   <WelcomeBanner />
-                  <NewNeighborhoodButton />
                 </div>
                 <div className="stats-container">
                   {statsData.map((stat, index) => (
@@ -165,7 +164,6 @@ const AppContent = () => {
               <div className="gradient-background">
                 <div className="welcome-wrapper">
                   <WelcomeBanner />
-                  <NewNeighborhoodButton />
                 </div>
                 <div className="stats-container">
                   {statsData.map((stat, index) => (
