@@ -233,7 +233,7 @@ export const JobProvider = ({ children }) => {
           id: job.id,
           title: campaignName,
           streets: uniqueStreets,
-          startTime: job.created_at ? new Date(job.created_at).toISOString() : null,
+          startTime: job.created_at || null,
           progress: Math.round((job.completed_addresses / (job.total_addresses || 1)) * 100),
           status: job.status || 'pending',
           thumbnail: job.thumbnail || 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=200&h=150'

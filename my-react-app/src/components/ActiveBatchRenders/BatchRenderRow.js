@@ -5,11 +5,20 @@ import { useJobs } from '../../context/JobContext';
 const BatchRenderRow = ({ id, title, streets = [], startTime, status, progress, thumbnail }) => {
   const { deleteJob } = useJobs();
 
-  // Format the date to be more readable
+  // Format the date to be more readable and in local time
   const formatDate = (dateString) => {
     if (!dateString) return 'Starting soon';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    
+    // Parse the UTC date string and explicitly handle timezone conversion
+    const utcDate = new Date(dateString);
+    
+    // Get user's timezone offset in minutes
+    const timezoneOffset = utcDate.getTimezoneOffset();
+    
+    // Create a new date adjusted for the local timezone
+    const localDate = new Date(utcDate.getTime() - (timezoneOffset * 60000));
+    
+    return localDate.toLocaleString('en-US', {
       month: 'short',
       day: 'numeric',
       hour: 'numeric',
