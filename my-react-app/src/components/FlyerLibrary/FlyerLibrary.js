@@ -89,7 +89,7 @@ const FlyerLibrary = () => {
               <div className="flyer-image">
                 <AuthImage src={firstImage} alt={`Houses from ${jobData.title}`} />
               </div>
-              <div className="flyer-details">
+                              <div className="flyer-details">
                 <h3 className="flyer-title">{jobData.title}</h3>
                 <p className="flyer-subtitle">{allStreets.join(' + ')}</p>
                 {jobData.completedAt && (
@@ -97,8 +97,8 @@ const FlyerLibrary = () => {
                     Completed: {formatDate(jobData.completedAt)}
                   </p>
                 )}
+                <p className="house-count">{totalHouses} houses</p>
                 <div className="street-card-footer">
-                  <p className="house-count">{totalHouses} houses</p>
                   <button 
                     className="view-street-btn"
                     onClick={() => {
