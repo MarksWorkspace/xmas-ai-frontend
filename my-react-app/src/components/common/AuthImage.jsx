@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import NoImage from './NoImage/NoImage';
 
 const AuthImage = ({ src, alt, className }) => {
   const [imageSrc, setImageSrc] = useState('');
@@ -33,10 +34,14 @@ const AuthImage = ({ src, alt, className }) => {
     };
   }, [src]);
 
-  return imageSrc ? (
-    <img src={imageSrc} alt={alt} className={className} />
-  ) : (
-    <div className={`${className} image-placeholder`} />
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      {imageSrc ? (
+        <img src={imageSrc} alt={alt} className={className} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      ) : (
+        <NoImage />
+      )}
+    </div>
   );
 };
 
