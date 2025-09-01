@@ -1,4 +1,4 @@
-.active-batch-renders {
+.jobs-in-progress {
   background: #fff;
   border-radius: 6px;
   padding: 6px;
@@ -8,14 +8,14 @@
   border: 1px solid #eaeaea;
 }
 
-.active-batch-renders * {
+.jobs-in-progress * {
   padding: 0 !important;
   margin: 0 !important;
   box-sizing: border-box !important;
 }
 
 /* Container for batch renders */
-.active-batch-renders-container {
+.jobs-in-progress-container {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
   gap: 10px !important;
@@ -140,14 +140,14 @@
 
 /* Large monitor screens (1600px+) */
 @media (min-width: 1600px) {
-  .active-batch-renders {
+  .jobs-in-progress {
     padding: 32px;
     margin-bottom: 32px;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
 
-  .active-batch-renders-container {
+  .jobs-in-progress-container {
     gap: 24px !important;
     padding: 24px !important;
   }
@@ -209,7 +209,7 @@
     gap: 12px;
   }
   
-  .active-batch-renders {
+  .jobs-in-progress {
     padding: 6px;
   }
 
@@ -225,12 +225,12 @@
 }
 
 @media (max-width: 1200px) {
-  .active-batch-renders {
+  .jobs-in-progress {
     padding: 2px !important;
     font-size: 9px !important;
     max-width: 500px !important;
   }
-  .active-batch-renders-container {
+  .jobs-in-progress-container {
     gap: 4px !important;
     padding: 2px !important;
   }
@@ -250,7 +250,7 @@
 }
 
 @media (max-width: 900px) {
-  .batch-renders-list, .active-batch-renders-container {
+  .batch-renders-list, .jobs-in-progress-container {
     grid-template-columns: 1fr !important;
     gap: 6px !important;
   }
@@ -264,7 +264,7 @@
 }
 
 @media (max-width: 768px) {
-  .active-batch-renders {
+  .jobs-in-progress {
     margin-bottom: 8px;
     padding: 6px;
   }
@@ -275,7 +275,7 @@
 }
 
 @media (max-width: 480px) {
-  .active-batch-renders {
+  .jobs-in-progress {
     margin-bottom: 6px;
     padding: 4px;
   }
@@ -304,7 +304,7 @@
 
 /* Large screens (1440px - 1599px) */
 @media (min-width: 1440px) and (max-width: 1599px) {
-  .active-batch-renders {
+  .jobs-in-progress {
     padding: 24px;
     margin-bottom: 24px;
   }
@@ -329,7 +329,7 @@
 
 /* Tablet */
 @media (max-width: 1024px) {
-  .active-batch-renders {
+  .jobs-in-progress {
     padding: 14px;
   }
 
@@ -340,7 +340,7 @@
 
 /* Mobile */
 @media (max-width: 640px) {
-  .active-batch-renders {
+  .jobs-in-progress {
     padding: 12px;
     margin-bottom: 12px;
   }

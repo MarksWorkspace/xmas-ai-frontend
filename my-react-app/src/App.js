@@ -8,7 +8,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 
-import ActiveBatchRenders from './components/ActiveBatchRenders/ActiveBatchRenders';
+import JobsInProgress from './components/ActiveBatchRenders/ActiveBatchRenders';
 import NewCampaign from './components/NewCampaign/NewCampaign';
 import StatCard from './components/StatCard/StatCard';
 import FlyerLibrary from './components/FlyerLibrary/FlyerLibrary';
@@ -149,7 +149,7 @@ const AppContent = () => {
                 </div>
                 <div className="dashboard-row">
                   <div className="dashboard-main">
-                    <ActiveBatchRenders />
+                    <JobsInProgress />
                   </div>
                   <div className="dashboard-side">
                     <NewCampaign />
@@ -177,7 +177,7 @@ const AppContent = () => {
                 </div>
                 <div className="dashboard-row">
                   <div className="dashboard-main">
-                    <ActiveBatchRenders />
+                    <JobsInProgress />
                   </div>
                   <div className="dashboard-side">
                     <NewCampaign />
