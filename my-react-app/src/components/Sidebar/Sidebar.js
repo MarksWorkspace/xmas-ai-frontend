@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
-import { RiDashboardLine, RiBuilding2Line, RiImageLine, RiFileList2Line, RiPriceTag3Line, RiPaintLine, RiWalletLine, RiSettings3Line, RiLogoutBoxRLine } from 'react-icons/ri';
+import { RiDashboardLine, RiAddLine, RiWalletLine, RiLogoutBoxRLine } from 'react-icons/ri';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -29,16 +29,11 @@ const Sidebar = () => {
 
   const mainMenuItems = [
     { icon: <RiDashboardLine size={20} />, label: "Dashboard", route: "/dashboard", active: true },
-    { icon: <RiBuilding2Line size={20} />, label: "Neighborhoods", route: "/neighborhoods" },
-    { icon: <RiImageLine size={20} />, label: "Render Batches", route: "/render-batches" },
-    { icon: <RiFileList2Line size={20} />, label: "Flyers Library", route: "/flyers-library" },
-    { icon: <RiPriceTag3Line size={20} />, label: "CRM Tags", route: "/crm-tags" },
-    { icon: <RiPaintLine size={20} />, label: "Branding", route: "/branding" }
+    { icon: <RiAddLine size={20} />, label: "Create Campaign", route: "/create-campaign" }
   ];
 
   const systemMenuItems = [
-    { icon: <RiWalletLine size={20} />, label: "Billing", route: "/billing" },
-    { icon: <RiSettings3Line size={20} />, label: "Settings", route: "/settings" }
+    { icon: <RiWalletLine size={20} />, label: "Billing", route: "/billing" }
   ];
 
   return (

@@ -30,10 +30,12 @@ export const JobProvider = ({ children }) => {
   // Handle job completion and organize flyers by street
   const handleJobCompletion = useCallback(async (job) => {
     try {
-      if (!job.total_addresses || !job.processed_addresses) {
-        const jobDetails = await makeRequest(`${API_ROUTES.jobs}${job.id}`, 'GET');
-        job = { ...job, ...jobDetails };
-      }
+      // Use the completed_at directly from the job object
+      console.log('Processing job:', {
+        id: job.id,
+        completed_at: job.completed_at,
+        created_at: job.created_at
+      });
       
       const addresses = await makeRequest(API_ROUTES.jobAddresses(job.id), 'GET');
       
@@ -75,7 +77,7 @@ export const JobProvider = ({ children }) => {
 
       setCompletedFlyers(prev => {
         const newState = { ...prev };
-        const completionDate = job.updated_at || new Date().toISOString();
+        const completionDate = job.completed_at;
         
         // Create or update the job entry
         if (!newState[job.id]) {
@@ -101,8 +103,9 @@ export const JobProvider = ({ children }) => {
       setSortedJobIds(prev => {
         const allIds = new Set([...prev, job.id]);
         return Array.from(allIds).sort((a, b) => {
-          const dateA = new Date(completedFlyers[a]?.completedAt || completedFlyers[a]?.createdAt || 0);
-          const dateB = new Date(completedFlyers[b]?.completedAt || completedFlyers[b]?.createdAt || 0);
+          const dateA = new Date(completedFlyers[a]?.completedAt || 0).getTime();
+          const dateB = new Date(completedFlyers[b]?.completedAt || 0).getTime();
+          // Sort by newest first (latest completion time first)
           return dateB - dateA;
         });
       });

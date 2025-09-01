@@ -9,6 +9,28 @@ import AuthImage from '../common/AuthImage';
 const FlyerLibrary = () => {
   const navigate = useNavigate();
   const { completedFlyers, sortedJobIds } = useJobs();
+
+  // Format the date to be more readable and in local time
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    
+    // Parse the UTC date string and explicitly handle timezone conversion
+    const utcDate = new Date(dateString);
+    
+    // Get user's timezone offset in minutes
+    const timezoneOffset = utcDate.getTimezoneOffset();
+    
+    // Create a new date adjusted for the local timezone
+    const localDate = new Date(utcDate.getTime() - (timezoneOffset * 60000));
+    
+    return localDate.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+  };
   
   const handleShare = async (flyerId) => {
     console.log('Share flyer:', flyerId);
@@ -70,11 +92,7 @@ const FlyerLibrary = () => {
                 <p className="flyer-subtitle">{allStreets.join(' + ')}</p>
                 {jobData.completedAt && (
                   <p className="completion-date">
-                    Completed: {new Date(jobData.completedAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
+                    Completed: {formatDate(jobData.completedAt)}
                   </p>
                 )}
                 <div className="street-card-footer">
