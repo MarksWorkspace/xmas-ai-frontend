@@ -216,7 +216,7 @@ export const JobProvider = ({ children }) => {
 
   return (
     <JobContext.Provider value={{ 
-      activeJobs: activeJobs.map(job => {
+      activeJobs: activeJobs.filter(job => job.status !== 'completed').map(job => {
         // Extract campaign name from metadata or description
         const campaignName = job.metadata?.campaign_name || 
                            job.campaign_name || 
