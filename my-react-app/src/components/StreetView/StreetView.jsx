@@ -81,6 +81,8 @@ const StreetView = () => {
   };
 
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isPdfDownloading, setIsPdfDownloading] = useState(false);
+  const [isPngDownloading, setIsPngDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState(null);
 
   const downloadImage = async (imageUrl) => {
@@ -95,6 +97,72 @@ const StreetView = () => {
     const blob = await response.blob();
     // Ensure we're creating a proper image blob
     return new Blob([blob], { type: 'image/jpeg' });
+  };
+
+  const handleDownloadFlyers = async (type) => {
+    const setLoading = type === 'pdf' ? setIsPdfDownloading : setIsPngDownloading;
+    setLoading(true);
+    setDownloadError(null);
+
+    try {
+      if (!houses.length || !houses[0].jobId) {
+        throw new Error('No job ID available');
+      }
+
+      const jobId = houses[0].jobId;
+      const token = localStorage.getItem('auth_token');
+
+      // First, get the list of flyer files
+      const filesResponse = await fetch(`${API_BASE_URL}/jobs/${jobId}/fliers`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      });
+
+      if (!filesResponse.ok) {
+        throw new Error(`Failed to get flyer list: ${filesResponse.status}`);
+      }
+
+      const filesData = await filesResponse.json();
+      const fileToDownload = filesData.fliers.find(f => 
+        type === 'pdf' ? f.type === 'pdf' : f.type === 'zip'
+      );
+
+      if (!fileToDownload) {
+        throw new Error(`No ${type.toUpperCase()} file available`);
+      }
+
+      // Now download the actual file
+      const downloadResponse = await fetch(
+        `${API_BASE_URL}/jobs/${jobId}/fliers/${fileToDownload.filename}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json'
+          }
+        }
+      );
+
+      if (!downloadResponse.ok) {
+        throw new Error(`Failed to download file: ${downloadResponse.status}`);
+      }
+
+      const blob = await downloadResponse.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileToDownload.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(`Error downloading ${type} flyers:`, error);
+      setDownloadError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDownloadAll = async () => {
@@ -194,11 +262,25 @@ const StreetView = () => {
         </div>
         <div className="download-all-container">
           <button 
-            className="download-all-button" 
+            className="download-button" 
             onClick={handleDownloadAll}
-            disabled={isDownloading}
+            disabled={isDownloading || isPdfDownloading || isPngDownloading}
           >
-            {isDownloading ? 'Downloading...' : 'Download All'}
+            {isDownloading ? 'Downloading...' : 'Download All Images'}
+          </button>
+          <button 
+            className="download-button" 
+            onClick={() => handleDownloadFlyers('pdf')}
+            disabled={isDownloading || isPdfDownloading || isPngDownloading}
+          >
+            {isPdfDownloading ? 'Downloading...' : 'Download PDF Flyers'}
+          </button>
+          <button 
+            className="download-button" 
+            onClick={() => handleDownloadFlyers('png')}
+            disabled={isDownloading || isPdfDownloading || isPngDownloading}
+          >
+            {isPngDownloading ? 'Downloading...' : 'Download PNG Flyers'}
           </button>
           {downloadError && <div className="download-error">{downloadError}</div>}
         </div>
