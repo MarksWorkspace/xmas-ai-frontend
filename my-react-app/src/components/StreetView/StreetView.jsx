@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { makeRequest, API_ROUTES, API_BASE_URL } from '../../config/api';
 import AuthImage from '../common/AuthImage';
+import ImageModal from '../common/ImageModal';
 import './StreetView.css';
 import JSZip from 'jszip';
 
@@ -11,6 +12,7 @@ const StreetView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [displayLimit, setDisplayLimit] = useState(20);
+  const [selectedImage, setSelectedImage] = useState(null);
   const ITEMS_PER_PAGE = 20;
 
   useEffect(() => {
@@ -202,7 +204,12 @@ const StreetView = () => {
             <div className="house-details">
               <h3>{house.fullAddress}</h3>
               <div className="house-actions">
-                <button className="view-button">View</button>
+                <button 
+                  className="view-button"
+                  onClick={() => setSelectedImage(house.image)}
+                >
+                  View
+                </button>
                 <button 
                   className="download-button"
                   onClick={() => {
@@ -230,6 +237,13 @@ const StreetView = () => {
             Show More
           </button>
         </div>
+      )}
+
+      {selectedImage && (
+        <ImageModal
+          imageUrl={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
       )}
     </div>
   );
