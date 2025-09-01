@@ -116,15 +116,18 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 }
 
 .plan-features li {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 1rem;
   font-size: 0.95rem;
   line-height: 1.5;
   color: #4a5568;
+  min-width: 0;
 }
 
 .plan-features li:last-child {
@@ -190,6 +193,12 @@
 }
 
 /* Responsive Design */
+@media (max-width: 992px) {
+  .plan-features ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .subscription-card {
     padding: 1.5rem;
@@ -222,6 +231,10 @@
 }
 
 @media (max-width: 480px) {
+  .plan-features ul {
+    grid-template-columns: 1fr;
+  }
+  
   .plan-price {
     min-height: 3rem;
     flex-wrap: wrap;
