@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, useNavigate, useLocation, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { makeRequest, API_ROUTES } from './config/api';
 import { JobProvider, useJobs } from './context/JobContext';
 import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
@@ -23,6 +24,11 @@ const AppContent = () => {
   const location = useLocation();
   const { logout } = useAuth();
   const { completedFlyers, activeJobs } = useJobs();
+  const [subscriptionStats, setSubscriptionStats] = React.useState({
+    imagesUsed: 0,
+    imagesLimit: 0,
+    imagesRemaining: 0
+  });
 
   const handleLogout = () => {
     try {
@@ -67,17 +73,44 @@ const AppContent = () => {
     },
     {
       icon: "flyers",
-      value: calculateTotalFlyers().toString(),
-      label: "Flyers Generated"
+      value: subscriptionStats.imagesUsed.toString(),
+      label: "Images Created"
     },
     {
       icon: "conversion",
-      value: "4.8%",
-      label: "Conversion CTR"
+      value: subscriptionStats.imagesRemaining.toString(),
+      label: "Images Remaining"
     }
   ];
 
   const { user } = useAuth();
+
+  // Fetch subscription data
+  React.useEffect(() => {
+    const fetchSubscriptionData = async () => {
+      try {
+        const response = await makeRequest(API_ROUTES.mySubscription, 'GET');
+        if (response && 
+            typeof response.yearly_images_used === 'number' && 
+            typeof response.yearly_images_limit === 'number' &&
+            typeof response.images_remaining === 'number') {
+          setSubscriptionStats({
+            imagesUsed: response.yearly_images_used,
+            imagesLimit: response.yearly_images_limit,
+            imagesRemaining: response.images_remaining
+          });
+        } else {
+          console.error('Invalid subscription data format:', response);
+        }
+      } catch (error) {
+        console.error('Error fetching subscription data:', error);
+      }
+    };
+
+    if (user) {
+      fetchSubscriptionData();
+    }
+  }, [user]);
   
   // If on login or register page, only show those components
   if (location.pathname === '/login' || location.pathname === '/register') {
