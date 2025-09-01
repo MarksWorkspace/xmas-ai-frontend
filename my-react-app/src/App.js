@@ -34,17 +34,9 @@ const AppContent = () => {
   };
 
   // Calculate real stats from the data
-  const calculateNeighborhoodCount = () => {
-    const allNeighborhoods = new Set();
-    
-    // Count unique neighborhoods from completed flyers
-    Object.values(completedFlyers).forEach(jobData => {
-      Object.keys(jobData.streets || {}).forEach(streetName => {
-        allNeighborhoods.add(streetName);
-      });
-    });
-    
-    return allNeighborhoods.size;
+  const calculateCompletedJobs = () => {
+    // Count total number of completed jobs
+    return Object.keys(completedFlyers).length;
   };
 
   const calculateProcessingJobs = () => {
@@ -65,7 +57,7 @@ const AppContent = () => {
   const statsData = [
     {
       icon: "neighborhoods",
-      value: calculateNeighborhoodCount().toString(),
+      value: calculateCompletedJobs().toString(),
       label: "Completed Jobs"
     },
     {
