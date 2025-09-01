@@ -39,7 +39,7 @@ const Sidebar = () => {
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-header">
-        <h1 className="sidebar-title">Light Craft</h1>
+        <h1 className="sidebar-title">Smart Lights</h1>
         <button className="hamburger-button" onClick={toggleSidebar}>
           <div className="hamburger-icon">
             <span></span>
