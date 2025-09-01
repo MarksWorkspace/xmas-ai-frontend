@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { makeRequest, API_ROUTES, API_BASE_URL } from '../../config/api';
 import AuthImage from '../common/AuthImage';
 import ImageModal from '../common/ImageModal';
+import LoadingOverlay from './LoadingOverlay';
 import './StreetView.css';
 import JSZip from 'jszip';
 
@@ -163,17 +164,25 @@ const StreetView = () => {
     }
   };
 
-  if (loading) {
-    return <div className="street-view-loading">Loading...</div>;
-  }
+  // Add a slight delay before removing the loading overlay
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
 
   if (error) {
     return <div className="street-view-error">{error}</div>;
   }
 
   return (
-    <div className="street-view">
-      <div className="street-view-header">
+    <div>
+      {loading && <LoadingOverlay />}
+      <div className="street-view">
+        <div className="street-view-header">
         <div className="header-left">
           <button className="back-button" onClick={() => window.history.back()}>
             ← Go Back
@@ -245,6 +254,7 @@ const StreetView = () => {
           onClose={() => setSelectedImage(null)}
         />
       )}
+      </div>
     </div>
   );
 };
