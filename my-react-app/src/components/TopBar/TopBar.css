@@ -11,6 +11,11 @@
   justify-content: space-between;
   z-index: 100;
   padding: 0 clamp(16px, 2vw, 32px) 0 12px;
+  transition: left 0.3s ease;
+}
+
+body.sidebar-collapsed .topbar {
+  left: 64px;
 }
 
 .topbar-left {
@@ -65,6 +70,10 @@
     height: 80px;
     padding: 0 48px 0 24px;
   }
+  
+  body.sidebar-collapsed .topbar {
+    left: 64px;
+  }
 
   .topbar-search {
     min-width: 300px;
@@ -83,7 +92,12 @@
 
 @media (max-width: 768px) {
   .topbar {
+    left: 0;
     padding: 0 16px;
+  }
+  
+  body.sidebar-collapsed .topbar {
+    left: 0;
   }
 
   .topbar-left {
