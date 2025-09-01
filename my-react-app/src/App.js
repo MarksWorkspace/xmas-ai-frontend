@@ -19,6 +19,7 @@ import StreetView from './components/StreetView/StreetView';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Billing, PaymentSuccess } from './components/Billing';
 import ContactUs from './components/ContactUs/ContactUs';
+import MobileBlocker from './components/common/MobileBlocker/MobileBlocker';
 
 const AppContent = () => {
   const navigate = useNavigate();
@@ -126,6 +127,7 @@ const AppContent = () => {
   }
   return (
     <div className="app">
+      <MobileBlocker />
       {user && <Sidebar />}
       <div className={`main-content ${!user ? 'full-width' : ''}`}>
         {user && <TopBar />}
