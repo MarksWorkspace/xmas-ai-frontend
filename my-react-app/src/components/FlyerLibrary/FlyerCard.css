@@ -118,7 +118,7 @@
 }
 
 .view-street-btn {
-  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
+  background: #58ad8a;
   color: white;
   border: none;
   padding: 8px 16px;
