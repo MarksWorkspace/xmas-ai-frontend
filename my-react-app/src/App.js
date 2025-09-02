@@ -2,12 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, useNavigate, useLocation, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { makeRequest, API_ROUTES } from './config/api';
 import { JobProvider, useJobs } from './context/JobContext';
 import Sidebar from './components/Sidebar/Sidebar';
 import TopBar from './components/TopBar/TopBar';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
-import NewNeighborhoodButton from './components/NewNeighborhoodButton/NewNeighborhoodButton';
-import ActiveBatchRenders from './components/ActiveBatchRenders/ActiveBatchRenders';
+
+import JobsInProgress from './components/ActiveBatchRenders/ActiveBatchRenders';
 import NewCampaign from './components/NewCampaign/NewCampaign';
 import StatCard from './components/StatCard/StatCard';
 import FlyerLibrary from './components/FlyerLibrary/FlyerLibrary';
@@ -16,12 +17,20 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import StreetView from './components/StreetView/StreetView';
 import ProtectedRoute from './components/ProtectedRoute';
+import { Billing, PaymentSuccess } from './components/Billing';
+import ContactUs from './components/ContactUs/ContactUs';
+import MobileBlocker from './components/common/MobileBlocker/MobileBlocker';
 
 const AppContent = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuth();
   const { completedFlyers, activeJobs } = useJobs();
+  const [subscriptionStats, setSubscriptionStats] = React.useState({
+    imagesUsed: 0,
+    imagesLimit: 0,
+    imagesRemaining: 0
+  });
 
   const handleLogout = () => {
     try {
@@ -33,17 +42,9 @@ const AppContent = () => {
   };
 
   // Calculate real stats from the data
-  const calculateNeighborhoodCount = () => {
-    const allNeighborhoods = new Set();
-    
-    // Count unique neighborhoods from completed flyers
-    Object.values(completedFlyers).forEach(jobData => {
-      Object.keys(jobData.streets || {}).forEach(streetName => {
-        allNeighborhoods.add(streetName);
-      });
-    });
-    
-    return allNeighborhoods.size;
+  const calculateCompletedJobs = () => {
+    // Count total number of completed jobs
+    return Object.keys(completedFlyers).length;
   };
 
   const calculateProcessingJobs = () => {
@@ -64,8 +65,8 @@ const AppContent = () => {
   const statsData = [
     {
       icon: "neighborhoods",
-      value: calculateNeighborhoodCount().toString(),
-      label: "Neighborhoods Targeted"
+      value: calculateCompletedJobs().toString(),
+      label: "Completed Jobs"
     },
     {
       icon: "jobs",
@@ -74,17 +75,44 @@ const AppContent = () => {
     },
     {
       icon: "flyers",
-      value: calculateTotalFlyers().toString(),
-      label: "Flyers Generated"
+      value: subscriptionStats.imagesUsed.toString(),
+      label: "Images Created"
     },
     {
       icon: "conversion",
-      value: "4.8%",
-      label: "Conversion CTR"
+      value: subscriptionStats.imagesRemaining.toString(),
+      label: "Images Remaining"
     }
   ];
 
   const { user } = useAuth();
+
+  // Fetch subscription data
+  React.useEffect(() => {
+    const fetchSubscriptionData = async () => {
+      try {
+        const response = await makeRequest(API_ROUTES.mySubscription, 'GET');
+        if (response && 
+            typeof response.yearly_images_used === 'number' && 
+            typeof response.yearly_images_limit === 'number' &&
+            typeof response.images_remaining === 'number') {
+          setSubscriptionStats({
+            imagesUsed: response.yearly_images_used,
+            imagesLimit: response.yearly_images_limit,
+            imagesRemaining: response.images_remaining
+          });
+        } else {
+          console.error('Invalid subscription data format:', response);
+        }
+      } catch (error) {
+        console.error('Error fetching subscription data:', error);
+      }
+    };
+
+    if (user) {
+      fetchSubscriptionData();
+    }
+  }, [user]);
   
   // If on login or register page, only show those components
   if (location.pathname === '/login' || location.pathname === '/register') {
@@ -97,17 +125,10 @@ const AppContent = () => {
       </div>
     );
   }
-
   return (
     <div className="app">
+      <MobileBlocker />
       {user && <Sidebar />}
-      {user && (
-        <div className="header">
-          <button onClick={handleLogout} className="logout-button">
-            Logout
-          </button>
-        </div>
-      )}
       <div className={`main-content ${!user ? 'full-width' : ''}`}>
         {user && <TopBar />}
         <Routes>
@@ -118,7 +139,6 @@ const AppContent = () => {
               <div className="gradient-background">
                 <div className="welcome-wrapper">
                   <WelcomeBanner />
-                  <NewNeighborhoodButton />
                 </div>
                 <div className="stats-container">
                   {statsData.map((stat, index) => (
@@ -132,7 +152,7 @@ const AppContent = () => {
                 </div>
                 <div className="dashboard-row">
                   <div className="dashboard-main">
-                    <ActiveBatchRenders />
+                    <JobsInProgress />
                   </div>
                   <div className="dashboard-side">
                     <NewCampaign />
@@ -147,7 +167,6 @@ const AppContent = () => {
               <div className="gradient-background">
                 <div className="welcome-wrapper">
                   <WelcomeBanner />
-                  <NewNeighborhoodButton />
                 </div>
                 <div className="stats-container">
                   {statsData.map((stat, index) => (
@@ -161,7 +180,7 @@ const AppContent = () => {
                 </div>
                 <div className="dashboard-row">
                   <div className="dashboard-main">
-                    <ActiveBatchRenders />
+                    <JobsInProgress />
                   </div>
                   <div className="dashboard-side">
                     <NewCampaign />
@@ -172,8 +191,11 @@ const AppContent = () => {
             </ProtectedRoute>
           } />
           <Route path="/create-campaign" element={<ProtectedRoute><CreateCampaign /></ProtectedRoute>} />
+          <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
+          <Route path="/billing/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
           <Route path="/street/:streetName" element={<ProtectedRoute><StreetView /></ProtectedRoute>} />
           <Route path="/batch/:batchId" element={<ProtectedRoute><StreetView /></ProtectedRoute>} />
+          <Route path="/contact" element={<ProtectedRoute><ContactUs /></ProtectedRoute>} />
         </Routes>
       </div>
     </div>

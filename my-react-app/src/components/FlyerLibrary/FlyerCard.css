@@ -46,6 +46,21 @@
   line-height: 1.2;
 }
 
+.completion-date {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.completion-date::before {
+  content: "📅";
+  font-size: 12px;
+}
+
 .flyer-actions {
   display: flex;
   gap: 10px;
@@ -103,7 +118,7 @@
 }
 
 .view-street-btn {
-  background-color: #1a73e8;
+  background: #58ad8a;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -115,5 +130,62 @@
 }
 
 .view-street-btn:hover {
-  background-color: #1557b0;
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%);
+}
+
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .flyer-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .flyer-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .flyer-details {
+    padding: 16px;
+  }
+
+  .flyer-address {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .completion-date {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  .completion-date::before {
+    font-size: 14px;
+  }
+
+  .flyer-actions {
+    gap: 12px;
+    padding: 0 3px;
+  }
+
+  .action-btn {
+    padding: 10px 0;
+    border-radius: 6px;
+    font-size: 16px;
+    min-height: 40px;
+  }
+
+  .street-card-footer {
+    margin-top: 12px;
+  }
+
+  .house-count {
+    font-size: 16px;
+  }
+
+  .view-street-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+  }
 } 

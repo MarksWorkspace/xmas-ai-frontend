@@ -20,17 +20,21 @@
 .back-button {
   background: none;
   border: none;
-  padding: 0;
-  font-size: 16px;
-  color: #666;
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #1b4332;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  width: 100px;
 }
 
 .back-button:hover {
-  color: #333;
+  background: rgba(27, 67, 50, 0.08);
 }
 
 .street-info h1 {
@@ -46,7 +50,7 @@
   font-size: 16px;
 }
 
-.download-all-button {
+.download-button {
   background-color: #004d1a;
   color: white;
   border: none;
@@ -58,22 +62,24 @@
   align-items: center;
   gap: 8px;
   font-size: 16px;
+  white-space: nowrap;
 }
 
-.download-all-button:hover {
+.download-button:hover {
   background-color: #003d15;
 }
 
-.download-all-button:disabled {
+.download-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
 .download-all-container {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .download-error {
@@ -177,7 +183,7 @@
 }
 
 .show-more-button {
-  background: #1a73e8;
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
   color: white;
   border: none;
   padding: 12px 32px;
@@ -189,7 +195,7 @@
 }
 
 .show-more-button:hover {
-  background: #1557b0;
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%);
 }
 
 .show-more-button:disabled {

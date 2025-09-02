@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
-import { RiDashboardLine, RiBuilding2Line, RiImageLine, RiFileList2Line, RiPriceTag3Line, RiPaintLine, RiWalletLine, RiSettings3Line, RiLogoutBoxRLine } from 'react-icons/ri';
+import { RiDashboardLine, RiAddLine, RiWalletLine, RiLogoutBoxRLine, RiCustomerService2Line } from 'react-icons/ri';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const handleLogout = () => {
     try {
@@ -21,24 +22,32 @@ const Sidebar = () => {
     navigate(route);
   };
 
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+    document.body.classList.toggle('sidebar-collapsed');
+  };
+
   const mainMenuItems = [
     { icon: <RiDashboardLine size={20} />, label: "Dashboard", route: "/dashboard", active: true },
-    { icon: <RiBuilding2Line size={20} />, label: "Neighborhoods", route: "/neighborhoods" },
-    { icon: <RiImageLine size={20} />, label: "Render Batches", route: "/render-batches" },
-    { icon: <RiFileList2Line size={20} />, label: "Flyers Library", route: "/flyers-library" },
-    { icon: <RiPriceTag3Line size={20} />, label: "CRM Tags", route: "/crm-tags" },
-    { icon: <RiPaintLine size={20} />, label: "Branding", route: "/branding" }
+    { icon: <RiAddLine size={20} />, label: "Create Campaign", route: "/create-campaign" }
   ];
 
   const systemMenuItems = [
     { icon: <RiWalletLine size={20} />, label: "Billing", route: "/billing" },
-    { icon: <RiSettings3Line size={20} />, label: "Settings", route: "/settings" }
+    { icon: <RiCustomerService2Line size={20} />, label: "Contact Us", route: "/contact" }
   ];
 
   return (
-    <div className="sidebar">
-      <div className="logo-container">
-        <h2>Light Craft</h2>
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="sidebar-header">
+        <h1 className="sidebar-title">Smart Lights</h1>
+        <button className="hamburger-button" onClick={toggleSidebar}>
+          <div className="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </button>
       </div>
       
       <nav className="nav-menu">
@@ -81,4 +90,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

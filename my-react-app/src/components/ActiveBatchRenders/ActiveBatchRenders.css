@@ -1,20 +1,78 @@
-.active-batch-renders {
+.jobs-in-progress {
   background: #fff;
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 6px;
+  padding: 6px;
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eaeaea;
+}
+
+.jobs-in-progress * {
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Container for batch renders */
+.jobs-in-progress-container {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px !important;
+  padding: 6px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Card styling */
+.batch-render-card {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  padding: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.batch-render-card img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.batch-render-card-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.batch-render-card-content h3 {
+  font-size: 11px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
   overflow: hidden;
-  min-height: 200px;
-  margin-bottom: 20px;
+  text-overflow: ellipsis;
+}
+
+.batch-render-card-content p {
+  margin: 0 0 2px 0 !important;
+  word-break: break-word !important;
+  font-size: 13px !important;
 }
 
 .batch-renders-header {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 4px;
+  margin-bottom: 4px;
 }
 
 .batch-renders-title {
@@ -24,15 +82,15 @@
 }
 
 .batch-renders-title h2 {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
   color: #111;
   margin: 0;
 }
 
 .icon-batch {
-  width: 16px;
-  height: 16px;
+  width: 12px !important;
+  height: 12px !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,10 +98,8 @@
 
 .batch-renders-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  width: 100%;
-  overflow-x: auto;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
 }
 
 /* Loading and error states */
@@ -82,37 +138,219 @@
   grid-column: 1 / -1;
 }
 
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .jobs-in-progress {
+    padding: 32px;
+    margin-bottom: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .jobs-in-progress-container {
+    gap: 24px !important;
+    padding: 24px !important;
+  }
+
+  .batch-render-card {
+    padding: 24px;
+    gap: 24px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .batch-render-card img {
+    width: 140px;
+    height: 140px;
+    border-radius: 10px;
+  }
+
+  .batch-render-card-content h3 {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .batch-render-card-content p {
+    font-size: 22px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .batch-renders-title h2 {
+    font-size: 28px;
+  }
+
+  .icon-batch {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .batch-renders-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .loading-spinner {
+    width: 48px;
+    height: 48px;
+    border-width: 5px;
+  }
+
+  .error-message,
+  .no-jobs-message {
+    font-size: 24px;
+    padding: 24px;
+    border-radius: 10px;
+  }
+}
+
 @media (max-width: 1200px) {
   .batch-renders-list {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
   
-  .active-batch-renders {
-    padding: 12px;
+  .jobs-in-progress {
+    padding: 6px;
+  }
+
+  .batch-render-card {
+    max-width: 100%;
+    gap: 6px;
+    padding: 6px;
+  }
+  .batch-render-card img {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .jobs-in-progress {
+    padding: 2px !important;
+    font-size: 9px !important;
+    max-width: 500px !important;
+  }
+  .jobs-in-progress-container {
+    gap: 4px !important;
+    padding: 2px !important;
+  }
+  .batch-render-card {
+    padding: 2px !important;
+    max-width: 140px !important;
+    gap: 2px !important;
+  }
+  .batch-render-card img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .batch-render-card-content h3,
+  .batch-render-card-content p {
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .batch-renders-list, .jobs-in-progress-container {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
   }
 }
 
 @media (max-width: 600px) {
   .batch-renders-list {
     grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
 
 @media (max-width: 768px) {
-  .active-batch-renders {
-    margin-bottom: 16px;
-    padding: 12px;
+  .jobs-in-progress {
+    margin-bottom: 8px;
+    padding: 6px;
   }
 
   .batch-renders-header {
-    margin-bottom: 12px;
+    margin-bottom: 6px;
   }
 }
 
 @media (max-width: 480px) {
-  .active-batch-renders {
+  .jobs-in-progress {
+    margin-bottom: 6px;
+    padding: 4px;
+  }
+}
+
+.street-name {
+  font-size: 10px;
+  color: #666;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.timestamp {
+  font-size: 9px;
+  color: #999;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.status {
+  font-size: 10px;
+  font-weight: 500;
+  color: #34a853;
+  line-height: 1.2;
+}
+
+/* Large screens (1440px - 1599px) */
+@media (min-width: 1440px) and (max-width: 1599px) {
+  .jobs-in-progress {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .batch-renders-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  
+  .batch-renders-title h2 {
+    font-size: 16px;
+  }
+}
+
+/* Small laptop */
+@media (max-width: 1200px) {
+  .batch-renders-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .jobs-in-progress {
+    padding: 14px;
+  }
+
+  .batch-renders-list {
+    gap: 12px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .jobs-in-progress {
+    padding: 12px;
     margin-bottom: 12px;
-    padding: 8px;
+  }
+
+  .batch-renders-list {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .batch-renders-title h2 {
+    font-size: 14px;
   }
 }

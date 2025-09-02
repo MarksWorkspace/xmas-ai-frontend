@@ -4,11 +4,33 @@ import './FlyerLibrary.css';
 import FlyerCard from './FlyerCard';
 import { useJobs } from '../../context/JobContext';
 import { makeRequest, API_ROUTES, API_BASE_URL } from '../../config/api';
-import AuthImage from '../common/AuthImage';
+import CompletedJobCard from './CompletedJobCard';
 
 const FlyerLibrary = () => {
   const navigate = useNavigate();
-  const { completedFlyers } = useJobs();
+  const { completedFlyers, sortedJobIds } = useJobs();
+
+  // Format the date to be more readable and in local time
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    
+    // Parse the UTC date string and explicitly handle timezone conversion
+    const utcDate = new Date(dateString);
+    
+    // Get user's timezone offset in minutes
+    const timezoneOffset = utcDate.getTimezoneOffset();
+    
+    // Create a new date adjusted for the local timezone
+    const localDate = new Date(utcDate.getTime() - (timezoneOffset * 60000));
+    
+    return localDate.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+  };
   
   const handleShare = async (flyerId) => {
     console.log('Share flyer:', flyerId);
@@ -47,52 +69,44 @@ const FlyerLibrary = () => {
     <div className="flyer-library">
       <div className="flyer-library-header">
         <div className="flyer-library-title">
-          <i className="icon-flyer"></i>
-          <h2>Flyer Library</h2>
+          <span className="icon-completed">✅</span>
+          <h2>Completed Jobs</h2>
         </div>
-        <div className="branding-notice">
-          <span>Your branding is live on all flyers</span>
-          <button className="edit-branding-btn">Edit Branding</button>
-        </div>
+        
       </div>
       <div className="flyer-grid">
-        {Object.entries(completedFlyers).map(([jobId, jobData]) => {
+        {sortedJobIds.map(jobId => {
+          const jobData = completedFlyers[jobId];
+          if (!jobData || !jobData.streets) return null;
+          
           // Combine all flyers from all streets in this batch
           const allStreets = Object.keys(jobData.streets);
           const totalHouses = Object.values(jobData.streets).reduce((sum, flyers) => sum + flyers.length, 0);
           const firstImage = Object.values(jobData.streets)[0]?.[0]?.image;
+          console.log('Debug - First image URL:', firstImage);
           
           return (
-            <div key={jobId} className="flyer-card">
-              <div className="flyer-image">
-                <AuthImage src={firstImage} alt={`Houses from ${jobData.title}`} />
-              </div>
-              <div className="flyer-details">
-                <h3 className="flyer-title">{jobData.title}</h3>
-                <p className="flyer-subtitle">{allStreets.join(' + ')}</p>
-                <div className="street-card-footer">
-                  <p className="house-count">{totalHouses} houses</p>
-                  <button 
-                    className="view-street-btn"
-                    onClick={() => {
-                      // Combine all flyers from all streets into a single list
-                      const allFlyers = Object.values(jobData.streets).flat();
-                      const combinedStreetName = allStreets.join(' + ');
-                      
-                      // Store the data in the expected format
-                      window.__FLYER_DATA__ = { 
-                        completedFlyers: {
-                          [combinedStreetName]: allFlyers
-                        }
-                      };
-                      navigate(`/street/${encodeURIComponent(combinedStreetName)}?batch=${jobId}`);
-                    }}
-                  >
-                    View
-                  </button>
-                </div>
-              </div>
-            </div>
+            <CompletedJobCard
+              key={jobId}
+              image={firstImage}
+              title={jobData.title}
+              subtitle={allStreets.join(' + ')}
+              completedAt={jobData.completedAt}
+              houseCount={totalHouses}
+              onView={() => {
+                // Combine all flyers from all streets into a single list
+                const allFlyers = Object.values(jobData.streets).flat();
+                const combinedStreetName = allStreets.join(' + ');
+                
+                // Store the data in the expected format
+                window.__FLYER_DATA__ = { 
+                  completedFlyers: {
+                    [combinedStreetName]: allFlyers
+                  }
+                };
+                navigate(`/street/${encodeURIComponent(combinedStreetName)}?batch=${jobId}`);
+              }}
+            />
           );
         })}
         {Object.keys(completedFlyers).length === 0 && (

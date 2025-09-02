@@ -7,6 +7,7 @@ const JobContext = createContext();
 export const JobProvider = ({ children }) => {
   const [activeJobs, setActiveJobs] = useState([]);
   const [completedFlyers, setCompletedFlyers] = useState({});  // Organized by jobId -> street
+  const [sortedJobIds, setSortedJobIds] = useState([]);  // Maintain stable sort order
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useAuth();
@@ -29,10 +30,12 @@ export const JobProvider = ({ children }) => {
   // Handle job completion and organize flyers by street
   const handleJobCompletion = useCallback(async (job) => {
     try {
-      if (!job.total_addresses || !job.processed_addresses) {
-        const jobDetails = await makeRequest(`${API_ROUTES.jobs}${job.id}`, 'GET');
-        job = { ...job, ...jobDetails };
-      }
+      // Use the completed_at directly from the job object
+      console.log('Processing job:', {
+        id: job.id,
+        completed_at: job.completed_at,
+        created_at: job.created_at
+      });
       
       const addresses = await makeRequest(API_ROUTES.jobAddresses(job.id), 'GET');
       
@@ -74,23 +77,37 @@ export const JobProvider = ({ children }) => {
 
       setCompletedFlyers(prev => {
         const newState = { ...prev };
+        const completionDate = job.completed_at;
         
         // Create or update the job entry
         if (!newState[job.id]) {
           newState[job.id] = {
             title: job.description || 'Untitled Campaign',
             createdAt: job.created_at,
+            completedAt: completionDate,
             streets: flyersByStreet
           };
         } else {
           // Update existing job's flyers
           newState[job.id] = {
             ...newState[job.id],
+            completedAt: completionDate,
             streets: flyersByStreet
           };
         }
         
         return newState;
+      });
+
+      // Update sorted job IDs
+      setSortedJobIds(prev => {
+        const allIds = new Set([...prev, job.id]);
+        return Array.from(allIds).sort((a, b) => {
+          const dateA = new Date(completedFlyers[a]?.completedAt || 0).getTime();
+          const dateB = new Date(completedFlyers[b]?.completedAt || 0).getTime();
+          // Sort by newest first (latest completion time first)
+          return dateB - dateA;
+        });
       });
     } catch (error) {
       console.error('Error processing completed job:', error);
@@ -199,7 +216,7 @@ export const JobProvider = ({ children }) => {
 
   return (
     <JobContext.Provider value={{ 
-      activeJobs: activeJobs.map(job => {
+      activeJobs: activeJobs.filter(job => job.status !== 'completed').map(job => {
         // Extract campaign name from metadata or description
         const campaignName = job.metadata?.campaign_name || 
                            job.campaign_name || 
@@ -219,13 +236,14 @@ export const JobProvider = ({ children }) => {
           id: job.id,
           title: campaignName,
           streets: uniqueStreets,
-          startTime: job.created_at ? new Date(job.created_at).toISOString() : null,
+          startTime: job.created_at || null,
           progress: Math.round((job.completed_addresses / (job.total_addresses || 1)) * 100),
           status: job.status || 'pending',
           thumbnail: job.thumbnail || 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=200&h=150'
         };
       }),
       completedFlyers,
+      sortedJobIds,
       isLoading,
       error,
       fetchJobs,

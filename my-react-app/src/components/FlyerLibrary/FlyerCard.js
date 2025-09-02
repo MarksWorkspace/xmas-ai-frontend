@@ -1,11 +1,16 @@
 import React from 'react';
 import './FlyerCard.css';
+import NoImage from '../common/NoImage/NoImage';
 
 const FlyerCard = ({ image, address, onShare, onDownload }) => {
   return (
     <div className="flyer-card">
       <div className="flyer-image">
-        <img src={image} alt={`Flyer for ${address}`} />
+        {image ? (
+          <img src={image} alt={`Flyer for ${address}`} />
+        ) : (
+          <NoImage />
+        )}
       </div>
       <div className="flyer-details">
         <h3 className="flyer-address">{address}</h3>

@@ -8,10 +8,10 @@ const ActiveBatchRenders = () => {
 
   if (isLoading && activeJobs.length === 0) {
     return (
-      <div className="active-batch-renders">
+      <div className="jobs-in-progress">
         <div className="batch-renders-header">
           <div className="batch-renders-title">
-            <h2>Active Batch Renders</h2>
+            <h2>Jobs in Progress</h2>
           </div>
         </div>
         <div className="loading-spinner" />
@@ -21,10 +21,10 @@ const ActiveBatchRenders = () => {
 
   if (error) {
     return (
-      <div className="active-batch-renders">
+      <div className="jobs-in-progress">
         <div className="batch-renders-header">
           <div className="batch-renders-title">
-            <h2>Active Batch Renders</h2>
+            <h2>Jobs in Progress</h2>
           </div>
         </div>
         <div className="error-message">{error}</div>
@@ -33,7 +33,7 @@ const ActiveBatchRenders = () => {
   }
 
   return (
-    <div className="active-batch-renders">
+    <div className="jobs-in-progress">
       <div className="batch-renders-header">
         <div className="batch-renders-title">
           <div className="icon-batch">
@@ -42,7 +42,7 @@ const ActiveBatchRenders = () => {
               <path d="M11 19L3 19M3 19L3 11M3 19L11 11" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
-          <h2>Active Batch Renders</h2>
+          <h2>Jobs in Progress</h2>
         </div>
       </div>
       <div className="batch-renders-list">

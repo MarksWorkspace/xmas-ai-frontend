@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './CreateCampaign.css';
 import { FaHome, FaMapMarkerAlt } from 'react-icons/fa';
-import { IoCloudUploadOutline } from 'react-icons/io5';
+
 import { 
   TextField, 
   Button, 
@@ -226,7 +226,6 @@ FormInput.propTypes = {
 
 // Main Component
 const CreateCampaign = () => {
-  const [activeTab, setActiveTab] = useState('address');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({
@@ -387,21 +386,20 @@ const CreateCampaign = () => {
       
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Typography variant="subtitle1" color="primary" sx={{ mr: 2, minWidth: 'fit-content' }}>Addresses</Typography>
+          <Typography variant="subtitle1" className="section-title" sx={{ mr: 2, minWidth: 'fit-content' }}>Streets</Typography>
           <Button
             variant="contained"
-            color="primary"
             onClick={addAddressField}
             fullWidth
-            sx={{ 
-              textTransform: 'none',
-              height: '40px',
-              fontSize: '14px'
-            }}
+            className="add-address-button"
           >
-            + ADD ADDRESS
+            + ADD STREET
           </Button>
         </Box>
+        
+        <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary', fontStyle: 'italic' }}>
+          Enter street names only (e.g., "Main Street"). Do not include house numbers.
+        </Typography>
         
         <Stack spacing={2}>
           {formData.addresses.map((address, index) => (
@@ -412,7 +410,7 @@ const CreateCampaign = () => {
                 name="address"
                 value={address}
                 onChange={(e) => handleInputChange(e, index)}
-                placeholder="Enter street address"
+                placeholder="Enter street name (e.g., Main Street)"
                 required
                 variant="outlined"
                 size="medium"
@@ -485,7 +483,6 @@ const CreateCampaign = () => {
       <Button
         type="submit"
         variant="contained"
-        color="primary"
         fullWidth
         disabled={
           isLoading || 
@@ -495,12 +492,7 @@ const CreateCampaign = () => {
           !formData.city.trim() || 
           !formData.state
         }
-        sx={{ 
-          mt: 3, 
-          textTransform: 'none',
-          height: '48px',
-          fontSize: '16px'
-        }}
+        className="create-campaign-button"
       >
         {isLoading ? 'Creating Campaign...' : 
          !isBackendAvailable ? 'Server Unavailable' : 
@@ -517,41 +509,19 @@ const CreateCampaign = () => {
   );
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 4, p: 3 }}>
+    <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4, p: 3 }}>
       <Stack direction="row" alignItems="center" spacing={2} mb={2}>
-        <FaHome size={24} color="#1976d2" />
+        <FaHome size={24} color="#f7f9fbff" />
         <Typography variant="h4" component="h1">
           Neighborhood / Address Selection
         </Typography>
       </Stack>
       
-      <Typography variant="subtitle1" color="text.secondary" mb={4}>
-        Search, map, or upload addresses to generate marketing flyers
+      <Typography variant="subtitle1" color="text.secondary" mb={4} sx={{ ml: '40px' }}>
+        Enter street names to generate marketing flyers
       </Typography>
 
-      <Stack direction="row" spacing={2} mb={4}>
-        <Button
-          startIcon={<FaMapMarkerAlt />}
-          variant={activeTab === 'map' ? 'contained' : 'outlined'}
-          onClick={() => setActiveTab('map')}
-        >
-          Map Link
-        </Button>
-        <Button
-          startIcon={<FaMapMarkerAlt />}
-          variant={activeTab === 'address' ? 'contained' : 'outlined'}
-          onClick={() => setActiveTab('address')}
-        >
-          Enter Address
-        </Button>
-        <Button
-          startIcon={<IoCloudUploadOutline />}
-          variant={activeTab === 'upload' ? 'contained' : 'outlined'}
-          onClick={() => setActiveTab('upload')}
-        >
-          Upload CSV
-        </Button>
-      </Stack>
+
 
       {renderAddressForm()}
     </Box>

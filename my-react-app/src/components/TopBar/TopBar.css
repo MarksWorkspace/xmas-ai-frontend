@@ -1,6 +1,6 @@
 .topbar {
   position: fixed;
-  left: min(240px, 20vw);
+  left: min(200px, 20vw);
   top: 0;
   right: 0;
   height: clamp(48px, 6vh, 56px);
@@ -10,12 +10,17 @@
   align-items: center;
   justify-content: space-between;
   z-index: 100;
-  padding: 0 clamp(16px, 2vw, 32px);
+  padding: 0 clamp(16px, 2vw, 32px) 0 12px;
+  transition: left 0.3s ease;
+}
+
+body.sidebar-collapsed .topbar {
+  left: 64px;
 }
 
 .topbar-left {
   position: relative;
-  padding-left: clamp(12px, 1.5vw, 20px);
+  padding-left: 0;
   flex: 1;
   max-width: 600px;
 }
@@ -25,19 +30,21 @@
   min-width: 200px;
   max-width: 340px;
   height: clamp(32px, 4vh, 36px);
-  border-radius: 8px;
-  border: 1px solid #eaeaea;
-  background: #f7f7f7;
-  padding: 0 36px 0 16px;
+  border-radius: 20px;
+  border: 1px solid #e0e0e0;
+  background: #f9f9f9;
+  padding: 0 40px 0 16px;
   font-size: clamp(13px, 0.9vw, 14px);
   color: #222;
   outline: none;
-  transition: border 0.2s;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .topbar-search:focus {
   border: 1.5px solid #1b4332;
   background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
 .topbar-search-icon {
@@ -45,17 +52,52 @@
   right: calc(100% - 330px);
   top: 50%;
   transform: translateY(-50%);
-  color: #888;
+  color: #666;
   pointer-events: none;
   display: flex;
   align-items: center;
+  transition: color 0.2s ease;
 }
 
+.topbar-search:focus + .topbar-search-icon {
+  color: #1b4332;
+}
 
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .topbar {
+    left: 280px;
+    height: 80px;
+    padding: 0 48px 0 24px;
+  }
+  
+  body.sidebar-collapsed .topbar {
+    left: 64px;
+  }
+
+  .topbar-search {
+    min-width: 300px;
+    max-width: 500px;
+    height: 48px;
+    border-radius: 24px;
+    padding: 0 48px 0 20px;
+    font-size: 18px;
+  }
+
+  .topbar-search-icon {
+    right: calc(100% - 480px);
+    font-size: 20px;
+  }
+}
 
 @media (max-width: 768px) {
   .topbar {
+    left: 0;
     padding: 0 16px;
+  }
+  
+  body.sidebar-collapsed .topbar {
+    left: 0;
   }
 
   .topbar-left {
@@ -64,6 +106,7 @@
 
   .topbar-search {
     max-width: 280px;
+    border-radius: 16px;
   }
 
   .topbar-search-icon {
@@ -74,9 +117,11 @@
 @media (max-width: 480px) {
   .topbar-search {
     max-width: 200px;
+    border-radius: 14px;
+    font-size: 12px;
   }
 
   .topbar-search-icon {
     right: calc(100% - 190px);
   }
-} 
+}

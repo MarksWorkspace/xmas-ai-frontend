@@ -1,16 +1,14 @@
+/* Basic app structure */
 .app {
   display: flex;
   min-height: 100vh;
-  position: relative;
   background-color: #f8f9fa;
 }
 
 .main-content {
   flex: 1;
-  margin-left: min(240px, 20vw);
-  padding-top: calc(clamp(48px, 6vh, 56px));
-  width: 100%;
-  max-width: 100%;
+  margin-left: 200px;
+  padding-top: 48px;
   overflow-x: hidden;
   transition: margin-left 0.3s ease;
 }
@@ -19,111 +17,8 @@
   margin-left: 0;
 }
 
-.auth-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  width: 100%;
-  background-color: #f8f9fa;
-  padding: 20px;
-}
-
-.header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: min(240px, 20vw);
-  display: flex;
-  justify-content: flex-end;
-  padding: 1rem;
-  background-color: white;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  z-index: 100;
-}
-
-.logout-button {
-  background-color: transparent;
-  color: #1a73e8;
-  border: 1px solid #1a73e8;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.logout-button:hover {
-  background-color: #1a73e8;
-  color: white;
-}
-
-.gradient-background {
-  background: linear-gradient(180deg, rgba(211, 248, 228, 0.3) 0%, rgba(255, 255, 255, 0) 100%);
-  border-radius: 24px;
-  padding: clamp(16px, 2vw, 20px);
-  margin: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-}
-
-.welcome-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-@media (max-width: 768px) {
-  .welcome-wrapper {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-.dashboard-row {
-  display: flex;
-  gap: 24px;
-  margin: 24px 0;
-  padding: 0 24px;
-}
-
-.dashboard-main {
-  flex: 3;
-  min-width: 0;
-}
-
-.dashboard-side {
-  flex: 2;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-@media (max-width: 800px) {
-  .dashboard-row {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 768px) {
-  .gradient-background {
-    margin: 12px;
-    padding: 16px;
-  }
-  
-  .main-content {
-    padding-top: 48px;
-  }
-
-  .dashboard-row {
-    padding: 0 16px;
-  }
-
-  .header {
-    left: 0;
-  }
+body.sidebar-collapsed .main-content {
+  margin-left: 50px;
 }
 
 /* Reset some basic elements */
@@ -148,25 +43,114 @@ input {
   border: 1px solid #dadce0;
   border-radius: 4px;
   font-size: 16px;
-  width: 100%;
 }
 
 button {
   cursor: pointer;
 }
 
-/* Loading spinner */
-.loading-spinner {
-  border: 3px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 3px solid #1a73e8;
-  width: 24px;
-  height: 24px;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
+.dashboard-row {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+  padding: 0 16px;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-side {
+  width: 280px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .main-content {
+    margin-left: 280px;
+    padding-top: 80px;
+  }
+
+  body.sidebar-collapsed .main-content {
+    margin-left: 60px;
+  }
+
+  .dashboard-row {
+    margin: 24px 0;
+    gap: 24px;
+    padding: 0 24px;
+  }
+  
+  .dashboard-side {
+    width: 350px;
+    min-width: 350px;
+  }
+  
+  /* Scale up form elements */
+  input {
+    padding: 12px 16px;
+    font-size: 18px;
+    border-radius: 6px;
+  }
+  
+  button {
+    font-size: 16px;
+    padding: 12px 20px;
+    border-radius: 6px;
+  }
+}
+
+/* Large screens (1440px - 1599px) */
+@media (min-width: 1440px) and (max-width: 1599px) {
+  .main-content {
+    margin-left: 240px;
+  }
+
+  body.sidebar-collapsed .main-content {
+    margin-left: 50px;
+  }
+
+  .dashboard-row {
+    max-width: 1400px;
+    margin: 24px auto;
+    gap: 24px;
+    padding: 0 32px;
+  }
+  
+  .dashboard-side {
+    width: 320px;
+    min-width: 320px;
+  }
+}
+
+/* Small laptop and tablet */
+@media (max-width: 1024px) {
+  .dashboard-row {
+    gap: 12px;
+    padding: 0 12px;
+  }
+  
+  .dashboard-side {
+    width: 240px;
+    min-width: 240px;
+  }
+}
+
+/* Mobile and small tablets */
+@media (max-width: 768px) {
+  .dashboard-row {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 12px;
+  }
+  
+  .dashboard-side {
+    width: 100%;
+    min-width: 100%;
+  }
 }

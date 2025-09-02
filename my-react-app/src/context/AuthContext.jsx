@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (username, email, password) => {
+  const register = async (username, email, password, phone, company_name) => {
     try {
       setLoading(true);
       setError(null);
@@ -69,6 +69,8 @@ export const AuthProvider = ({ children }) => {
         username,
         email,
         password,
+        phone,
+        company_name,
       });
       return response;
     } catch (err) {

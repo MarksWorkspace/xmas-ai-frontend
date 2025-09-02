@@ -1,39 +1,57 @@
 .create-campaign-container {
-  max-width: 1200px;
-  margin: 40px auto;
+  max-width: 800px;
+  margin: 2rem auto;
   padding: 0;
   background: white;
-  border-radius: 12px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f1f5f9;
 }
 
 .campaign-header {
-  background-color: #1a73e8;
+  background: linear-gradient(135deg, #58ad8a 0%, #0b3f28 100%);
   color: white;
-  padding: 20px 24px 0;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 0;
+  padding: 2rem 2.5rem 1.5rem;
+  position: relative;
+}
+
+.campaign-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
 }
 
 .campaign-header h1 {
   margin: 0;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header-icon {
-  font-size: 20px;
+  font-size: 1.5rem;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .header-subtitle {
-  background-color: #1a73e8;
+  background: linear-gradient(135deg, #58ad8a 0%, #0b3f28 100%);
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
-  padding: 8px 24px 16px;
-  font-size: 14px;
+  padding: 1rem 2.5rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.4;
 }
 
 .selection-options {
@@ -58,7 +76,7 @@
 }
 
 .option-button.active {
-  color: #1a73e8;
+  color: #1b4332;
 }
 
 .option-button.active::after {
@@ -68,7 +86,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #1a73e8;
+  background-color: #1b4332;
 }
 
 .option-icon {
@@ -88,8 +106,8 @@
 }
 
 .upload-area.dragging {
-  border-color: #1a73e8;
-  background-color: rgba(26, 115, 232, 0.05);
+  border-color: #1b4332;
+  background-color: rgba(27, 67, 50, 0.05);
 }
 
 .upload-content {
@@ -102,7 +120,7 @@
 }
 
 .upload-icon {
-  color: #1a73e8;
+  color: #1b4332;
   font-size: 32px;
 }
 
@@ -120,7 +138,7 @@
 }
 
 .choose-file-btn {
-  background-color: #1a73e8;
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
   color: white;
   border: none;
   padding: 8px 24px;
@@ -128,12 +146,12 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background 0.2s ease;
   margin-top: 8px;
 }
 
 .choose-file-btn:hover {
-  background-color: #1557b0;
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%);
 }
 
 .file-format-note {
@@ -144,79 +162,158 @@
 
 /* Address Form Styles */
 .address-form-container {
-  padding: 24px;
-  max-width: 600px;
+  padding: 3rem 2.5rem;
   margin: 0 auto;
+  background: linear-gradient(135deg, #fafbfc 0%, #f8fafc 100%);
+  position: relative;
+}
+
+.address-form-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 2.5rem;
+  right: 2.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #e2e8f0 50%, transparent 100%);
 }
 
 .address-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 2rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.75rem;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 16px;
+  gap: 1.5rem;
 }
 
 .addresses-container {
-  margin: 24px 0;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e8f0fe;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.addresses-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
+  border-radius: 16px 16px 0 0;
 }
 
 .addresses-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
+  padding-top: 0.5rem;
 }
 
 .addresses-header h3 {
   margin: 0;
-  color: #1a73e8;
-  font-size: 16px;
-  font-weight: 600;
+  color: #1a202c;
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.addresses-header h3::before {
+  content: '🏘️';
+  font-size: 1.5rem;
 }
 
 .add-address-btn {
-  background: #1a73e8;
+  background: linear-gradient(135deg, #58ad8a 0%, #0b3f28 100%);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.95rem;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  gap: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(88, 173, 138, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.add-address-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.add-address-btn:hover::before {
+  left: 100%;
 }
 
 .add-address-btn:hover {
-  background: #1557b0;
+  background: linear-gradient(135deg, #4a9d7a 0%, #083b24 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(88, 173, 138, 0.4);
 }
 
 .address-field-container {
   display: flex;
-  gap: 16px;
+  gap: 1.5rem;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 1.5rem;
   background: white;
-  padding: 16px;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.address-field-container:hover {
+  border-color: #58ad8a;
+  box-shadow: 0 4px 12px rgba(88, 173, 138, 0.1);
+  transform: translateY(-1px);
+}
+
+.address-field-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #58ad8a 0%, #0b3f28 100%);
+  border-radius: 12px 0 0 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.address-field-container:hover::before {
+  opacity: 1;
 }
 
 .address-field-container .form-group {
@@ -225,21 +322,26 @@
 }
 
 .remove-address-btn {
-  background: #dc3545;
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
-  height: 38px;
-  transition: background-color 0.2s;
+  font-size: 0.9rem;
+  min-height: 44px;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
 }
 
 .remove-address-btn:hover {
-  background: #c82333;
+  background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
 }
 
 .form-group label {
@@ -259,7 +361,7 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #1a73e8;
+  border-color: #1b4332;
 }
 
 .form-group input::placeholder {
@@ -267,7 +369,7 @@
 }
 
 .submit-btn {
-  background-color: #1a73e8;
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
   color: white;
   border: none;
   padding: 10px 24px;
@@ -281,7 +383,7 @@
 }
 
 .submit-btn:hover {
-  background-color: #1557b0;
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%);
 }
 
 /* Lighting Preferences Styles */
@@ -358,14 +460,14 @@
 .lighting-preferences input[type="text"]:focus,
 .form-group input[type="text"]:focus {
   outline: none;
-  border-color: #1a73e8;
-  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+  border-color: #1b4332;
+  box-shadow: 0 0 0 2px rgba(27, 67, 50, 0.1);
 }
 
 .lighting-preferences select:hover,
 .lighting-preferences input[type="text"]:hover,
 .form-group input[type="text"]:hover {
-  border-color: #1a73e8;
+  border-color: #1b4332;
   background-color: #f8f9fa;
 }
 
@@ -389,10 +491,10 @@
 .preferences-section h3 {
   font-size: 15px;
   font-weight: 600;
-  color: #1a73e8;
+  color: #1b4332;
   margin: 0 0 16px 0;
   padding-bottom: 12px;
-  border-bottom: 2px solid #e8f0fe;
+  border-bottom: 2px solid #e8f4f0;
 }
 
 /* Style the sections */
@@ -402,7 +504,7 @@
   padding: 20px;
   margin-bottom: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e8f0fe;
+  border: 1px solid #e8f4f0;
 }
 
 /* Style checkboxes */
@@ -418,7 +520,7 @@
 .checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
-  border: 2px solid #1a73e8;
+  border: 2px solid #1b4332;
   border-radius: 4px;
   cursor: pointer;
   margin: 0;
@@ -470,6 +572,124 @@ input[list]::-webkit-calendar-picker-indicator {
   color: #5f6368;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .create-campaign-container {
+    margin: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.15);
+  }
+  
+  .campaign-header {
+    padding: 1.5rem 2rem 1rem;
+    gap: 12px;
+  }
+  
+  .campaign-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .header-icon {
+    font-size: 1.25rem;
+  }
+  
+  .header-subtitle {
+    padding: 0.75rem 2rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .address-form-container {
+    padding: 2rem 1.5rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .addresses-container {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .addresses-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .address-field-container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .remove-address-btn {
+    align-self: flex-end;
+    width: fit-content;
+    min-width: 120px;
+  }
+  
+  .add-address-btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+  
+  .create-campaign-button {
+    height: 52px !important;
+    font-size: 1rem !important;
+    margin-top: 2rem !important;
+    border-radius: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-campaign-container {
+    margin: 0.5rem;
+    border-radius: 12px;
+  }
+  
+  .campaign-header {
+    padding: 1.25rem 1.5rem 0.75rem;
+  }
+  
+  .campaign-header h1 {
+    font-size: 1.25rem;
+  }
+  
+  .header-subtitle {
+    padding: 0.5rem 1.5rem 1.25rem;
+    font-size: 0.95rem;
+  }
+  
+  .address-form-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .addresses-container {
+    padding: 1.25rem;
+  }
+  
+  .addresses-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .add-address-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .address-field-container {
+    padding: 1rem;
+  }
+  
+  .remove-address-btn {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
 /* Section transitions */
 .preferences-section {
   transition: opacity 0.2s, height 0.2s;
@@ -510,4 +730,89 @@ input[list]::-webkit-calendar-picker-indicator {
 .submit-btn:disabled {
   background-color: #dadce0;
   cursor: not-allowed;
+}
+
+/* Material-UI Button Overrides */
+.tab-button-contained {
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.tab-button-contained:hover {
+  background: linear-gradient(90deg, #4a9d7a 0%, #083b24 100%) !important;
+}
+
+.tab-button-outlined {
+  border: 1px solid #58ad8a !important;
+  color: #1b4332 !important;
+  background: transparent !important;
+}
+
+.tab-button-outlined:hover {
+  background: rgba(27, 67, 50, 0.05) !important;
+  border-color: #1b4332 !important;
+}
+
+.add-address-button {
+  background: linear-gradient(135deg, #58ad8a 0%, #0b3f28 100%) !important;
+  color: white !important;
+  text-transform: none !important;
+  height: 48px !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(88, 173, 138, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.add-address-button:hover {
+  background: linear-gradient(135deg, #4a9d7a 0%, #083b24 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(88, 173, 138, 0.4) !important;
+}
+
+.create-campaign-button {
+  background: linear-gradient(135deg, #58ad8a 0%, #0b3f28 100%) !important;
+  color: white !important;
+  text-transform: none !important;
+  height: 56px !important;
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  margin-top: 2.5rem !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 25px rgba(88, 173, 138, 0.4) !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.create-campaign-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.create-campaign-button:hover::before {
+  left: 100%;
+}
+
+.create-campaign-button:hover {
+  background: linear-gradient(135deg, #4a9d7a 0%, #083b24 100%) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 35px rgba(88, 173, 138, 0.5) !important;
+}
+
+.create-campaign-button:disabled {
+  background: #dadce0 !important;
+  color: #666 !important;
+}
+
+.section-title {
+  color: #1b4332 !important;
 }

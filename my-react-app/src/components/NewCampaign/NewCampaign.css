@@ -1,6 +1,6 @@
 .campaign-section {
   background: white;
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -12,22 +12,66 @@
 
 .campaign-header {
   color: white;
-  padding: 16px 20px;
-  font-size: 20px;
+  padding: 8px 12px;
+  font-size: 14px;
   font-weight: 600;
   text-align: left;
   letter-spacing: 0.2px;
   background: #1a73e8;
-  border-radius: 12px 12px 0 0;
+  border-radius: 6px 6px 0 0;
   margin-bottom: 0;
 }
 
 .campaign-steps {
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  padding: 40px 32px;
+  gap: 12px;
+  padding: 12px;
   flex-grow: 1;
+}
+
+/* Large monitor screens (1600px+) */
+@media (min-width: 1600px) {
+  .campaign-section {
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .campaign-header {
+    padding: 28px 36px;
+    font-size: 28px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .campaign-steps {
+    gap: 28px;
+    padding: 36px;
+    font-size: 50px;
+  }
+
+  .campaign-step {
+    padding-left: 28px;
+  }
+
+  .campaign-step::before {
+    width: 5px;
+    border-radius: 3px;
+  }
+
+  .step-number {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-size: 24px;
+  }
+
+  .start-campaign-btn {
+    padding: 24px 0;
+    font-size: 24px;
+    border-radius: 0 0 12px 12px;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -49,14 +93,33 @@
     padding: 16px 0;
     font-size: 16px;
   }
+
+  .new-campaign-container {
+    padding: 4px !important;
+    font-size: 0.8rem !important;
+    max-width: 180px !important;
+  }
+  .new-campaign-header {
+    font-size: 0.9rem !important;
+    padding: 4px !important;
+  }
+  .new-campaign-step {
+    font-size: 0.8rem !important;
+    padding: 2px !important;
+    margin-bottom: 4px !important;
+  }
+  .new-campaign-action {
+    font-size: 0.8rem !important;
+    padding: 4px 0 !important;
+  }
 }
 
 .campaign-step {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   position: relative;
-  padding-left: 20px;
+  padding-left: 16px;
 }
 
 .campaign-step::before {
@@ -65,9 +128,9 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 4px;
+  width: 3px;
   background: #1a73e8;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .campaign-step:nth-child(2)::before {
@@ -79,29 +142,29 @@
 }
 
 .step-number {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   color: #666;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 .step-title {
-  font-size: 20px;
+  font-size: 13px;
   font-weight: 500;
   color: #1f1f1f;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 .start-campaign-btn {
   width: 100%;
-  padding: 20px 0;
+  padding: 10px 0;
   background: #002016;
   color: white;
   border: none;
-  border-radius: 0 0 12px 12px;
-  font-size: 18px;
+  border-radius: 0 0 6px 6px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -112,6 +175,4 @@
 
 .start-campaign-btn:hover {
   background: #003926;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 32, 22, 0.2);
 }
