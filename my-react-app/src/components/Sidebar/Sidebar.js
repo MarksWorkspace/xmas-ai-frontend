@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
-import { RiDashboardLine, RiAddLine, RiWalletLine, RiLogoutBoxRLine, RiCustomerService2Line } from 'react-icons/ri';
+import { RiDashboardLine, RiAddLine, RiWalletLine, RiLogoutBoxRLine, RiCustomerService2Line, RiMenuLine, RiCloseLine } from 'react-icons/ri';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -39,18 +39,25 @@ const Sidebar = () => {
 
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-      <div className="sidebar-header">
-        <h1 className="sidebar-title">Smart Lights</h1>
-        <button className="hamburger-button" onClick={toggleSidebar}>
-          <div className="hamburger-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </button>
-      </div>
-      
       <nav className="nav-menu">
+        <div className="nav-item toggle-item" onClick={toggleSidebar}>
+          {isCollapsed ? (
+            <>
+              <span className="nav-icon">
+                <RiMenuLine size={20} />
+              </span>
+              <span className="nav-label">Smart Lights</span>
+            </>
+          ) : (
+            <>
+              <span className="nav-label">Smart Lights</span>
+              <span className="nav-icon close-icon">
+                <RiCloseLine size={20} />
+              </span>
+            </>
+          )}
+        </div>
+
         {mainMenuItems.map((item, index) => (
           <div 
             key={index} 
@@ -78,14 +85,14 @@ const Sidebar = () => {
             </div>
           ))}
         </div>
-      </nav>
 
-      <div className="logout-section">
-        <div className="nav-item" onClick={handleLogout} role="button" tabIndex={0}>
-          <span className="nav-icon"><RiLogoutBoxRLine size={20} /></span>
-          <span className="nav-label">Logout</span>
+        <div className="logout-section">
+          <div className="nav-item" onClick={handleLogout} role="button" tabIndex={0}>
+            <span className="nav-icon"><RiLogoutBoxRLine size={20} /></span>
+            <span className="nav-label">Logout</span>
+          </div>
         </div>
-      </div>
+      </nav>
     </div>
   );
 };
