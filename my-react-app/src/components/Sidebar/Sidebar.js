@@ -9,6 +9,17 @@ const Sidebar = () => {
   const { logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // Handle sidebar class on mount and cleanup
+  React.useEffect(() => {
+    // Remove any existing class on mount to ensure clean state
+    document.body.classList.remove('sidebar-collapsed');
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('sidebar-collapsed');
+    };
+  }, []);
+
   const handleLogout = () => {
     try {
       logout();
@@ -23,8 +34,13 @@ const Sidebar = () => {
   };
 
   const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
-    document.body.classList.toggle('sidebar-collapsed');
+    const newCollapsedState = !isCollapsed;
+    setIsCollapsed(newCollapsedState);
+    if (newCollapsedState) {
+      document.body.classList.add('sidebar-collapsed');
+    } else {
+      document.body.classList.remove('sidebar-collapsed');
+    }
   };
 
   const mainMenuItems = [
