@@ -64,14 +64,14 @@ const useAddressForm = (onSubmit) => {
       style: ''
     },
     roof_lights: {
-      enabled: false,
+      enabled: true,
       bulb_size: '',
       colors: [],
       pattern: '',
       style: ''
     },
     window_lights: {
-      enabled: false,
+      enabled: true,
       color: '',
       style: '',
       interior_glow: false
@@ -118,8 +118,8 @@ const useAddressForm = (onSubmit) => {
       depth_of_field: ''
     },
     image_settings: {
-      resolution: '',
-      format: ''
+      resolution: '3840x2160',
+      format: 'landscape'
     }
   });
 

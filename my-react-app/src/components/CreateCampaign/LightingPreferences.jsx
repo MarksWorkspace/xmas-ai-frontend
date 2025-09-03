@@ -369,53 +369,7 @@ const LightingPreferences = ({ preferences, onToggle }) => {
           )}
         </Paper>
 
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="subtitle1" className="section-title" gutterBottom>Image Settings</Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                select
-                fullWidth
-                size="medium"
-                sx={{ 
-                  '& .MuiSelect-select': {
-                    minWidth: '120px'
-                  },
-                  minHeight: '56px'
-                }}
-                label="Resolution"
-                value={preferences.image_settings.resolution}
-                onChange={(e) => handleChange('image_settings', 'resolution', e.target.value)}
-              >
-                <MenuItem value="">Select Resolution</MenuItem>
-                <MenuItem value="1920x1080">1920x1080 (Full HD)</MenuItem>
-                <MenuItem value="2560x1440">2560x1440 (2K)</MenuItem>
-                <MenuItem value="3840x2160">3840x2160 (4K)</MenuItem>
-              </TextField>
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                select
-                fullWidth
-                size="medium"
-                sx={{ 
-                  '& .MuiSelect-select': {
-                    minWidth: '120px'
-                  },
-                  minHeight: '56px'
-                }}
-                label="Format"
-                value={preferences.image_settings.format}
-                onChange={(e) => handleChange('image_settings', 'format', e.target.value)}
-              >
-                <MenuItem value="">Select Format</MenuItem>
-                <MenuItem value="landscape">Landscape</MenuItem>
-                <MenuItem value="portrait">Portrait</MenuItem>
-                <MenuItem value="square">Square</MenuItem>
-              </TextField>
-            </Grid>
-          </Grid>
-        </Paper>
+        {/* Image settings are now fixed to landscape and 4K */}
       </Stack>
     </Box>
   );
