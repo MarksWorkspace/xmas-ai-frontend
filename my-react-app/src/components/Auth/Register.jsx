@@ -69,7 +69,7 @@ const Register = () => {
               id="phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="e.g., +1 (555) 123-4567"
+              placeholder="e.g., (555) 123-4567"
               required
               autoComplete="tel"
             />
