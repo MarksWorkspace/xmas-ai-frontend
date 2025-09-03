@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, useNavigate, useLocation, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, useNavigate, useLocation, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { makeRequest, API_ROUTES } from './config/api';
@@ -17,7 +17,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import StreetView from './components/StreetView/StreetView';
 import ProtectedRoute from './components/ProtectedRoute';
-import { Billing, PaymentSuccess } from './components/Billing';
+import { Billing, PaymentSuccess } from './components/Billing/index.js';
 import ContactUs from './components/ContactUs/ContactUs';
 import MobileBlocker from './components/common/MobileBlocker/MobileBlocker';
 
@@ -136,30 +136,7 @@ const AppContent = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={
             <ProtectedRoute>
-              <div className="gradient-background">
-                <div className="welcome-wrapper">
-                  <WelcomeBanner />
-                </div>
-                <div className="stats-container">
-                  {statsData.map((stat, index) => (
-                    <StatCard 
-                      key={index}
-                      icon={stat.icon}
-                      value={stat.value}
-                      label={stat.label}
-                    />
-                  ))}
-                </div>
-                <div className="dashboard-row">
-                  <div className="dashboard-main">
-                    <JobsInProgress />
-                  </div>
-                  <div className="dashboard-side">
-                    <NewCampaign />
-                  </div>
-                </div>
-                <FlyerLibrary />
-              </div>
+              <Navigate to="/dashboard" replace />
             </ProtectedRoute>
           } />
           <Route path="/dashboard" element={
