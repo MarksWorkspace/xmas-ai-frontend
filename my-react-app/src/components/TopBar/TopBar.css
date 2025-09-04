@@ -15,7 +15,7 @@
 }
 
 body.sidebar-collapsed .topbar {
-  left: 64px;
+  left: 50px;
 }
 
 .topbar-left {
@@ -72,7 +72,7 @@ body.sidebar-collapsed .topbar {
   }
   
   body.sidebar-collapsed .topbar {
-    left: 64px;
+    left: 60px;
   }
 
   .topbar-search {
