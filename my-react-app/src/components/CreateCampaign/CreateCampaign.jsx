@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import './CreateCampaign.css';
 import { FaHome, FaMapMarkerAlt } from 'react-icons/fa';
 
@@ -226,6 +227,7 @@ FormInput.propTypes = {
 
 // Main Component
 const CreateCampaign = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({
@@ -348,7 +350,13 @@ const CreateCampaign = () => {
       }
 
       const data = await makeRequest(API_ROUTES.jobs, 'POST', requestData);
-      setSuccess('Campaign created successfully! Processing your request...');
+      setSuccess('Campaign created successfully! Redirecting to dashboard...');
+      
+      // Wait a short moment to show the success message
+      setTimeout(() => {
+        // Navigate to dashboard and force a reload
+        window.location.href = '/dashboard';
+      }, 1500);
     } catch (err) {
       setError(err.message || 'Failed to create campaign. Please try again.');
       console.error('Error creating job:', err);
