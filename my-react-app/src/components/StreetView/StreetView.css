@@ -60,9 +60,11 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 16px;
   white-space: nowrap;
+  min-width: 120px;
 }
 
 .download-button:hover {
