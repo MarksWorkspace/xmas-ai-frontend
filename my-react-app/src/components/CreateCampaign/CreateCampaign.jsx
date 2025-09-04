@@ -496,7 +496,7 @@ const CreateCampaign = () => {
       >
         {isLoading ? 'Creating Campaign...' : 
          !isBackendAvailable ? 'Server Unavailable' : 
-         'CREATE CAMPAIGN'}
+         'CREATE JOB'}
       </Button>
 
       {error && (
