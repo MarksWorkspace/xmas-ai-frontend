@@ -56,7 +56,7 @@ export const JobProvider = ({ children }) => {
           const flyer = {
             id: `${job.id}-${address.id}`,
             image: imageUrl,
-            fullAddress: address.full_address || `${address.house_number} ${address.city}, ${address.state}`,
+            fullAddress: address.full_address || `${address.house_number} ${address.street}`,
             houseNumber: address.house_number,
             city: address.city,
             state: address.state,

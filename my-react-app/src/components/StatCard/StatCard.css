@@ -94,7 +94,34 @@
   }
 }
 
-@media (max-width: 1200px) {
+/* Laptop screens (1200px - 1600px) */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .stat-card {
+    padding: 12px;
+    border-radius: 8px;
+    gap: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .stat-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+  }
+}
+
+/* Tablet and smaller screens */
+@media (max-width: 1199px) {
   .stat-card {
     padding: 4px !important;
     font-size: 0.7rem !important;

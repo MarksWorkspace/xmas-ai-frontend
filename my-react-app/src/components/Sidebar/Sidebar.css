@@ -3,7 +3,7 @@
   height: 100vh;
   background-color: #ffffff;
   color: #333333;
-  padding: 12px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -18,76 +18,74 @@
 
 .sidebar.collapsed {
   width: 50px;
-  padding: 12px 8px;
+  padding: 0;
 }
 
-.sidebar-header {
-  display: flex;
-  align-items: center;
+.nav-item.toggle-item {
+  margin-bottom: 16px;
+  background: transparent !important;
   justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 0 4px;
+  padding: 12px;
+  border-radius: 8px;
+  color: #333333 !important;
+  pointer-events: none;
 }
 
-.sidebar-title {
+.nav-item.toggle-item .close-icon {
+  pointer-events: auto;
+}
+
+/* Re-enable pointer events when sidebar is collapsed */
+.sidebar.collapsed .nav-item.toggle-item {
+  pointer-events: auto;
+}
+
+.sidebar.collapsed .nav-item.toggle-item:hover {
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%) !important;
+  color: #ffffff !important;
+}
+
+.sidebar.collapsed .nav-item.toggle-item:hover .nav-icon {
+  color: #ffffff;
+}
+
+.nav-item.toggle-item .nav-label {
+  color: #333333 !important;
+}
+
+.nav-item.toggle-item .nav-label {
   font-size: 18px;
   font-weight: 600;
   margin: 0;
+  color: #333333;
+  cursor: default;
 }
 
-.hamburger-button {
-  width: 30px;
-  height: 30px;
-  background: transparent;
-  border: none;
+.nav-item.toggle-item .close-icon {
+  margin: 0;
+  padding: 8px;
+  border-radius: 4px;
   cursor: pointer;
-  padding: 0;
+  width: fit-content;
+  height: fit-content;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.hamburger-icon {
-  width: 20px;
-  height: 14px;
-  position: relative;
-  margin: 0 auto;
+.nav-item.toggle-item .close-icon:hover {
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
+  color: #ffffff;
 }
 
-.hamburger-icon span {
-  display: block;
-  position: absolute;
-  height: 2px;
-  width: 100%;
-  background: #333;
-  border-radius: 2px;
-  transition: all 0.3s ease;
+/* Keep the standard nav-item hover effect only when collapsed */
+.sidebar.collapsed .nav-item.toggle-item {
+  cursor: pointer;
 }
 
-.hamburger-icon span:first-child {
-  top: 0;
-}
-
-.hamburger-icon span:nth-child(2) {
-  top: 6px;
-}
-
-.hamburger-icon span:last-child {
-  top: 12px;
-}
-
-.sidebar.collapsed .hamburger-icon span:first-child {
-  transform: rotate(45deg);
-  top: 6px;
-}
-
-.sidebar.collapsed .hamburger-icon span:nth-child(2) {
-  opacity: 0;
-}
-
-.sidebar.collapsed .hamburger-icon span:last-child {
-  transform: rotate(-45deg);
-  top: 6px;
+.sidebar.collapsed .nav-item.toggle-item:hover {
+  background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
+  color: #ffffff;
 }
 
 /* Hide text when collapsed */
@@ -97,20 +95,7 @@
 
 .sidebar.collapsed .nav-item {
   justify-content: center;
-  padding: 10px 0;
-}
-
-.sidebar.collapsed .sidebar-title {
-  display: none;
-}
-
-.sidebar.collapsed .sidebar-header {
-  justify-content: center;
-  padding: 0;
-}
-
-.sidebar.collapsed .hamburger-button {
-  margin: 0;
+  padding: 8px 12px;
 }
 
 .logo-container {
@@ -138,9 +123,8 @@
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  margin: 2px 0;
-  border-radius: 6px;
+  padding: 12px;
+  margin: 0;
   cursor: pointer;
   transition: all 0.2s ease;
   color: #666666;
@@ -151,9 +135,20 @@
   position: relative;
 }
 
+.sidebar.collapsed .nav-item {
+  padding: 12px 0;
+  justify-content: center;
+}
+
 .nav-item:hover {
   background: linear-gradient(90deg, #58ad8a 0%, #0b3f28 100%);
   color: #ffffff;
+}
+
+/* Override hover effect for toggle-item */
+.nav-item.toggle-item:hover {
+  background: transparent;
+  color: #333333;
 }
 
 .nav-item.active {
@@ -185,6 +180,8 @@
   opacity: 1;
   color: #ffffff;
 }
+
+
 
 .active .nav-label,
 .active .nav-icon {
