@@ -24,6 +24,20 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [error, setError] = useState(null);
+  const [freeUsage, setFreeUsage] = useState(null);
+
+  // Effect to fetch free usage data
+  React.useEffect(() => {
+    const fetchFreeUsage = async () => {
+      try {
+        const response = await makeRequest(API_ROUTES.freeUsage);
+        setFreeUsage(response);
+      } catch (err) {
+        console.error('Error fetching free usage:', err);
+      }
+    };
+    fetchFreeUsage();
+  }, []);
 
   // Effect to sync user state with localStorage and handle initialization
   React.useEffect(() => {
@@ -57,6 +71,9 @@ export const AuthProvider = ({ children }) => {
       
       // Then update state
       setUser({ username, token: response.access_token });
+      
+      // Force reload to ensure fresh data
+      window.location.href = '/dashboard';
       return response;
     } catch (err) {
       console.error('Login error:', err);
@@ -90,7 +107,23 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    // Clear all user-related data from localStorage and sessionStorage
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('username');
+    sessionStorage.removeItem('username');
+    // Force reload the page to clear all cached data
+    window.location.href = '/login';
+  };
+
+  const refreshFreeUsage = async () => {
+    try {
+      const response = await makeRequest(API_ROUTES.freeUsage);
+      setFreeUsage(response);
+      return response;
+    } catch (err) {
+      console.error('Error refreshing free usage:', err);
+      throw err;
+    }
   };
 
   const value = {
@@ -98,6 +131,8 @@ export const AuthProvider = ({ children }) => {
     loading,
     isInitializing,
     error,
+    freeUsage,
+    refreshFreeUsage,
     login,
     register,
     logout,

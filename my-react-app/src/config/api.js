@@ -4,6 +4,7 @@ export const API_ROUTES = {
   me: `${API_BASE_URL}/users/me`,
   login: `${API_BASE_URL}/users/token`,
   register: `${API_BASE_URL}/users/register`,
+  freeUsage: `${API_BASE_URL}/users/free-usage`,
   jobs: `${API_BASE_URL}/jobs/`,
   jobStatus: (jobId) => `${API_BASE_URL}/jobs/${jobId}/status`,
   jobAddresses: (jobId) => `${API_BASE_URL}/jobs/${jobId}/addresses/`,
