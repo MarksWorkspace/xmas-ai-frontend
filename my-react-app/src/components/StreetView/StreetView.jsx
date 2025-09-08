@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { makeRequest, API_ROUTES, API_BASE_URL } from '../../config/api';
+import { useJobs } from '../../context/JobContext';
 import AuthImage from '../common/AuthImage';
 import ImageModal from '../common/ImageModal';
 import LoadingOverlay from './LoadingOverlay';
@@ -8,40 +9,62 @@ import './StreetView.css';
 import JSZip from 'jszip';
 
 const StreetView = () => {
-  const { streetName } = useParams();
+  const { streetName, batchId } = useParams();
+  const { completedFlyers } = useJobs();
   const [houses, setHouses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [displayLimit, setDisplayLimit] = useState(20);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [pageTitle, setPageTitle] = useState('');
   const ITEMS_PER_PAGE = 20;
 
   useEffect(() => {
-    const loadStreetHouses = async () => {
+    const loadData = async () => {
       try {
-        // Get houses from completedFlyers context for this street
-        const { completedFlyers } = window.__FLYER_DATA__ || {};
-        console.log('DEBUG - Street name:', streetName);
-        console.log('DEBUG - Completed flyers data:', completedFlyers);
-        if (completedFlyers && completedFlyers[streetName]) {
-          console.log('DEBUG - Houses for this street:', completedFlyers[streetName].map(house => ({
-            id: house.id,
-            jobId: house.jobId,
-            fullAddress: house.fullAddress,
-            imageUrl: house.image.split('?')[0]
-          })));
-          setHouses(completedFlyers[streetName]);
-          setLoading(false);
+        console.log('StreetView loading data:', { streetName, batchId, completedFlyers });
+        
+        let housesData = [];
+        let title = '';
+        
+        if (batchId) {
+          // Handle batch route: /batch/:batchId
+          const jobData = completedFlyers[batchId];
+          if (jobData && jobData.streets) {
+            // Flatten all houses from all streets in this batch
+            housesData = Object.values(jobData.streets).flat();
+            title = jobData.title || `Batch ${batchId}`;
+          }
+        } else if (streetName) {
+          // Handle street route: /street/:streetName
+          // Find houses from this street across all jobs
+          Object.values(completedFlyers).forEach(jobData => {
+            if (jobData.streets && jobData.streets[streetName]) {
+              housesData = [...housesData, ...jobData.streets[streetName]];
+            }
+          });
+          title = streetName;
         }
+        
+        console.log('Loaded houses:', housesData.length, housesData);
+        setHouses(housesData);
+        setPageTitle(title);
+        setLoading(false);
+        
       } catch (err) {
-        console.error('Error loading street data:', err);
-        setError('Failed to load street data');
+        console.error('Error loading data:', err);
+        setError('Failed to load data');
         setLoading(false);
       }
     };
 
-    loadStreetHouses();
-  }, [streetName]);
+    if (completedFlyers && Object.keys(completedFlyers).length > 0) {
+      loadData();
+    } else if (!loading) {
+      // Only set loading if we're not already loading
+      setLoading(true);
+    }
+  }, [streetName, batchId, completedFlyers]);
 
   const handleDownload = async (jobId, addressId) => {
     try {
@@ -232,15 +255,7 @@ const StreetView = () => {
     }
   };
 
-  // Add a slight delay before removing the loading overlay
-  useEffect(() => {
-    if (!loading) {
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, [loading]);
+  // Remove the problematic loading loop - this was causing infinite loading
 
   if (error) {
     return <div className="street-view-error">{error}</div>;
@@ -256,7 +271,7 @@ const StreetView = () => {
             ← Go Back
           </button>
           <div className="street-info">
-            <h1>{streetName} - Dec 2025</h1>
+            <h1>{pageTitle} - Dec 2025</h1>
             <p>{houses.length} houses rendered</p>
           </div>
         </div>
