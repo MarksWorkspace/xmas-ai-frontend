@@ -11,6 +11,7 @@ import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 import JobsInProgress from './components/ActiveBatchRenders/ActiveBatchRenders';
 import NewCampaign from './components/NewCampaign/NewCampaign';
 import StatCard from './components/StatCard/StatCard';
+import FreeUsageCard from './components/StatCard/FreeUsageCard';
 import FlyerLibrary from './components/FlyerLibrary/FlyerLibrary';
 import CreateCampaign from './components/CreateCampaign/CreateCampaign';
 import Login from './components/Auth/Login';
@@ -85,7 +86,18 @@ const AppContent = () => {
     }
   ];
 
-  const { user } = useAuth();
+  const { user, freeUsage } = useAuth();
+
+  // Update stats based on free usage data
+  React.useEffect(() => {
+    if (freeUsage) {
+      setSubscriptionStats({
+        imagesUsed: freeUsage.free_images_used,
+        imagesLimit: freeUsage.total_free_images_granted,
+        imagesRemaining: freeUsage.free_images_remaining
+      });
+    }
+  }, [freeUsage]);
 
   // Fetch subscription data
   React.useEffect(() => {
@@ -160,6 +172,7 @@ const AppContent = () => {
                     <JobsInProgress />
                   </div>
                   <div className="dashboard-side">
+                    {freeUsage && <FreeUsageCard />}
                     <NewCampaign />
                   </div>
                 </div>
