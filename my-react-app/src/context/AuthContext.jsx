@@ -22,9 +22,10 @@ export const AuthProvider = ({ children }) => {
     return null;
   });
   const [loading, setLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
   const [error, setError] = useState(null);
 
-  // Effect to sync user state with localStorage
+  // Effect to sync user state with localStorage and handle initialization
   React.useEffect(() => {
     if (user) {
       localStorage.setItem('auth_token', user.token);
@@ -33,7 +34,12 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('username');
     }
-  }, [user]);
+    
+    // Mark initialization as complete after first render
+    if (isInitializing) {
+      setIsInitializing(false);
+    }
+  }, [user, isInitializing]);
 
   const login = async (username, password) => {
     try {
@@ -90,6 +96,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     loading,
+    isInitializing,
     error,
     login,
     register,
