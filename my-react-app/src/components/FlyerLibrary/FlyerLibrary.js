@@ -75,7 +75,7 @@ const FlyerLibrary = () => {
         
       </div>
       <div className="flyer-grid">
-        {sortedJobIds.map(jobId => {
+        {[...sortedJobIds].reverse().map(jobId => {
           const jobData = completedFlyers[jobId];
           if (!jobData || !jobData.streets) return null;
           
@@ -98,13 +98,18 @@ const FlyerLibrary = () => {
                 const allFlyers = Object.values(jobData.streets).flat();
                 const combinedStreetName = allStreets.join(' + ');
                 
-                // Store the data in the expected format
+                // Store the data in the expected format, preserving job context
                 window.__FLYER_DATA__ = { 
                   completedFlyers: {
-                    [combinedStreetName]: allFlyers
+                    [jobId]: {
+                      title: jobData.title,
+                      createdAt: jobData.createdAt,
+                      completedAt: jobData.completedAt,
+                      streets: jobData.streets
+                    }
                   }
                 };
-                navigate(`/street/${encodeURIComponent(combinedStreetName)}?batch=${jobId}`);
+                navigate(`/batch/${jobId}`);
               }}
             />
           );

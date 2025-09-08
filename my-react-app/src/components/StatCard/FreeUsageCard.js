@@ -5,16 +5,20 @@ import './StatCard.css';
 const FreeUsageCard = () => {
   const { freeUsage } = useAuth();
 
+  // First check if user has subscription data
+  const hasSubscription = freeUsage?.has_subscription;
+
+  // Don't show the card if user has a subscription
+  if (hasSubscription) {
+    return null;
+  }
+
+  // Show loading or error state if no freeUsage data
   if (!freeUsage) {
     return null;
   }
 
   const { free_images_remaining, free_images_used, total_free_images_granted } = freeUsage;
-
-  // Don't show the card if user has used all free images
-  if (free_images_remaining === 0) {
-    return null;
-  }
 
   return (
     <div className="stat-card">
@@ -35,12 +39,18 @@ const FreeUsageCard = () => {
             className="progress-fill"
             style={{ 
               width: `${(free_images_used / total_free_images_granted) * 100}%`,
-              backgroundColor: '#4CAF50'
+              backgroundColor: free_images_remaining === 0 ? '#dc3545' : '#4CAF50'
             }}
           />
         </div>
         <p className="stat-footer">
-          {free_images_remaining} of {total_free_images_granted} free images remaining
+          {free_images_remaining === 0 ? (
+            <span style={{ color: '#dc3545' }}>
+              No free images remaining. Subscribe to continue creating images.
+            </span>
+          ) : (
+            `${free_images_remaining} of ${total_free_images_granted} free images remaining`
+          )}
         </p>
       </div>
     </div>

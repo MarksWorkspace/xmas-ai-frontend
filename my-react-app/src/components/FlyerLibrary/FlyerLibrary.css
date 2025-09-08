@@ -60,6 +60,8 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
   padding: 0;
+  direction: ltr; /* Ensure left-to-right layout */
+  grid-auto-flow: dense; /* Ensure dense packing of items */
 }
 
 /* Laptop screens (1024px - 1440px) */
@@ -67,6 +69,8 @@
   .flyer-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
     justify-content: start;
+    direction: ltr;
+    grid-auto-flow: dense;
   }
 }
 
