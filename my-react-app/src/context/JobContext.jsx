@@ -45,7 +45,8 @@ export const JobProvider = ({ children }) => {
 
   // Check if job exceeds free image limit
   const checkFreeImageLimit = useCallback(async (job) => {
-    if (!freeUsage || !job) return false;
+    // Skip check if user has an active subscription or if no job/freeUsage data
+    if (!job || !freeUsage || freeUsage.has_subscription) return false;
 
     try {
       // Get job status to check total_addresses
@@ -54,7 +55,8 @@ export const JobProvider = ({ children }) => {
         jobId: job.id,
         status: job.status,
         totalAddresses: jobStatus.total_addresses,
-        freeImagesRemaining: freeUsage.free_images_remaining
+        freeImagesRemaining: freeUsage.free_images_remaining,
+        hasSubscription: freeUsage.has_subscription
       });
       
       // Only proceed if total_addresses is available and greater than 0

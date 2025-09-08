@@ -25,18 +25,33 @@ export const AuthProvider = ({ children }) => {
   const [isInitializing, setIsInitializing] = useState(true);
   const [error, setError] = useState(null);
   const [freeUsage, setFreeUsage] = useState(null);
+  const [subscription, setSubscription] = useState(null);
 
-  // Effect to fetch free usage data
+  // Effect to fetch free usage and subscription data
   React.useEffect(() => {
-    const fetchFreeUsage = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await makeRequest(API_ROUTES.freeUsage);
-        setFreeUsage(response);
+        // Fetch both free usage and subscription data
+        const [freeUsageResponse, subscriptionResponse] = await Promise.all([
+          makeRequest(API_ROUTES.freeUsage),
+          makeRequest(API_ROUTES.subscription)
+        ]);
+        
+        setFreeUsage(freeUsageResponse);
+        setSubscription(subscriptionResponse);
+        
+        // Update freeUsage with subscription status
+        if (subscriptionResponse?.status === 'active') {
+          setFreeUsage(prev => ({
+            ...prev,
+            has_subscription: true
+          }));
+        }
       } catch (err) {
-        console.error('Error fetching free usage:', err);
+        console.error('Error fetching user data:', err);
       }
     };
-    fetchFreeUsage();
+    fetchUserData();
   }, []);
 
   // Effect to sync user state with localStorage and handle initialization
@@ -117,11 +132,27 @@ export const AuthProvider = ({ children }) => {
 
   const refreshFreeUsage = async () => {
     try {
-      const response = await makeRequest(API_ROUTES.freeUsage);
-      setFreeUsage(response);
-      return response;
+      // Fetch both free usage and subscription data
+      const [freeUsageResponse, subscriptionResponse] = await Promise.all([
+        makeRequest(API_ROUTES.freeUsage),
+        makeRequest(API_ROUTES.subscription)
+      ]);
+      
+      setSubscription(subscriptionResponse);
+      
+      // Update freeUsage with subscription status
+      if (subscriptionResponse?.status === 'active') {
+        setFreeUsage({
+          ...freeUsageResponse,
+          has_subscription: true
+        });
+      } else {
+        setFreeUsage(freeUsageResponse);
+      }
+      
+      return freeUsageResponse;
     } catch (err) {
-      console.error('Error refreshing free usage:', err);
+      console.error('Error refreshing user data:', err);
       throw err;
     }
   };
@@ -132,6 +163,7 @@ export const AuthProvider = ({ children }) => {
     isInitializing,
     error,
     freeUsage,
+    subscription,
     refreshFreeUsage,
     login,
     register,
