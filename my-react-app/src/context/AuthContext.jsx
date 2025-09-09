@@ -24,7 +24,12 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [error, setError] = useState(null);
-  const [freeUsage, setFreeUsage] = useState(null);
+  const [freeUsage, setFreeUsage] = useState({
+    free_images_remaining: 10,
+    free_images_used: 0,
+    total_free_images_granted: 10,
+    has_subscription: false
+  });
   const [subscription, setSubscription] = useState(null);
 
   // Effect to fetch free usage and subscription data
@@ -37,16 +42,14 @@ export const AuthProvider = ({ children }) => {
           makeRequest(API_ROUTES.subscription)
         ]);
         
-        setFreeUsage(freeUsageResponse);
-        setSubscription(subscriptionResponse);
-        
-        // Update freeUsage with subscription status
-        if (subscriptionResponse?.status === 'active') {
-          setFreeUsage(prev => ({
-            ...prev,
-            has_subscription: true
-          }));
+        // If we get a null response, keep the default values
+        if (freeUsageResponse) {
+          setFreeUsage({
+            ...freeUsageResponse,
+            has_subscription: subscriptionResponse?.status === 'active' || false
+          });
         }
+        setSubscription(subscriptionResponse);
       } catch (err) {
         console.error('Error fetching user data:', err);
       }
@@ -140,14 +143,12 @@ export const AuthProvider = ({ children }) => {
       
       setSubscription(subscriptionResponse);
       
-      // Update freeUsage with subscription status
-      if (subscriptionResponse?.status === 'active') {
+      // If we get a null response, keep the default values
+      if (freeUsageResponse) {
         setFreeUsage({
           ...freeUsageResponse,
-          has_subscription: true
+          has_subscription: subscriptionResponse?.status === 'active' || false
         });
-      } else {
-        setFreeUsage(freeUsageResponse);
       }
       
       return freeUsageResponse;
