@@ -24,12 +24,12 @@ const LightingPreferences = ({ preferences, onToggle }) => {
   };
 
   const handleArrayChange = (section, field, value) => {
-    const values = value.split(',').map(v => v.trim()).filter(v => v);
+    // Just update the raw string value
     onToggle({
       ...preferences,
       [section]: {
         ...preferences[section],
-        [field]: values
+        [field]: value
       }
     });
   };
@@ -287,15 +287,38 @@ const LightingPreferences = ({ preferences, onToggle }) => {
                 <TextField
                   fullWidth
                   size="medium"
-                sx={{ 
-                  '& .MuiSelect-select': {
-                    minWidth: '120px'
-                  },
-                  minHeight: '56px'
-                }}
+                  sx={{ 
+                    '& .MuiSelect-select': {
+                      minWidth: '120px'
+                    },
+                    minHeight: '56px'
+                  }}
                   label="Colors (comma-separated)"
-                  value={preferences.roof_lights.colors.join(', ')}
-                  onChange={(e) => handleArrayChange('roof_lights', 'colors', e.target.value)}
+                  placeholder="e.g. red,blue,green"
+                  value={preferences.roof_lights.colors}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    onToggle({
+                      ...preferences,
+                      roof_lights: {
+                        ...preferences.roof_lights,
+                        colors: newValue
+                      }
+                    });
+                  }}
+                  onBlur={(e) => {
+                    const value = e.target.value;
+                    const colors = value.split(',')
+                      .map(v => v.trim())
+                      .filter(v => v);
+                    onToggle({
+                      ...preferences,
+                      roof_lights: {
+                        ...preferences.roof_lights,
+                        colors: colors
+                      }
+                    });
+                  }}
                 />
               </Grid>
             </Grid>

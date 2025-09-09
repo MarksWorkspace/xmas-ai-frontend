@@ -67,7 +67,7 @@ const useAddressForm = (onSubmit) => {
     roof_lights: {
       enabled: true,
       bulb_size: '',
-      colors: [],
+      colors: '',
       pattern: '',
       style: ''
     },
@@ -343,7 +343,18 @@ const CreateCampaign = () => {
       };
 
       if (formData.lightingPreferences) {
-        const cleanedPreferences = cleanObject(formData.lightingPreferences);
+        // Process the preferences before sending
+        const processedPreferences = { ...formData.lightingPreferences };
+        
+        // Convert comma-separated strings to arrays where needed
+        if (processedPreferences.roof_lights?.colors) {
+          processedPreferences.roof_lights.colors = processedPreferences.roof_lights.colors
+            .split(',')
+            .map(color => color.trim())
+            .filter(color => color);
+        }
+
+        const cleanedPreferences = cleanObject(processedPreferences);
         if (Object.keys(cleanedPreferences).length > 0) {
           requestData.lighting_preferences = cleanedPreferences;
         }
