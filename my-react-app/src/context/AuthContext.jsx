@@ -24,6 +24,35 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [error, setError] = useState(null);
+  const [freeUsage, setFreeUsage] = useState(null);
+  const [subscription, setSubscription] = useState(null);
+
+  // Effect to fetch free usage and subscription data
+  React.useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Fetch both free usage and subscription data
+        const [freeUsageResponse, subscriptionResponse] = await Promise.all([
+          makeRequest(API_ROUTES.freeUsage),
+          makeRequest(API_ROUTES.subscription)
+        ]);
+        
+        setFreeUsage(freeUsageResponse);
+        setSubscription(subscriptionResponse);
+        
+        // Update freeUsage with subscription status
+        if (subscriptionResponse?.status === 'active') {
+          setFreeUsage(prev => ({
+            ...prev,
+            has_subscription: true
+          }));
+        }
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   // Effect to sync user state with localStorage and handle initialization
   React.useEffect(() => {
@@ -57,6 +86,9 @@ export const AuthProvider = ({ children }) => {
       
       // Then update state
       setUser({ username, token: response.access_token });
+      
+      // Force reload to ensure fresh data
+      window.location.href = '/dashboard';
       return response;
     } catch (err) {
       console.error('Login error:', err);
@@ -90,7 +122,39 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    // Clear all user-related data from localStorage and sessionStorage
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('username');
+    sessionStorage.removeItem('username');
+    // Force reload the page to clear all cached data
+    window.location.href = '/login';
+  };
+
+  const refreshFreeUsage = async () => {
+    try {
+      // Fetch both free usage and subscription data
+      const [freeUsageResponse, subscriptionResponse] = await Promise.all([
+        makeRequest(API_ROUTES.freeUsage),
+        makeRequest(API_ROUTES.subscription)
+      ]);
+      
+      setSubscription(subscriptionResponse);
+      
+      // Update freeUsage with subscription status
+      if (subscriptionResponse?.status === 'active') {
+        setFreeUsage({
+          ...freeUsageResponse,
+          has_subscription: true
+        });
+      } else {
+        setFreeUsage(freeUsageResponse);
+      }
+      
+      return freeUsageResponse;
+    } catch (err) {
+      console.error('Error refreshing user data:', err);
+      throw err;
+    }
   };
 
   const value = {
@@ -98,6 +162,9 @@ export const AuthProvider = ({ children }) => {
     loading,
     isInitializing,
     error,
+    freeUsage,
+    subscription,
+    refreshFreeUsage,
     login,
     register,
     logout,

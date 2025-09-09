@@ -350,6 +350,14 @@ const CreateCampaign = () => {
       }
 
       const data = await makeRequest(API_ROUTES.jobs, 'POST', requestData);
+      
+      // Refresh free usage data after job creation
+      try {
+        await makeRequest(API_ROUTES.freeUsage);
+      } catch (err) {
+        console.error('Error refreshing free usage data:', err);
+      }
+      
       setSuccess('Campaign created successfully! Redirecting to dashboard...');
       
       // Wait a short moment to show the success message

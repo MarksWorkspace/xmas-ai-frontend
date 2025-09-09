@@ -8,9 +8,10 @@ const BatchView = () => {
   const navigate = useNavigate();
   const flyers = window.__FLYER_DATA__?.completedFlyers || {};
   
-  // Combine all flyers from all streets
-  const allFlyers = Object.values(flyers).flat();
-  const allStreets = Object.keys(flyers);
+  // Get the selected job's flyers
+  const selectedJob = flyers[batchId];
+  const jobFlyers = selectedJob ? Object.values(selectedJob.streets).flat() : [];
+  const jobStreets = selectedJob ? Object.keys(selectedJob.streets) : [];
 
   return (
     <div className="batch-view">
@@ -21,12 +22,12 @@ const BatchView = () => {
           </svg>
           Back to Library
         </button>
-        <h1>{allStreets.join(' + ')}</h1>
-        <p className="house-count">{allFlyers.length} houses</p>
+        <h1>{selectedJob ? selectedJob.title : ''} - {jobStreets.join(' + ')}</h1>
+        <p className="house-count">{jobFlyers.length} houses</p>
       </div>
       
       <div className="flyers-grid">
-        {allFlyers.map((flyer) => (
+        {jobFlyers.map((flyer) => (
           <div key={flyer.id} className="flyer-item">
             <AuthImage src={flyer.image} alt={`House at ${flyer.fullAddress}`} />
             <div className="flyer-info">
