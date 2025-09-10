@@ -24,25 +24,23 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [error, setError] = useState(null);
-  const [freeUsage, setFreeUsage] = useState({
-    free_images_remaining: 10,
-    free_images_used: 0,
-    total_free_images_granted: 10,
-    has_subscription: false
-  });
+  const [freeUsage, setFreeUsage] = useState(null);
   const [subscription, setSubscription] = useState(null);
 
   // Effect to fetch free usage and subscription data
   React.useEffect(() => {
     const fetchUserData = async () => {
+      if (!user) return; // Don't fetch if user is not logged in
+      
       try {
         // Fetch both free usage and subscription data
         const [freeUsageResponse, subscriptionResponse] = await Promise.all([
           makeRequest(API_ROUTES.freeUsage),
-          makeRequest(API_ROUTES.subscription)
+          makeRequest(API_ROUTES.mySubscription)
         ]);
         
-        // If we get a null response, keep the default values
+        console.log('Free Usage Response:', freeUsageResponse);
+        
         if (freeUsageResponse) {
           setFreeUsage({
             ...freeUsageResponse,
@@ -52,10 +50,17 @@ export const AuthProvider = ({ children }) => {
         setSubscription(subscriptionResponse);
       } catch (err) {
         console.error('Error fetching user data:', err);
+        // Set default values if there's an error
+        setFreeUsage({
+          free_images_remaining: 0,
+          free_images_used: 0,
+          total_free_images_granted: 0,
+          has_subscription: false
+        });
       }
     };
     fetchUserData();
-  }, []);
+  }, [user]); // Add user as dependency
 
   // Effect to sync user state with localStorage and handle initialization
   React.useEffect(() => {

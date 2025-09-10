@@ -172,7 +172,7 @@ const AppContent = () => {
                     <JobsInProgress />
                   </div>
                   <div className="dashboard-side">
-                    {freeUsage && <FreeUsageCard />}
+                    <FreeUsageCard />
                     <NewCampaign />
                   </div>
                 </div>

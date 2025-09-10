@@ -13,9 +13,21 @@ const FreeUsageCard = () => {
     return null;
   }
 
-  // Show loading or error state if no freeUsage data
+  // Show loading state if no freeUsage data
   if (!freeUsage) {
-    return null;
+    return (
+      <div className="stat-card">
+        <div className="stat-card-content">
+          <h3>Free Images</h3>
+          <div className="stat-numbers">
+            <div className="stat-item">
+              <span className="stat-value">...</span>
+              <span className="stat-label">Loading</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const { free_images_remaining, free_images_used, total_free_images_granted } = freeUsage;
