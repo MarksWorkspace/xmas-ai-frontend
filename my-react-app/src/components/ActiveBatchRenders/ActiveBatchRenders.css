@@ -9,7 +9,7 @@
 }
 
 .jobs-in-progress * {
-  padding: 0 !important;
+  padding: 0;
   margin: 0 !important;
   box-sizing: border-box !important;
 }
@@ -19,7 +19,7 @@
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
   gap: 10px !important;
-  padding: 6px !important;
+  padding: 6px;
   width: 100% !important;
   box-sizing: border-box !important;
 }
@@ -71,6 +71,7 @@
 .batch-renders-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 4px;
   margin-bottom: 4px;
 }
@@ -96,10 +97,20 @@
   justify-content: center;
 }
 
+
 .batch-renders-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 4px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.batch-renders-list > * {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* Loading and error states */
@@ -149,7 +160,7 @@
 
   .jobs-in-progress-container {
     gap: 24px !important;
-    padding: 24px !important;
+    padding: 24px;
   }
 
   .batch-render-card {
@@ -185,8 +196,8 @@
   }
 
   .batch-renders-list {
-    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 
   .loading-spinner {
@@ -205,8 +216,8 @@
 
 @media (max-width: 1200px) {
   .batch-renders-list {
-    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
   
   .jobs-in-progress {
@@ -226,16 +237,16 @@
 
 @media (max-width: 1200px) {
   .jobs-in-progress {
-    padding: 2px !important;
+    padding: 2px;
     font-size: 9px !important;
     max-width: 500px !important;
   }
   .jobs-in-progress-container {
     gap: 4px !important;
-    padding: 2px !important;
+    padding: 2px;
   }
   .batch-render-card {
-    padding: 2px !important;
+    padding: 2px;
     max-width: 140px !important;
     gap: 2px !important;
   }
@@ -250,16 +261,14 @@
 }
 
 @media (max-width: 900px) {
-  .batch-renders-list, .jobs-in-progress-container {
-    grid-template-columns: 1fr !important;
-    gap: 6px !important;
+  .batch-renders-list {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
 
 @media (max-width: 600px) {
   .batch-renders-list {
-    grid-template-columns: 1fr;
-    gap: 6px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
 }
 
@@ -309,9 +318,9 @@
     margin-bottom: 24px;
   }
 
-  .batch-renders-list {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+  .batch-renders-list > * {
+    width: calc(50% - 12px);
+    min-width: 350px;
   }
   
   .batch-renders-title h2 {
@@ -322,8 +331,7 @@
 /* Small laptop */
 @media (max-width: 1200px) {
   .batch-renders-list {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 }
 
@@ -334,7 +342,7 @@
   }
 
   .batch-renders-list {
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
@@ -346,11 +354,11 @@
   }
 
   .batch-renders-list {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 
   .batch-renders-title h2 {
     font-size: 14px;
   }
+  
 }

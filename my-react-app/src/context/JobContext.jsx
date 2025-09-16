@@ -31,7 +31,6 @@ export const JobProvider = ({ children }) => {
   const fetchJobStatus = useCallback(async (jobId) => {
     try {
       const statusData = await makeRequest(API_ROUTES.jobStatus(jobId), 'GET');
-      console.log('📊 Job Status:', { jobId, statusData });
       return statusData;
     } catch (err) {
       console.error('Error fetching job status:', err);
@@ -43,7 +42,6 @@ export const JobProvider = ({ children }) => {
   const deleteJob = useCallback(async (jobId) => {
     try {
       setIsLoading(true);
-      console.log('🗑️ Deleting job:', jobId);
       await makeRequest(`${API_ROUTES.jobs}${jobId}`, 'DELETE');
       setActiveJobs(prev => prev.filter(job => job.id !== jobId));
       setError(null);
@@ -63,35 +61,15 @@ export const JobProvider = ({ children }) => {
     try {
       // Get job status to check total_addresses
       const jobStatus = await makeRequest(API_ROUTES.jobStatus(job.id), 'GET');
-      console.log('📊 Job Status Check:', {
-        jobId: job.id,
-        status: job.status,
-        totalAddresses: jobStatus.total_addresses,
-        freeImagesRemaining: freeUsage.free_images_remaining,
-        hasSubscription: freeUsage.has_subscription
-      });
       
       // Only proceed if total_addresses is available and greater than 0
       if (jobStatus.total_addresses && jobStatus.total_addresses > 0) {
         // Calculate remaining images needed for this job
         const completedAddresses = jobStatus.completed_addresses || 0;
         const remainingAddressesToProcess = jobStatus.total_addresses - completedAddresses;
-        
-        console.log('📊 Free Image Check:', {
-          jobId: job.id,
-          totalAddresses: jobStatus.total_addresses,
-          completedAddresses,
-          remainingToProcess: remainingAddressesToProcess,
-          freeImagesRemaining: freeUsage.free_images_remaining
-        });
 
         // Only check against the remaining addresses that need to be processed
         if (remainingAddressesToProcess > freeUsage.free_images_remaining) {
-          console.log('⚠️ Job exceeds free image limit:', {
-            jobId: job.id,
-            remainingRequired: remainingAddressesToProcess,
-            remaining: freeUsage.free_images_remaining
-          });
           // Delete the job
           await deleteJob(job.id);
           // Set error message
@@ -109,11 +87,6 @@ export const JobProvider = ({ children }) => {
   // Handle job completion and organize flyers by street
   const handleJobCompletion = useCallback(async (job) => {
     try {
-      console.log('✅ Processing completed job:', {
-        jobId: job.id,
-        description: job.description,
-        completedAt: job.completed_at
-      });
 
       const addresses = await makeRequest(API_ROUTES.jobAddresses(job.id), 'GET');
       
@@ -193,14 +166,6 @@ export const JobProvider = ({ children }) => {
     try {
       setIsLoading(true);
       const response = await makeRequest(API_ROUTES.jobs, 'GET');
-      
-      console.log('📋 All Jobs:', response.map(job => ({
-        id: job.id,
-        status: job.status,
-        description: job.description,
-        createdAt: job.created_at,
-        completedAt: job.completed_at
-      })));
 
       // Fetch status for each job to get real-time progress
       const jobsWithStatus = await Promise.all(
@@ -264,12 +229,6 @@ export const JobProvider = ({ children }) => {
       pollInterval = setInterval(async () => {
         try {
           const response = await makeRequest(API_ROUTES.jobs, 'GET');
-          
-          console.log('🔄 Polling Update - Jobs:', response.map(job => ({
-            id: job.id,
-            status: job.status,
-            description: job.description
-          })));
 
           // Fetch status for each job to get real-time progress
           let jobsWithStatus = await Promise.all(

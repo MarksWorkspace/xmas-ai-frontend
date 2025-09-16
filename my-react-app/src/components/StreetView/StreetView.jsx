@@ -22,8 +22,6 @@ const StreetView = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        console.log('StreetView loading data:', { streetName, batchId, completedFlyers });
-        
         let housesData = [];
         let title = '';
         
@@ -46,7 +44,6 @@ const StreetView = () => {
           title = streetName;
         }
         
-        console.log('Loaded houses:', housesData.length, housesData);
         setHouses(housesData);
         setPageTitle(title);
         setLoading(false);
@@ -69,9 +66,7 @@ const StreetView = () => {
   const handleDownload = async (jobId, addressId) => {
     try {
       const token = localStorage.getItem('auth_token');
-      console.log('Download params:', { jobId, addressId });
       const downloadUrl = `${API_BASE_URL}/jobs/${jobId}/addresses/${addressId}/output-image`;
-      console.log('Downloading from:', downloadUrl);
       const response = await fetch(downloadUrl, {
         headers: {
           'Accept': 'application/json',
@@ -210,7 +205,6 @@ const StreetView = () => {
         }
 
         const data = await response.json();
-        console.log('API Response:', data);
 
         // Extract all output image URLs and addresses
         const imagesToDownload = data.images
@@ -319,8 +313,6 @@ const StreetView = () => {
                 <button 
                   className="download-button"
                   onClick={() => {
-                    // Get the original IDs from the house object
-                    console.log('Download clicked - house data:', house);
                     // Extract addressId from the image URL since that has the full ID
                     const addressId = house.image.split('/addresses/')[1].split('/output-image')[0];
                     handleDownload(house.jobId, addressId);

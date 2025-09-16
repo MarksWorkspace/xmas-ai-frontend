@@ -33,13 +33,11 @@ const FlyerLibrary = () => {
   };
   
   const handleShare = async (flyerId) => {
-    console.log('Share flyer:', flyerId);
     // Implement sharing functionality
   };
 
   const handleDownload = async (flyerId) => {
     const [jobId, addressId] = flyerId.split('-');
-    console.log('Download clicked:', { flyerId, jobId, addressId });
     try {
       const token = localStorage.getItem('auth_token');
       const response = await fetch(`${API_BASE_URL}/jobs/${jobId}/addresses/${addressId}/output-image`, {
@@ -83,7 +81,6 @@ const FlyerLibrary = () => {
           const allStreets = Object.keys(jobData.streets);
           const totalHouses = Object.values(jobData.streets).reduce((sum, flyers) => sum + flyers.length, 0);
           const firstImage = Object.values(jobData.streets)[0]?.[0]?.image;
-          console.log('Debug - First image URL:', firstImage);
           
           return (
             <CompletedJobCard

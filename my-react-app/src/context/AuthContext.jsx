@@ -39,8 +39,6 @@ export const AuthProvider = ({ children }) => {
           makeRequest(API_ROUTES.mySubscription)
         ]);
         
-        console.log('Free Usage Response:', freeUsageResponse);
-        
         if (freeUsageResponse) {
           setFreeUsage({
             ...freeUsageResponse,

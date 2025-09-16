@@ -31,11 +31,6 @@ export const makeRequest = async (url, method = 'GET', data = null, isFormEncode
   if (token && !url.includes('/token')) {
     // Ensure token is in the correct format for FastAPI
     options.headers['Authorization'] = `Bearer ${token}`;
-    
-    // Debug auth header for status requests only
-    if (url.includes('/status')) {
-      console.log('Auth header for status request:', options.headers['Authorization']);
-    }
   }
 
   if (data) {
