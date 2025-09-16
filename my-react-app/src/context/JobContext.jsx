@@ -53,36 +53,11 @@ export const JobProvider = ({ children }) => {
     }
   }, [handleError]);
 
-  // Check if job exceeds free image limit
+  // Check if job exceeds free image limit - DISABLED
   const checkFreeImageLimit = useCallback(async (job) => {
-    // Skip check if user has an active subscription or if no job/freeUsage data
-    if (!job || !freeUsage || freeUsage.has_subscription) return false;
-
-    try {
-      // Get job status to check total_addresses
-      const jobStatus = await makeRequest(API_ROUTES.jobStatus(job.id), 'GET');
-      
-      // Only proceed if total_addresses is available and greater than 0
-      if (jobStatus.total_addresses && jobStatus.total_addresses > 0) {
-        // Calculate remaining images needed for this job
-        const completedAddresses = jobStatus.completed_addresses || 0;
-        const remainingAddressesToProcess = jobStatus.total_addresses - completedAddresses;
-
-        // Only check against the remaining addresses that need to be processed
-        if (remainingAddressesToProcess > freeUsage.free_images_remaining) {
-          // Delete the job
-          await deleteJob(job.id);
-          // Set error message
-          setError(`This job still needs ${remainingAddressesToProcess} more images, but you only have ${freeUsage.free_images_remaining} free images remaining. Please upgrade your account to process more images.`);
-          return true;
-        }
-      }
-      return false;
-    } catch (err) {
-      console.error('Error checking free image limit:', err);
-      return false;
-    }
-  }, [freeUsage, deleteJob]);
+    // Free usage limits have been removed - always return false (no limit exceeded)
+    return false;
+  }, []);
 
   // Handle job completion and organize flyers by street
   const handleJobCompletion = useCallback(async (job) => {
@@ -244,17 +219,12 @@ export const JobProvider = ({ children }) => {
             })
           );
 
-          // Check all non-completed jobs for free image limit
+          // Process all jobs without free usage limit checks
           for (const job of jobsWithStatus) {
-            if (job.status !== 'completed') {
-              const exceededLimit = await checkFreeImageLimit(job);
-              if (exceededLimit) {
-                // Remove the job from response if limit exceeded
-                jobsWithStatus = jobsWithStatus.filter(j => j.id !== job.id);
-              }
-            } else {
+            if (job.status === 'completed') {
               await handleJobCompletion(job);
             }
+            // Free usage limits have been removed - no need to check or filter jobs
           }
           
           setActiveJobs(jobsWithStatus);

@@ -172,8 +172,8 @@ const AppContent = () => {
                     <JobsInProgress />
                   </div>
                   <div className="dashboard-side">
-                    <FreeUsageCard />
                     <NewCampaign />
+                    <FreeUsageCard />
                   </div>
                 </div>
                 <FlyerLibrary />
