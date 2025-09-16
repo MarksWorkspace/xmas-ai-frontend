@@ -325,72 +325,6 @@ const LightingPreferences = ({ preferences, onToggle }) => {
           )}
         </Paper>
 
-        <Paper sx={{ p: 2 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-            <Typography variant="subtitle1" className="section-title">Window Lights</Typography>
-            <Switch
-              checked={preferences.window_lights.enabled}
-              onChange={(e) => handleToggle('window_lights', e.target.checked)}
-            />
-          </Box>
-          {preferences.window_lights.enabled && (
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  select
-                  fullWidth
-                  size="medium"
-                sx={{ 
-                  '& .MuiSelect-select': {
-                    minWidth: '120px'
-                  },
-                  minHeight: '56px'
-                }}
-                  label="Style"
-                  value={preferences.window_lights.style}
-                  onChange={(e) => handleChange('window_lights', 'style', e.target.value)}
-                >
-                  <MenuItem value="">Select Style</MenuItem>
-                  <MenuItem value="candle lights in each window">Candle Lights</MenuItem>
-                  <MenuItem value="string lights">String Lights</MenuItem>
-                  <MenuItem value="icicle lights">Icicle Lights</MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  select
-                  fullWidth
-                  size="medium"
-                sx={{ 
-                  '& .MuiSelect-select': {
-                    minWidth: '120px'
-                  },
-                  minHeight: '56px'
-                }}
-                  label="Color"
-                  value={preferences.window_lights.color}
-                  onChange={(e) => handleChange('window_lights', 'color', e.target.value)}
-                >
-                  <MenuItem value="">Select Color</MenuItem>
-                  <MenuItem value="warm white">Warm White</MenuItem>
-                  <MenuItem value="cool white">Cool White</MenuItem>
-                  <MenuItem value="multicolor">Multicolor</MenuItem>
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={preferences.window_lights.interior_glow}
-                      onChange={(e) => handleChange('window_lights', 'interior_glow', e.target.checked)}
-                    />
-                  }
-                  label="Interior Glow"
-                />
-              </Grid>
-            </Grid>
-          )}
-        </Paper>
 
         {/* Image settings are now fixed to landscape and 4K */}
       </Stack>
@@ -417,12 +351,6 @@ LightingPreferences.propTypes = {
       bulb_size: PropTypes.string,
       style: PropTypes.string,
       colors: PropTypes.arrayOf(PropTypes.string)
-    }),
-    window_lights: PropTypes.shape({
-      enabled: PropTypes.bool,
-      style: PropTypes.string,
-      color: PropTypes.string,
-      interior_glow: PropTypes.bool
     }),
     image_settings: PropTypes.shape({
       resolution: PropTypes.string,

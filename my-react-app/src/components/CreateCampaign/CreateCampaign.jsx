@@ -71,12 +71,6 @@ const useAddressForm = (onSubmit) => {
       pattern: '',
       style: ''
     },
-    window_lights: {
-      enabled: true,
-      color: '',
-      style: '',
-      interior_glow: false
-    },
     doorway_lights: {
       enabled: false,
       style: '',
@@ -348,10 +342,14 @@ const CreateCampaign = () => {
         
         // Convert comma-separated strings to arrays where needed
         if (processedPreferences.roof_lights?.colors) {
-          processedPreferences.roof_lights.colors = processedPreferences.roof_lights.colors
-            .split(',')
-            .map(color => color.trim())
-            .filter(color => color);
+          // Check if colors is already an array (from onBlur processing) or a string
+          if (typeof processedPreferences.roof_lights.colors === 'string') {
+            processedPreferences.roof_lights.colors = processedPreferences.roof_lights.colors
+              .split(',')
+              .map(color => color.trim())
+              .filter(color => color);
+          }
+          // If it's already an array, leave it as is
         }
 
         const cleanedPreferences = cleanObject(processedPreferences);
