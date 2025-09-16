@@ -4,15 +4,15 @@
   background: #fff;
   border: 1px solid #eaeaea;
   border-radius: 8px;
-  padding: 12px;
+  padding: 20px;
   width: 100%;
   box-sizing: border-box;
-  min-height: 140px;
+  min-height: 160px;
 }
 
 .batch-content {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   flex: 1;
   min-width: 0;
 }
@@ -36,8 +36,8 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 4px;
+  gap: 12px;
+  padding-top: 8px;
 }
 
 .batch-title {
@@ -120,9 +120,9 @@
 .progress-section {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-  padding: 4px 0;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 8px 0;
 }
 
 .progress-bar {
@@ -160,14 +160,14 @@
 /* Large monitor screens (1600px+) */
 @media (min-width: 1600px) {
   .batch-render-row {
-    padding: 28px;
+    padding: 36px;
     border-radius: 12px;
-    min-height: 200px;
+    min-height: 220px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
 
   .batch-content {
-    gap: 24px;
+    gap: 32px;
   }
 
   .thumbnail {
@@ -177,8 +177,8 @@
   }
 
   .batch-info {
-    gap: 16px;
-    padding-top: 8px;
+    gap: 20px;
+    padding-top: 12px;
   }
 
   .batch-title {
@@ -204,9 +204,9 @@
   }
 
   .progress-section {
-    gap: 12px;
-    margin-top: 12px;
-    padding: 6px 0;
+    gap: 16px;
+    margin-top: 16px;
+    padding: 10px 0;
   }
 
   .progress-bar {
@@ -222,12 +222,12 @@
 
 @media (max-width: 1200px) {
   .batch-render-row {
-    padding: 8px;
-    min-height: 90px;
+    padding: 16px;
+    min-height: 120px;
   }
 
   .batch-content {
-    gap: 10px;
+    gap: 16px;
   }
 
   .thumbnail {
@@ -247,12 +247,12 @@
 
 @media (max-width: 768px) {
   .batch-render-row {
-    padding: 8px;
-    min-height: 100px;
+    padding: 14px;
+    min-height: 110px;
   }
 
   .batch-content {
-    gap: 10px;
+    gap: 14px;
   }
 
   .thumbnail {
@@ -272,12 +272,12 @@
 
 @media (max-width: 480px) {
   .batch-render-row {
-    padding: 6px;
-    min-height: 90px;
+    padding: 12px;
+    min-height: 100px;
   }
 
   .batch-content {
-    gap: 8px;
+    gap: 12px;
   }
 
   .thumbnail {
