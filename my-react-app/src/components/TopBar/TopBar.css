@@ -22,45 +22,6 @@ body.sidebar-collapsed .topbar {
   position: relative;
   padding-left: 0;
   flex: 1;
-  max-width: 600px;
-}
-
-.topbar-search {
-  width: 100%;
-  min-width: 200px;
-  max-width: 340px;
-  height: clamp(32px, 4vh, 36px);
-  border-radius: 20px;
-  border: 1px solid #e0e0e0;
-  background: #f9f9f9;
-  padding: 0 40px 0 16px;
-  font-size: clamp(13px, 0.9vw, 14px);
-  color: #222;
-  outline: none;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.topbar-search:focus {
-  border: 1.5px solid #1b4332;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.topbar-search-icon {
-  position: absolute;
-  right: calc(100% - 330px);
-  top: 50%;
-  transform: translateY(-50%);
-  color: #666;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  transition: color 0.2s ease;
-}
-
-.topbar-search:focus + .topbar-search-icon {
-  color: #1b4332;
 }
 
 /* Large monitor screens (1600px+) */
@@ -75,19 +36,6 @@ body.sidebar-collapsed .topbar {
     left: 60px;
   }
 
-  .topbar-search {
-    min-width: 300px;
-    max-width: 500px;
-    height: 48px;
-    border-radius: 24px;
-    padding: 0 48px 0 20px;
-    font-size: 18px;
-  }
-
-  .topbar-search-icon {
-    right: calc(100% - 480px);
-    font-size: 20px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -103,25 +51,8 @@ body.sidebar-collapsed .topbar {
   .topbar-left {
     padding-left: 12px;
   }
-
-  .topbar-search {
-    max-width: 280px;
-    border-radius: 16px;
-  }
-
-  .topbar-search-icon {
-    right: calc(100% - 270px);
-  }
 }
 
 @media (max-width: 480px) {
-  .topbar-search {
-    max-width: 200px;
-    border-radius: 14px;
-    font-size: 12px;
-  }
-
-  .topbar-search-icon {
-    right: calc(100% - 190px);
-  }
+  /* Mobile styles for topbar without search */
 }

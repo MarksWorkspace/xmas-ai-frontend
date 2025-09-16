@@ -2,7 +2,7 @@ import React from 'react';
 import './BatchRenderRow.css';
 import { useJobs } from '../../context/JobContext';
 
-const BatchRenderRow = ({ id, title, streets = [], startTime, status, progress, thumbnail }) => {
+const BatchRenderRow = ({ id, title, streets = [], startTime, status, progress, thumbnail, completedAddresses, totalAddresses }) => {
   const { deleteJob } = useJobs();
 
   // Format the date to be more readable and in local time
@@ -67,6 +67,19 @@ const BatchRenderRow = ({ id, title, streets = [], startTime, status, progress, 
               {statusInfo.text}
             </span>
           </div>
+          {(status === 'processing' || status === 'pending') && (
+            <div className="progress-section">
+              <div className="progress-bar">
+                <div 
+                  className={`progress-bar-fill ${status === 'completed' ? 'completed' : ''}`}
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <span className="progress-text">
+                {progress}% ({completedAddresses || 0}/{totalAddresses || 1})
+              </span>
+            </div>
+          )}
         </div>
         <button 
           className="delete-button"

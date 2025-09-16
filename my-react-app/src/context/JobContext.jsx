@@ -27,6 +27,18 @@ export const JobProvider = ({ children }) => {
     }
   }, []);
 
+  // Fetch job status with progress
+  const fetchJobStatus = useCallback(async (jobId) => {
+    try {
+      const statusData = await makeRequest(API_ROUTES.jobStatus(jobId), 'GET');
+      console.log('📊 Job Status:', { jobId, statusData });
+      return statusData;
+    } catch (err) {
+      console.error('Error fetching job status:', err);
+      return null;
+    }
+  }, []);
+
   // Delete a job
   const deleteJob = useCallback(async (jobId) => {
     try {
@@ -190,25 +202,39 @@ export const JobProvider = ({ children }) => {
         completedAt: job.completed_at
       })));
 
+      // Fetch status for each job to get real-time progress
+      const jobsWithStatus = await Promise.all(
+        response.map(async (job) => {
+          const statusData = await fetchJobStatus(job.id);
+          return {
+            ...job,
+            // Update job with real-time status data
+            completed_addresses: statusData?.completed_addresses || job.completed_addresses || 0,
+            total_addresses: statusData?.total_addresses || job.total_addresses || 1,
+            status: statusData?.status || job.status
+          };
+        })
+      );
+
       // Process any completed jobs immediately
-      for (const job of response) {
+      for (const job of jobsWithStatus) {
         if (job.status === 'completed') {
           await handleJobCompletion(job);
         }
       }
 
       // Check free image limits for all non-completed jobs
-      for (const job of response) {
+      for (const job of jobsWithStatus) {
         if (job.status !== 'completed') {
           const exceededLimit = await checkFreeImageLimit(job);
           if (exceededLimit) {
             // Job was deleted, update the response
-            response = response.filter(j => j.id !== job.id);
+            jobsWithStatus = jobsWithStatus.filter(j => j.id !== job.id);
           }
         }
       }
 
-      setActiveJobs(response);
+      setActiveJobs(jobsWithStatus);
       setError(null);
     } catch (err) {
       console.error('Error fetching jobs:', err);
@@ -216,7 +242,7 @@ export const JobProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [handleJobCompletion, handleError, checkFreeImageLimit]);
+  }, [handleJobCompletion, handleError, checkFreeImageLimit, fetchJobStatus]);
 
   // Reset state when user changes
   useEffect(() => {
@@ -238,7 +264,6 @@ export const JobProvider = ({ children }) => {
       pollInterval = setInterval(async () => {
         try {
           const response = await makeRequest(API_ROUTES.jobs, 'GET');
-          let updatedResponse = [...response];
           
           console.log('🔄 Polling Update - Jobs:', response.map(job => ({
             id: job.id,
@@ -246,20 +271,34 @@ export const JobProvider = ({ children }) => {
             description: job.description
           })));
 
+          // Fetch status for each job to get real-time progress
+          let jobsWithStatus = await Promise.all(
+            response.map(async (job) => {
+              const statusData = await fetchJobStatus(job.id);
+              return {
+                ...job,
+                // Update job with real-time status data
+                completed_addresses: statusData?.completed_addresses || job.completed_addresses || 0,
+                total_addresses: statusData?.total_addresses || job.total_addresses || 1,
+                status: statusData?.status || job.status
+              };
+            })
+          );
+
           // Check all non-completed jobs for free image limit
-          for (const job of response) {
+          for (const job of jobsWithStatus) {
             if (job.status !== 'completed') {
               const exceededLimit = await checkFreeImageLimit(job);
               if (exceededLimit) {
                 // Remove the job from response if limit exceeded
-                updatedResponse = updatedResponse.filter(j => j.id !== job.id);
+                jobsWithStatus = jobsWithStatus.filter(j => j.id !== job.id);
               }
             } else {
               await handleJobCompletion(job);
             }
           }
           
-          setActiveJobs(updatedResponse);
+          setActiveJobs(jobsWithStatus);
         } catch (err) {
           handleError(err);
         }
@@ -271,7 +310,7 @@ export const JobProvider = ({ children }) => {
         }
       };
     }
-  }, [user, handleJobCompletion, handleError, checkFreeImageLimit]);
+  }, [user, handleJobCompletion, handleError, checkFreeImageLimit, fetchJobStatus]);
 
   return (
     <JobContext.Provider value={{ 
@@ -288,14 +327,21 @@ export const JobProvider = ({ children }) => {
 
         const uniqueStreets = [...new Set(streets)].sort();
 
+        // Calculate progress percentage using real-time data
+        const completedAddresses = job.completed_addresses || 0;
+        const totalAddresses = job.total_addresses || 1;
+        const progressPercentage = Math.round((completedAddresses / totalAddresses) * 100);
+
         return {
           id: job.id,
           title: campaignName,
           streets: uniqueStreets,
           startTime: job.created_at || null,
-          progress: Math.round((job.completed_addresses / (job.total_addresses || 1)) * 100),
+          progress: progressPercentage,
           status: job.status || 'pending',
-          thumbnail: job.thumbnail || 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=200&h=150'
+          thumbnail: job.thumbnail || 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=200&h=150',
+          completedAddresses,
+          totalAddresses
         };
       }),
       completedFlyers,
@@ -303,7 +349,7 @@ export const JobProvider = ({ children }) => {
       isLoading,
       error,
       fetchJobs,
-      fetchJobStatus: fetchJobs,
+      fetchJobStatus,
       deleteJob
     }}>
       {children}

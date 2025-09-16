@@ -56,6 +56,8 @@ const ActiveBatchRenders = () => {
             progress={job.progress}
             status={job.status}
             thumbnail={job.thumbnail}
+            completedAddresses={job.completedAddresses}
+            totalAddresses={job.totalAddresses}
           />
         ))}
         {activeJobs.length === 0 && (
